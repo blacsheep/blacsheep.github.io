@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="提前学习一下,虽然也只是随意看下,开学再回顾一下,计组应该就不会再去看了 第一章几个层次 1.应用软件 &#x3D;&#x3D;用户接口,如GUI之类&#x3D;&#x3D; 2.系统软件(操作系统,数据抽象[编译器,汇编器,数据库管理系统等]和资源抽象[系统调用]) &#x3D;&#x3D;系统接口&#x3D;&#x3D; 3.硬件系统(CPU,主存,输入输出,通信子系统) &#x3D;&amp;#x3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计组学习">
+<meta property="og:url" content="http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="提前学习一下,虽然也只是随意看下,开学再回顾一下,计组应该就不会再去看了 第一章几个层次 1.应用软件 &#x3D;&#x3D;用户接口,如GUI之类&#x3D;&#x3D; 2.系统软件(操作系统,数据抽象[编译器,汇编器,数据库管理系统等]和资源抽象[系统调用]) &#x3D;&#x3D;系统接口&#x3D;&#x3D; 3.硬件系统(CPU,主存,输入输出,通信子系统) &#x3D;&amp;#x3">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2018/07/jizu-1.jpg">
+<meta property="article:published_time" content="2018-07-24T03:24:50.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:13:29.454Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2018/07/jizu-1.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>计组学习</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/07/28/suctf%E8%A1%A5%E9%A2%98/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/07/23/%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2webwriteup/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&text=计组学习"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&title=计组学习"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&is_video=false&description=计组学习"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=计组学习&body=Check out this article: http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&title=计组学习"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&title=计组学习"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&title=计组学习"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&title=计组学习"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&name=计组学习&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&t=计组学习"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0"><span class="toc-number">1.</span> <span class="toc-text">第一章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E5%B1%82%E6%AC%A1"><span class="toc-number">1.1.</span> <span class="toc-text">几个层次</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%B1%82"><span class="toc-number">1.1.1.</span> <span class="toc-text">软件层</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">操作系统</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">编译器</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E5%B1%82"><span class="toc-number">1.1.2.</span> <span class="toc-text">硬件层</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">计算机体系结构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">计算机组成原理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E4%B8%8E%E6%95%B0%E5%AD%97%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">逻辑与数字系统</span></a></li></ol></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        计组学习
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-07-24T03:24:50.000Z" class="dt-published" itemprop="datePublished">2018-07-24</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>提前学习一下,虽然也只是随意看下,开学再回顾一下,计组应该就不会再去看了</p>
+<h2 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h2><h3 id="几个层次"><a href="#几个层次" class="headerlink" title="几个层次"></a>几个层次</h3><blockquote>
+<p>1.应用软件 &#x3D;&#x3D;用户接口,如GUI之类&#x3D;&#x3D; 2.系统软件(操作系统,数据抽象[编译器,汇编器,数据库管理系统等]和资源抽象[系统调用]) &#x3D;&#x3D;系统接口&#x3D;&#x3D; 3.硬件系统(CPU,主存,输入输出,通信子系统) &#x3D;&#x3D;I&#x2F;O和通信接口&#x3D;&#x3D; 4.硬件设备(输入输出,通信设备)</p>
+</blockquote>
+<h4 id="软件层"><a href="#软件层" class="headerlink" title="软件层"></a>软件层</h4><p>软件层可分为系统软件和应用软件 <strong>核心的系统软件</strong>:操作系统和编译器</p>
+<h5 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h5><p>操作系统是用户程序和硬件的接口,它提供服务和管理功能,其中最重要的功能有: – 处理基本的输入输出操作 – 分配存储空间及内存 – 为多个程序同时使用计算机提供支持</p>
+<h5 id="编译器"><a href="#编译器" class="headerlink" title="编译器"></a>编译器</h5><p>完成另外一项核心功能,将用高级语言,如c,java写的程序编译成硬件能够执行的指令 软件层次整体来看,从高级语言到机器语言 – 高级语言经过编译器被翻译成汇编语言,这个过程是一条高级语言对应多条汇编语言(把汇编转源码就是逆向咯?) – 汇编语言经过汇编器被翻译成机器语言,对应是一条汇编转一条机器语言</p>
+<h4 id="硬件层"><a href="#硬件层" class="headerlink" title="硬件层"></a>硬件层</h4><p>不说了,放图自己体会…感觉又要学一门数字逻辑加强版 <img src="/images/2018/07/jizu-1.jpg" alt="blacsheep"> 相关课程的安排:</p>
+<h5 id="计算机体系结构"><a href="#计算机体系结构" class="headerlink" title="计算机体系结构"></a>计算机体系结构</h5><p>-- 程序员所见到的计算机系统的属性、概念性的结构和功能特性 – 指令系统、数据类型、寻址技术、I&#x2F;O机理 也就是研究指令<strong>系统</strong></p>
+<h5 id="计算机组成原理"><a href="#计算机组成原理" class="headerlink" title="计算机组成原理"></a>计算机组成原理</h5><p>-- 实现计算机体系结构所体现的属性 – 具体指令的逻辑实现 研究怎么设计<strong>具体的指令</strong></p>
+<h5 id="逻辑与数字系统"><a href="#逻辑与数字系统" class="headerlink" title="逻辑与数字系统"></a>逻辑与数字系统</h5><p>-- 计算机组成的物理实现 – 具体的指令的物理实现 比如乘法指令需要乘法器,那么这里我们研究的就是乘法器的物理实现…</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0"><span class="toc-number">1.</span> <span class="toc-text">第一章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E5%B1%82%E6%AC%A1"><span class="toc-number">1.1.</span> <span class="toc-text">几个层次</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%B1%82"><span class="toc-number">1.1.1.</span> <span class="toc-text">软件层</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">操作系统</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">编译器</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E5%B1%82"><span class="toc-number">1.1.2.</span> <span class="toc-text">硬件层</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">计算机体系结构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">计算机组成原理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E4%B8%8E%E6%95%B0%E5%AD%97%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">逻辑与数字系统</span></a></li></ol></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&text=计组学习"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&title=计组学习"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&is_video=false&description=计组学习"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=计组学习&body=Check out this article: http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&title=计组学习"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&title=计组学习"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&title=计组学习"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&title=计组学习"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&name=计组学习&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/07/24/%E8%AE%A1%E7%BB%84%E5%AD%A6%E4%B9%A0/&t=计组学习"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

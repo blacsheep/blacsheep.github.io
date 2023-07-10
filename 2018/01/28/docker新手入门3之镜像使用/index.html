@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="运行容器的时候如果镜像本地不存在,docker就会从docker镜像仓库里面去下载,默认docker hub公共镜像源 这一篇主要是怎么管理使用本地镜像以及创建镜像 列出镜像列表命令:docker images 12345root@blacsheep-myubuntu:&#x2F;home&#x2F;blacsheep# docker imagesREPOSITORY          TAG">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker新手入门(3)之镜像使用">
+<meta property="og:url" content="http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="运行容器的时候如果镜像本地不存在,docker就会从docker镜像仓库里面去下载,默认docker hub公共镜像源 这一篇主要是怎么管理使用本地镜像以及创建镜像 列出镜像列表命令:docker images 12345root@blacsheep-myubuntu:&#x2F;home&#x2F;blacsheep# docker imagesREPOSITORY          TAG">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-01-28T06:20:28.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:12:02.237Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>docker新手入门(3)之镜像使用</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/01/29/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A84%E4%B9%8B%E5%AE%B9%E5%99%A8%E8%BF%9E%E6%8E%A5/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/01/27/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A8%E4%B9%8B%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&text=docker新手入门(3)之镜像使用"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&title=docker新手入门(3)之镜像使用"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&is_video=false&description=docker新手入门(3)之镜像使用"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=docker新手入门(3)之镜像使用&body=Check out this article: http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&title=docker新手入门(3)之镜像使用"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&title=docker新手入门(3)之镜像使用"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&title=docker新手入门(3)之镜像使用"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&title=docker新手入门(3)之镜像使用"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&name=docker新手入门(3)之镜像使用&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&t=docker新手入门(3)之镜像使用"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E9%95%9C%E5%83%8F%E5%88%97%E8%A1%A8"><span class="toc-number">1.</span> <span class="toc-text">列出镜像列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E9%95%9C%E5%83%8F"><span class="toc-number">2.</span> <span class="toc-text">获取镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E9%95%9C%E5%83%8F"><span class="toc-number">3.</span> <span class="toc-text">查找镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%98%E5%8F%96%E9%95%9C%E5%83%8F"><span class="toc-number">4.</span> <span class="toc-text">托取镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%95%9C%E5%83%8F-%E9%87%8D%E7%82%B9"><span class="toc-number">5.</span> <span class="toc-text">创建镜像(重点)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E9%95%9C%E5%83%8F"><span class="toc-number">5.0.1.</span> <span class="toc-text">更新镜像</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dockerfile%E5%88%9B%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="toc-number">5.0.2.</span> <span class="toc-text">dockerfile创建镜像</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E6%A0%87%E7%AD%BE"><span class="toc-number">6.</span> <span class="toc-text">设置镜像标签</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        docker新手入门(3)之镜像使用
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-01-28T06:20:28.000Z" class="dt-published" itemprop="datePublished">2018-01-28</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web%E7%AF%87/">web篇</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>运行容器的时候如果镜像本地不存在,docker就会从docker镜像仓库里面去下载,默认docker hub公共镜像源 这一篇主要是怎么管理使用本地镜像以及创建镜像</p>
+<h3 id="列出镜像列表"><a href="#列出镜像列表" class="headerlink" title="列出镜像列表"></a>列出镜像列表</h3><p>命令:docker images</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker images</span><br><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">ubuntu              16.10               7d3f705d307c        6 months ago        107MB</span><br><span class="line">training/webapp     latest              6fae60ef3446        2 years ago         349MB</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>
+
+<p>其中 repository:镜像的仓库源 tag:镜像的标签 image id:镜像id created:创建时间 size:大小 一个仓库源可以有多个tag,比如一个ubuntu的仓库源里面可以有14.04,15.10等等版本,我们可以用repository:tag来定义不同的镜像,比如我们要用16.10的ubuntu来运行容器的时候,就是使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker run -t -i ubuntu:16.10 /bin/bash </span><br><span class="line">root@68cc92ce5dee:/# </span><br></pre></td></tr></table></figure>
+
+<p>如果不去指定镜像的标签的话,比如只用ubuntu,docker就会默认使用ubuntu:latest的镜像</p>
+<h3 id="获取镜像"><a href="#获取镜像" class="headerlink" title="获取镜像"></a>获取镜像</h3><p>使用docker pull,同时说明不带标签的话使用的是latest的标签</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker pull ubuntu</span><br><span class="line">Using default tag: latest</span><br><span class="line">latest: Pulling from library/ubuntu</span><br><span class="line">1be7f2b886e8: Pull complete </span><br><span class="line">6fbc4a21b806: Pull complete </span><br><span class="line">c71a6f8e1378: Pull complete </span><br><span class="line">4be3072e5a37: Pull complete </span><br><span class="line">06c6d2f59700: Pull complete </span><br><span class="line">Digest: sha256:e46251ecd3548065ca203df31bdcf25e53b530b9b39bd3a86ac8147b347bb7ac</span><br><span class="line">Status: Downloaded newer image for ubuntu:latest</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>
+
+<p>下载完成之后docker images查看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker images</span><br><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">ubuntu              latest              0458a4468cbc        2 days ago          112MB</span><br><span class="line">ubuntu              16.10               7d3f705d307c        6 months ago        107MB</span><br><span class="line">training/webapp     latest              6fae60ef3446        2 years ago         349MB</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>
+
+<h3 id="查找镜像"><a href="#查找镜像" class="headerlink" title="查找镜像"></a>查找镜像</h3><p>可以从docker hub的网站来搜索镜像,网址为<a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com/</a> 如果想用命令行,可以用docker search xxx,比如我们想找一个httpd的镜像作为web服务,可以</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker search httpd</span><br><span class="line">NAME                                DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED</span><br><span class="line">httpd                               The Apache HTTP Server Project                  1470                [OK]                </span><br><span class="line">hypriot/rpi-busybox-httpd           Raspberry Pi compatible Docker Image with a …   40                                      </span><br><span class="line">centos/httpd                                                                        15                                      [OK]</span><br><span class="line">centos/httpd-24-centos7             Platform for running Apache httpd 2.4 or bui…   8                                       </span><br><span class="line">armhf/httpd                         The Apache HTTP Server Project                  8                                       </span><br><span class="line">macadmins/netboot-httpd             use in combination with bruienne/bsdpy          4                                       [OK]</span><br><span class="line">lolhens/httpd                       Apache httpd 2 Server                           2                                       [OK]</span><br><span class="line">salim1983hoop/httpd24               Dockerfile running apache config                2                                       [OK]</span><br><span class="line">fboaventura/dckr-httpd              Small footprint http server to use with othe…   1                                       [OK]</span><br><span class="line">rgielen/httpd-image-simple          Docker image for simple Apache httpd based o…   1                                       [OK]</span><br><span class="line">lead4good/httpd-fpm                 httpd server which connects via fcgi proxy h…   1                                       [OK]</span><br><span class="line">epflidevelop/os-wp-httpd            WP httpd                                        1                                       [OK]</span><br><span class="line">rgielen/httpd-image-php5            Docker image for Apache httpd with PHP 5 bas…   1                                       [OK]</span><br><span class="line">publici/httpd                       httpd:latest                                    0                                       [OK]</span><br><span class="line">tplatform/aws-linux-httpd24-php70   aws-linux-httpd24-php70                         0                                       [OK]</span><br><span class="line">dockerpinata/httpd                                                                  0                                       </span><br><span class="line">trollin/httpd                                                                       0                                       </span><br><span class="line">manasip/httpd                                                                       0                                       </span><br><span class="line">manageiq/httpd                      Container with httpd, built on CentOS for Ma…   0                                       [OK]</span><br><span class="line">jbpt/httpd                                                                          0                                       [OK]</span><br><span class="line">fintaffy/fintaffy-httpd                                                             0                                       </span><br><span class="line">efrecon/httpd                       A micro-sized httpd. Start serving files in …   0                                       [OK]</span><br><span class="line">ppc64le/httpd                       The Apache HTTP Server Project                  0                                       </span><br><span class="line">sbutler/pie-httpd                   PIE httpd server                                0                                       </span><br><span class="line">camptocamp/os-wp-httpd              Wordpress httpd                                 0                                       [OK]</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>
+
+<p>name:表示镜像仓库源的名称 description:镜像描述 official:是否是docker官方发布的</p>
+<h3 id="托取镜像"><a href="#托取镜像" class="headerlink" title="托取镜像"></a>托取镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker pull httpd</span><br><span class="line"></span><br><span class="line">Using default tag: latest</span><br><span class="line">latest: Pulling from library/httpd</span><br><span class="line">f49cf87b52c1: Pull complete </span><br><span class="line">02ca099fb6cd: Pull complete </span><br><span class="line">de7acb18da57: Pull complete </span><br><span class="line">770c8edb393d: Pull complete </span><br><span class="line">0e252730aeae: Pull complete </span><br><span class="line">6288e83d58fa: Pull complete </span><br><span class="line">a91ad03b2178: Pull complete </span><br><span class="line">Digest: sha256:6261d80fe154a7d7f1cbb0ca90eb344fafb4511afd06ebfc2d41915367ce25ad</span><br><span class="line">Status: Downloaded newer image for httpd:latest</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>
+
+<p>之后docker run httpd就可以了</p>
+<h3 id="创建镜像-重点"><a href="#创建镜像-重点" class="headerlink" title="创建镜像(重点)"></a>创建镜像(重点)</h3><p>如果我们从docker镜像仓库里面下载的镜像不能满足我们的需求的话,有两种方式可以对镜像进行更改 - 1.从已经创建的容器中更新镜像,并且提交这个镜像 - 2.使用docker file来创建一个新的镜像</p>
+<h5 id="更新镜像"><a href="#更新镜像" class="headerlink" title="更新镜像"></a>更新镜像</h5><p>更新之前先用镜像创建一个容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker run -t -i ubuntu:16.10 /bin/bashroot@000b42c94ddd:/#</span><br></pre></td></tr></table></figure>
+
+<p>容器内使用apt-get update更新一下 完成之后exit退出 这个容器是按我们的需求修改的容器,可以使用docker commit来提交容器副本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker commit -m=&quot;update ubuntu&quot; -a=&quot;blacsheep&quot; 000b42c94ddd blacsheep/ubuntu:v1</span><br><span class="line">sha256:3846343d3b39a77b3dbadb32cdef5a3669560bbb96d52d639f24cc06f8d2655e</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>
+
+<p>-m:提交的描述 -a:镜像作者 000b42c94ddd:容器id blacsheep&#x2F;ubuntu:v1:镜像名:标签 然后docker images查看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker images</span><br><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE</span><br><span class="line">blacsheep/ubuntu    v1                  3846343d3b39        About a minute ago   107MB</span><br><span class="line">httpd               latest              2e202f453940        2 days ago           179MB</span><br><span class="line">ubuntu              latest              0458a4468cbc        2 days ago           112MB</span><br><span class="line">ubuntu              16.10               7d3f705d307c        6 months ago         107MB</span><br><span class="line">training/webapp     latest              6fae60ef3446        2 years ago          349MB</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>
+
+<p>这样就可以使用新的镜像来创建容器了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker run -t -i blacsheep/ubuntu:v1 /bin/bash</span><br><span class="line">root@02b45e36003d:/#</span><br></pre></td></tr></table></figure>
+
+<h5 id="dockerfile创建镜像"><a href="#dockerfile创建镜像" class="headerlink" title="dockerfile创建镜像"></a>dockerfile创建镜像</h5><p>使用docker build可以从零开始创建一个镜像。但是我们必须创建一个Dockerfile来告诉docker怎么来创建我们的镜像 dockerfile自己写 写完了大概就是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# cat Dockerfile</span><br><span class="line">From ubuntu:16.04</span><br><span class="line">RUN /bin/echo &#x27;root:123456&#x27; chpasswd</span><br><span class="line">RUN useradd blacsheep</span><br><span class="line">RUN /bin/echo &#x27;blacsheep:123456&#x27; chpasswd</span><br><span class="line">RUN /bin/echo -e &quot;LANG=\&quot;en_US.UTF-8\&quot;&quot; &gt;/etc/default/local</span><br><span class="line">EXPOSE 22</span><br><span class="line">EXPOSE 80</span><br><span class="line">CMD /usr/sbin/sshd -D</span><br></pre></td></tr></table></figure>
+
+<p>From:表示使用哪个镜像源 RUN:表示告诉docker在镜像里面执行什么命令 然后使用docker build -t xxx .来创建 注意,不要忘记指令最后的一个点,点表示dockerfile在当前目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker build -t blacsheep/ubuntu:dockerfile .</span><br><span class="line">ERRO[0036] Can&#x27;t add file /home/blacsheep/.gnupg/S.gpg-agent to tar: archive/tar: sockets not supported </span><br><span class="line">Sending build context to Docker daemon   2.19GB</span><br><span class="line">Step 1/8 : From ubuntu:16.04</span><br><span class="line">16.04: Pulling from library/ubuntu</span><br><span class="line">1be7f2b886e8: Already exists </span><br><span class="line">6fbc4a21b806: Already exists </span><br><span class="line">c71a6f8e1378: Already exists </span><br><span class="line">4be3072e5a37: Already exists </span><br><span class="line">06c6d2f59700: Already exists </span><br><span class="line">Digest: sha256:2b80e7fbfd1b0a3784dd0e55fb6f2750ebc33e596c2ccee5201ecf018ac5ae05</span><br><span class="line">Status: Downloaded newer image for ubuntu:16.04</span><br><span class="line"> ---&gt; 0458a4468cbc</span><br><span class="line">Step 2/8 : RUN /bin/echo &#x27;root:123456&#x27; chpasswd</span><br><span class="line"> ---&gt; Running in b3d12aa12f6c</span><br><span class="line">Removing intermediate container b3d12aa12f6c</span><br><span class="line"> ---&gt; 99c6e9ccdd81</span><br><span class="line">Step 3/8 : RUN useradd blacsheep</span><br><span class="line"> ---&gt; Running in fe025de84d56</span><br><span class="line">Removing intermediate container fe025de84d56</span><br><span class="line"> ---&gt; e5180f2047b3</span><br><span class="line">Step 4/8 : RUN /bin/echo &#x27;blacsheep:123456&#x27; chpasswd</span><br><span class="line"> ---&gt; Running in aa3c30d8f07b</span><br><span class="line">Removing intermediate container aa3c30d8f07b</span><br><span class="line"> ---&gt; 9bda89fa8c14</span><br><span class="line">Step 5/8 : RUN /bin/echo -e &quot;LANG=\&quot;en_US.UTF-8\&quot;&quot; &gt;/etc/default/local</span><br><span class="line"> ---&gt; Running in d63a51e6d430</span><br><span class="line">Removing intermediate container d63a51e6d430</span><br><span class="line"> ---&gt; a3b879d7090e</span><br><span class="line">Step 6/8 : EXPOSE 22</span><br><span class="line"> ---&gt; Running in d2f15040553b</span><br><span class="line">Removing intermediate container d2f15040553b</span><br><span class="line"> ---&gt; 65916c8dda3e</span><br><span class="line">Step 7/8 : EXPOSE 80</span><br><span class="line"> ---&gt; Running in 62dde9991ee4</span><br><span class="line">Removing intermediate container 62dde9991ee4</span><br><span class="line"> ---&gt; 5bf05e8d377f</span><br><span class="line">Step 8/8 : CMD /usr/sbin/sshd -D</span><br><span class="line"> ---&gt; Running in 62528b637ebc</span><br><span class="line">Removing intermediate container 62528b637ebc</span><br><span class="line"> ---&gt; 7ba34ce933fb</span><br><span class="line">Successfully built 7ba34ce933fb</span><br><span class="line">Successfully tagged blacsheep/ubuntu:dockerfile</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker images</span><br><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE</span><br><span class="line">blacsheep/ubuntu    dockerfile          7ba34ce933fb        About a minute ago   112MB</span><br><span class="line">blacsheep/ubuntu    v1                  3846343d3b39        22 minutes ago       107MB</span><br><span class="line">httpd               latest              2e202f453940        2 days ago           179MB</span><br><span class="line">ubuntu              16.04               0458a4468cbc        2 days ago           112MB</span><br><span class="line">ubuntu              latest              0458a4468cbc        2 days ago           112MB</span><br><span class="line">ubuntu              16.10               7d3f705d307c        6 months ago         107MB</span><br><span class="line">training/webapp     latest              6fae60ef3446        2 years ago          349MB</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep#</span><br></pre></td></tr></table></figure>
+
+<p>最后的docker images也可以看出镜像安装成功了 然后至于用户</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker run -i -t blacsheep/ubuntu:dockerfile /bin/bash</span><br><span class="line">root@1b52c348bf31:/# id blacsheep</span><br><span class="line">uid=1000(blacsheep) gid=1000(blacsheep) groups=1000(blacsheep)</span><br><span class="line">root@1b52c348bf31:/# </span><br></pre></td></tr></table></figure>
+
+<h3 id="设置镜像标签"><a href="#设置镜像标签" class="headerlink" title="设置镜像标签"></a>设置镜像标签</h3><p>使用docker tag命令 比如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker tag 7ba34ce933fb blacsheep/ubuntu:practice</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker images</span><br><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">blacsheep/ubuntu    dockerfile          7ba34ce933fb        19 minutes ago      112MB</span><br><span class="line">blacsheep/ubuntu    practice            7ba34ce933fb        19 minutes ago      112MB</span><br><span class="line">blacsheep/ubuntu    v1                  3846343d3b39        40 minutes ago      107MB</span><br><span class="line">httpd               latest              2e202f453940        2 days ago          179MB</span><br><span class="line">ubuntu              16.10               7d3f705d307c        6 months ago        107MB</span><br><span class="line">training/webapp     latest              6fae60ef3446        2 years ago         349MB</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>
+
+<p>可以看到blacsheep&#x2F;ubuntu多了一个practice标签.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E9%95%9C%E5%83%8F%E5%88%97%E8%A1%A8"><span class="toc-number">1.</span> <span class="toc-text">列出镜像列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E9%95%9C%E5%83%8F"><span class="toc-number">2.</span> <span class="toc-text">获取镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E9%95%9C%E5%83%8F"><span class="toc-number">3.</span> <span class="toc-text">查找镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%98%E5%8F%96%E9%95%9C%E5%83%8F"><span class="toc-number">4.</span> <span class="toc-text">托取镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%95%9C%E5%83%8F-%E9%87%8D%E7%82%B9"><span class="toc-number">5.</span> <span class="toc-text">创建镜像(重点)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E9%95%9C%E5%83%8F"><span class="toc-number">5.0.1.</span> <span class="toc-text">更新镜像</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dockerfile%E5%88%9B%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="toc-number">5.0.2.</span> <span class="toc-text">dockerfile创建镜像</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E9%95%9C%E5%83%8F%E6%A0%87%E7%AD%BE"><span class="toc-number">6.</span> <span class="toc-text">设置镜像标签</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&text=docker新手入门(3)之镜像使用"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&title=docker新手入门(3)之镜像使用"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&is_video=false&description=docker新手入门(3)之镜像使用"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=docker新手入门(3)之镜像使用&body=Check out this article: http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&title=docker新手入门(3)之镜像使用"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&title=docker新手入门(3)之镜像使用"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&title=docker新手入门(3)之镜像使用"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&title=docker新手入门(3)之镜像使用"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&name=docker新手入门(3)之镜像使用&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/01/28/docker%E6%96%B0%E6%89%8B%E5%85%A5%E9%97%A83%E4%B9%8B%E9%95%9C%E5%83%8F%E4%BD%BF%E7%94%A8/&t=docker新手入门(3)之镜像使用"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

