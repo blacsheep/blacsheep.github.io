@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="第一次远程笔试,本来是以为leetcode类似,结果和预想的有点差别,然后测试用例和leetcode也不太一样,样例输入也不太相似, 做的很不理想. 大致记录下, 题目记得不是很清楚只能大概写下. 使环上三点中任意两点距离大于k 输入格式: n, k, a1, a2, a3 n为环上点的个数 k为间距大小 a1, a2, a3为指定点的位置,节点一次只能动一次,输出最少需要的移动次数 比如6, 2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="某厂算法笔试记录">
+<meta property="og:url" content="http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="第一次远程笔试,本来是以为leetcode类似,结果和预想的有点差别,然后测试用例和leetcode也不太一样,样例输入也不太相似, 做的很不理想. 大致记录下, 题目记得不是很清楚只能大概写下. 使环上三点中任意两点距离大于k 输入格式: n, k, a1, a2, a3 n为环上点的个数 k为间距大小 a1, a2, a3为指定点的位置,节点一次只能动一次,输出最少需要的移动次数 比如6, 2">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-08-21T01:11:34.000Z">
+<meta property="article:modified_time" content="2023-08-21T14:57:56.264Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>某厂算法笔试记录</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2019/08/31/%E5%A4%A7%E5%9B%9B/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&text=某厂算法笔试记录"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&title=某厂算法笔试记录"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&is_video=false&description=某厂算法笔试记录"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=某厂算法笔试记录&body=Check out this article: http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&title=某厂算法笔试记录"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&title=某厂算法笔试记录"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&title=某厂算法笔试记录"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&title=某厂算法笔试记录"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&name=某厂算法笔试记录&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&t=某厂算法笔试记录"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%8E%AF%E4%B8%8A%E4%B8%89%E7%82%B9%E4%B8%AD%E4%BB%BB%E6%84%8F%E4%B8%A4%E7%82%B9%E8%B7%9D%E7%A6%BB%E5%A4%A7%E4%BA%8Ek"><span class="toc-number">1.</span> <span class="toc-text">使环上三点中任意两点距离大于k</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E8%8A%B1%E9%A1%BA"><span class="toc-number">2.</span> <span class="toc-text">同花顺</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%BD%E6%95%B0%E7%BB%84"><span class="toc-number">3.</span> <span class="toc-text">好数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E8%BF%9E%E7%BB%AD%E5%AD%90%E4%B8%B2%E6%9D%83%E9%87%8D"><span class="toc-number">4.</span> <span class="toc-text">最大连续子串权重</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        某厂算法笔试记录
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-08-21T01:11:34.000Z" class="dt-published" itemprop="datePublished">2023-08-21</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>第一次远程笔试,本来是以为leetcode类似,结果和预想的有点差别,然后测试用例和leetcode也不太一样,样例输入也不太相似, 做的很不理想. 大致记录下, 题目记得不是很清楚只能大概写下.</p>
+<h2 id="使环上三点中任意两点距离大于k">使环上三点中任意两点距离大于k</h2>
+<p>输入格式: n, k, a1, a2, a3 n为环上点的个数 k为间距大小 a1, a2, a3为指定点的位置,节点一次只能动一次,输出最少需要的移动次数</p>
+<p>比如6, 2, 1, 2, 3. 我们需要将节点1往左移动一次,节点3往右一次即可满足,总共移动2次,所以应该返回2</p>
+<p>笔试的时候想法是取三点任两点中距离中最小的两组, 从而确定最低需要的次数, 代码如下. <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">least_move</span>(<span class="params">n, k, a1, a2, a3</span>):</span><br><span class="line">    <span class="comment"># 排除不满足的</span></span><br><span class="line">    <span class="keyword">if</span> n // <span class="number">3</span> &lt; k:</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 考虑环首尾相连</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">distance</span>(<span class="params">a, b</span>):</span><br><span class="line">        abs_v = <span class="built_in">abs</span>(a - b)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">min</span>(abs_v, <span class="built_in">abs</span>(n - abs_v))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    d = [distance(a1, a2), distance(a1, a3), distance(a2, a3)]</span><br><span class="line">    d.sort()</span><br><span class="line">    d.pop()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 最近的两组都满足, 返回0</span></span><br><span class="line">    <span class="keyword">if</span> d[<span class="number">0</span>] &gt;= k <span class="keyword">and</span> d[<span class="number">1</span>] &gt;= k:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 最近的两组都需移动到k距离</span></span><br><span class="line">    <span class="keyword">elif</span> d[<span class="number">0</span>] &lt; k <span class="keyword">and</span> d[<span class="number">1</span>] &lt; k:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span> * k - d[<span class="number">0</span>] - d[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 一组大于k, 一组小于k, 先移动中间再考虑移动小于k侧</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        larger = <span class="built_in">max</span>(d)</span><br><span class="line">        less = <span class="built_in">min</span>(d)</span><br><span class="line">        <span class="comment"># k - less 为中间点移向large,直到距离large为k还不满足只能移动less</span></span><br><span class="line">        <span class="comment"># 后者为中间点移向large过程中就满足了</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(k - less, k - less - (larger - k))</span><br><span class="line"></span><br><span class="line"><span class="comment"># print(least_move(12, 4, 1, 2, 7))</span></span><br><span class="line"><span class="comment"># 应该是3, 2往右1次, 1往左2次</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="同花顺">同花顺</h2>
+<p>给一堆输入, 检测其中的同花顺(仅5张), 感觉是针对c语言的,用python感觉简单不少,不过给出的样例过了但是提交之后结果错误,不是很理解哪里写错了.</p>
+<p>这里简化一下问题, 给出一个字典, key为牌的大小, value为此牌的数量, 每找到一个同花顺, 字典中对应key的value-1(即不放回).</p>
+<p>目标为找出手牌中最大同花顺数量</p>
+<p>不确定写错没,这里直接写的检测所有同花顺的函数 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">flush</span>(<span class="params">dict1</span>):</span><br><span class="line">    found = <span class="number">1</span></span><br><span class="line">    flush_list = []</span><br><span class="line">    keys = []</span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> dict1.items():</span><br><span class="line">        <span class="keyword">if</span> v &gt; <span class="number">0</span>:</span><br><span class="line">            keys.append(k)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> found == <span class="number">1</span>:</span><br><span class="line">        found = <span class="number">0</span></span><br><span class="line">        left = <span class="number">0</span></span><br><span class="line">        right = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> right &lt; <span class="built_in">len</span>(keys):</span><br><span class="line">            <span class="keyword">if</span> keys[right] - keys[left] == right - left:</span><br><span class="line">                right += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                left = right</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> right - left == <span class="number">5</span>:</span><br><span class="line">                found = <span class="number">1</span></span><br><span class="line">                flush_key = keys[left:right]</span><br><span class="line">                flush_list.append(flush_key)</span><br><span class="line">                <span class="keyword">for</span> key <span class="keyword">in</span> flush_key:</span><br><span class="line">                    dict1[key] -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line">                keys = []</span><br><span class="line">                <span class="keyword">for</span> k, v <span class="keyword">in</span> dict1.items():</span><br><span class="line">                    <span class="keyword">if</span> v &gt; <span class="number">0</span>:</span><br><span class="line">                        keys.append(k)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">return</span> flush_list</span><br><span class="line"><span class="comment"># test = &#123;1:2, 2:2, 3:2, 4:3, 5:3, 6:3, 7:1, 8:1, 9:1, 10:1&#125;</span></span><br><span class="line"><span class="comment"># print(flush(test))</span></span><br><span class="line"><span class="comment"># [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [4, 5, 6, 7, 8]]</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="好数组">好数组</h2>
+<p>给出一个长度为n的数组, 目标是让其变成n-1且仅n-1个元素相同的数组,具体记得不太清了,样例倒是记得一些 输入: [1, 2, 2, 2, 5] 输出: 1 解释: 只需要将1变为2即可</p>
+<p>输入:[1, 1, 1] 输出1: 解释: 将随便一个1变成0或者2即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 好数组</span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">good_list</span>(<span class="params">lst</span>):</span><br><span class="line">    counter = Counter(lst)</span><br><span class="line">    keys = counter.keys()</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(keys) == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">len</span>(keys) == <span class="number">2</span> <span class="keyword">and</span> (<span class="number">1</span> <span class="keyword">in</span> counter.values()):</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    mean = <span class="keyword">lambda</span> x: <span class="built_in">sum</span>(x)/<span class="built_in">len</span>(x)</span><br><span class="line">    sorted_list = <span class="built_in">sorted</span>(lst)</span><br><span class="line">    mean_all = mean(sorted_list)</span><br><span class="line">    <span class="comment"># 去除一个极端值然后依据平均数来移动</span></span><br><span class="line">    mean_without_last = mean(sorted_list[:-<span class="number">1</span>])</span><br><span class="line">    mean_without_first = mean(sorted_list[<span class="number">1</span>:])</span><br><span class="line">    <span class="comment"># 对平均数影响越大说明越极端</span></span><br><span class="line">    <span class="comment"># 去除最大值更好</span></span><br><span class="line">    <span class="keyword">if</span> mean_all - mean_without_last &gt; mean_without_first - mean_all:</span><br><span class="line">        <span class="comment"># 向上取整还是向下取整取决于两边元素的数量,最终取min就行</span></span><br><span class="line">        target_floor = <span class="built_in">int</span>(mean_without_last)</span><br><span class="line">        target_ceil = target_floor + <span class="number">1</span></span><br><span class="line">        res_floor = <span class="number">0</span></span><br><span class="line">        res_ceil = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> sorted_list[:-<span class="number">1</span>]:</span><br><span class="line">            res_floor += <span class="built_in">abs</span>(target_floor - i)</span><br><span class="line">            res_ceil += <span class="built_in">abs</span>(target_ceil - i)</span><br><span class="line">    <span class="comment"># 去除最小值更好</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        target_floor = <span class="built_in">int</span>(mean_without_first)</span><br><span class="line">        target_ceil = target_floor + <span class="number">1</span></span><br><span class="line">        res_floor = <span class="number">0</span></span><br><span class="line">        res_ceil = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> sorted_list[<span class="number">1</span>:]:</span><br><span class="line">            res_floor += <span class="built_in">abs</span>(target_floor - i)</span><br><span class="line">            res_ceil += <span class="built_in">abs</span>(target_ceil - i)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">min</span>(res_ceil, res_floor)</span><br><span class="line"><span class="comment"># print(good_list([2,2,2,2,2,4,4,4,4,8,8,8,8,8,888]))</span></span><br><span class="line"><span class="comment"># output : 30</span></span><br><span class="line"><span class="comment"># to 2: 4 * 2 + 5 * 6 = 38</span></span><br><span class="line"><span class="comment"># to 4: 5 * 2 + 5 * 4 = 30</span></span><br><span class="line"><span class="comment"># to 8: 5 * 6 + 4 * 4 = 46</span></span><br></pre></td></tr></table></figure>
+<h2 id="最大连续子串权重">最大连续子串权重</h2>
+<p>具体记不太清了,描述有点长. 首先定义连续子串权重: 比如11000111 11, 000, 111分别是三个最大连续子串,则记权重为3</p>
+<p>然后要求输出一个字符串的所有子串的最大连续子串权重. 比如1101 1元素:1, 1, 0, 1. 共计4</p>
+<p>2元素:11, 10, 01. 11记1, 10记2, 01记2</p>
+<p>3元素:110, 101. 110记2, 101记3</p>
+<p>4元素:1101. 记3</p>
+<p>所以总权重为4+1+2+2+2+3+3 = 17,输出17</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 最大连续子串权重</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">weight</span>(<span class="params">s</span>):</span><br><span class="line">    left = <span class="number">0</span></span><br><span class="line">    right = <span class="number">0</span></span><br><span class="line">    length = <span class="built_in">len</span>(s)</span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> right &lt; length:</span><br><span class="line">        <span class="keyword">if</span> s[left] == s[right]:</span><br><span class="line">            right += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            left = right</span><br><span class="line">            ret += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> ret + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_substring</span>(<span class="params">s</span>):</span><br><span class="line">    s_weight = <span class="number">0</span></span><br><span class="line">    lens = <span class="built_in">len</span>(s)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, lens + <span class="number">1</span>):</span><br><span class="line">        left = <span class="number">0</span></span><br><span class="line">        right = i</span><br><span class="line">        <span class="keyword">while</span> right &lt;= lens:</span><br><span class="line">            <span class="comment"># ret_lst = []</span></span><br><span class="line">            <span class="comment"># ret_lst.append(s[left:right])</span></span><br><span class="line">            s_weight += weight(s[left:right])</span><br><span class="line">            left += <span class="number">1</span></span><br><span class="line">            right += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> s_weight</span><br><span class="line"></span><br><span class="line"><span class="comment"># print(weight(&#x27;11000111&#x27;))</span></span><br><span class="line"><span class="comment"># should be 3</span></span><br><span class="line"><span class="comment"># 11, 000, 111</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># print(get_substring(&#x27;1101&#x27;))</span></span><br><span class="line"><span class="comment"># should be 17</span></span><br></pre></td></tr></table></figure>
+<p>不过最后TLE了,应该还能优化,比如<code>get_substring</code>带一个字典,每算出一个weight先查询,没有的话再计算然后更新,空间换时间. 不过当时没反应过来.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%8E%AF%E4%B8%8A%E4%B8%89%E7%82%B9%E4%B8%AD%E4%BB%BB%E6%84%8F%E4%B8%A4%E7%82%B9%E8%B7%9D%E7%A6%BB%E5%A4%A7%E4%BA%8Ek"><span class="toc-number">1.</span> <span class="toc-text">使环上三点中任意两点距离大于k</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E8%8A%B1%E9%A1%BA"><span class="toc-number">2.</span> <span class="toc-text">同花顺</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%BD%E6%95%B0%E7%BB%84"><span class="toc-number">3.</span> <span class="toc-text">好数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E8%BF%9E%E7%BB%AD%E5%AD%90%E4%B8%B2%E6%9D%83%E9%87%8D"><span class="toc-number">4.</span> <span class="toc-text">最大连续子串权重</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&text=某厂算法笔试记录"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&title=某厂算法笔试记录"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&is_video=false&description=某厂算法笔试记录"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=某厂算法笔试记录&body=Check out this article: http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&title=某厂算法笔试记录"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&title=某厂算法笔试记录"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&title=某厂算法笔试记录"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&title=某厂算法笔试记录"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&name=某厂算法笔试记录&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2023/08/21/%E6%9F%90%E5%8E%82%E7%AE%97%E6%B3%95%E7%AC%94%E8%AF%95%E8%AE%B0%E5%BD%95/&t=某厂算法笔试记录"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

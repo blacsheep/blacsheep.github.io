@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="五.数据链路层概述目的:了解数据链路层服务和协议原理 包括: (1)差错检测和纠错 (2)共享广播信道:多路访问协议 (3)链路层寻址 (4)可靠传输,流量控制 简单的介绍 术语: 节点:主机和路由器(包括网桥和交换机) 链路:沿通信路径连接的通信信道 帧:链路层协议交换的数据单元。封装网络层数据报  数据链路层的职责: 将分组通过一个链路,从一个节点传到临近的另一个节点。  特点: 分组的传输在">
+    <meta name="description" content="五.数据链路层 概述 目的:了解数据链路层服务和协议原理 包括: (1)差错检测和纠错 (2)共享广播信道:多路访问协议 (3)链路层寻址 (4)可靠传输,流量控制 简单的介绍 术语: 节点:主机和路由器(包括网桥和交换机) 链路:沿通信路径连接的通信信道 帧:链路层协议交换的数据单元。封装网络层数据报  数据链路层的职责: 将分组通过一个链路,从一个节点传到临近的另一个节点。  特点: 分组的传">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计网复习(链路层)">
 <meta property="og:url" content="http://example.com/2018/07/03/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0%E9%93%BE%E8%B7%AF%E5%B1%82/index.html">
 <meta property="og:site_name" content="blacsheep&#39;s blog">
-<meta property="og:description" content="五.数据链路层概述目的:了解数据链路层服务和协议原理 包括: (1)差错检测和纠错 (2)共享广播信道:多路访问协议 (3)链路层寻址 (4)可靠传输,流量控制 简单的介绍 术语: 节点:主机和路由器(包括网桥和交换机) 链路:沿通信路径连接的通信信道 帧:链路层协议交换的数据单元。封装网络层数据报  数据链路层的职责: 将分组通过一个链路,从一个节点传到临近的另一个节点。  特点: 分组的传输在">
+<meta property="og:description" content="五.数据链路层 概述 目的:了解数据链路层服务和协议原理 包括: (1)差错检测和纠错 (2)共享广播信道:多路访问协议 (3)链路层寻址 (4)可靠传输,流量控制 简单的介绍 术语: 节点:主机和路由器(包括网桥和交换机) 链路:沿通信路径连接的通信信道 帧:链路层协议交换的数据单元。封装网络层数据报  数据链路层的职责: 将分组通过一个链路,从一个节点传到临近的另一个节点。  特点: 分组的传">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/2018/07/1-1.jpg">
 <meta property="article:published_time" content="2018-07-03T14:17:39.000Z">
@@ -128,7 +128,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">五.数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.</span> <span class="toc-text">链路层服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%B7%AF%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AE-MAC%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">多路访问协议(MAC协议)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%A1%E9%81%93%E5%88%92%E5%88%86"><span class="toc-number">1.3.1.</span> <span class="toc-text">信道划分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E8%AE%BF%E9%97%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text">随机访问</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AE%E8%BD%AC%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.3.</span> <span class="toc-text">轮转协议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">1.4.</span> <span class="toc-text">交换局域网</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#arp%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">arp协议</span></a></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94.%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">五.数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.</span> <span class="toc-text">链路层服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%B7%AF%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AEmac%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">多路访问协议(MAC协议)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%A1%E9%81%93%E5%88%92%E5%88%86"><span class="toc-number">1.3.1.</span> <span class="toc-text">信道划分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E8%AE%BF%E9%97%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text">随机访问</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AE%E8%BD%AC%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.3.</span> <span class="toc-text">轮转协议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">1.4.</span> <span class="toc-text">交换局域网</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#arp%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">arp协议</span></a></li></ol></li></ol></li></ol>
       </div>
     
   </span>
@@ -173,7 +173,9 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h2 id="五-数据链路层"><a href="#五-数据链路层" class="headerlink" title="五.数据链路层"></a>五.数据链路层</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong>目的</strong>:了解数据链路层服务和协议原理 <strong>包括</strong>: (1)差错检测和纠错 (2)共享广播信道:多路访问协议 (3)链路层寻址 (4)可靠传输,流量控制 <strong>简单的介绍</strong> <strong>术语</strong>: 节点:主机和路由器(包括网桥和交换机) 链路:沿通信路径连接的通信信道 <strong>帧</strong>:链路层协议交换的数据单元。封装网络层数据报</p>
+    <h2 id="五.数据链路层">五.数据链路层</h2>
+<h3 id="概述">概述</h3>
+<p><strong>目的</strong>:了解数据链路层服务和协议原理 <strong>包括</strong>: (1)差错检测和纠错 (2)共享广播信道:多路访问协议 (3)链路层寻址 (4)可靠传输,流量控制 <strong>简单的介绍</strong> <strong>术语</strong>: 节点:主机和路由器(包括网桥和交换机) 链路:沿通信路径连接的通信信道 <strong>帧</strong>:链路层协议交换的数据单元。封装网络层数据报</p>
 <blockquote>
 <p>数据链路层的职责: 将分组通过一个链路,从一个节点传到临近的另一个节点。</p>
 </blockquote>
@@ -185,20 +187,24 @@
 <blockquote>
 <p>例如,可以在链路上提供或不提供可靠的传输</p>
 </blockquote>
-<h3 id="链路层服务"><a href="#链路层服务" class="headerlink" title="链路层服务"></a>链路层服务</h3><p><strong>成帧</strong>: (1)把网络层的数据加头和尾封装成帧 (2)帧头中包括指明目的和源的”物理地址”(不同于IP地址) <strong>链路访问</strong>: (1)媒体访问控制协议(MAC) (2)共享媒体的多路访问 <strong>在邻接节点间的可靠传输</strong>: (1)无确认无连接 (2)无确认有连接 (3)有确认有连接 <strong>差错检测</strong>: 差错由信号衰减和噪声所引起 如果接受者检测到错误,那么发送者重传帧或者丢弃帧 <strong>纠错</strong>: 接收者检测和纠正错误,不需要发送者重传。</p>
-<h3 id="多路访问协议-MAC协议"><a href="#多路访问协议-MAC协议" class="headerlink" title="多路访问协议(MAC协议)"></a>多路访问协议(MAC协议)</h3><p>分三类:</p>
+<h3 id="链路层服务">链路层服务</h3>
+<p><strong>成帧</strong>: (1)把网络层的数据加头和尾封装成帧 (2)帧头中包括指明目的和源的"物理地址"(不同于IP地址) <strong>链路访问</strong>: (1)媒体访问控制协议(MAC) (2)共享媒体的多路访问 <strong>在邻接节点间的可靠传输</strong>: (1)无确认无连接 (2)无确认有连接 (3)有确认有连接 <strong>差错检测</strong>: 差错由信号衰减和噪声所引起 如果接受者检测到错误,那么发送者重传帧或者丢弃帧 <strong>纠错</strong>: 接收者检测和纠正错误,不需要发送者重传。</p>
+<h3 id="多路访问协议mac协议">多路访问协议(MAC协议)</h3>
+<p>分三类:</p>
 <blockquote>
-<p><strong>1.信道划分</strong> 把信道进行划分(TDMA,FDMA,CDMA),然后给节点分配专用的小片 <strong>2.随机访问</strong> 不划分信道,允许冲突,能够从冲突中”进行恢复” <strong>3.轮流</strong> 通过集中来调整共享访问从而避免冲突</p>
+<p><strong>1.信道划分</strong> 把信道进行划分(TDMA,FDMA,CDMA),然后给节点分配专用的小片 <strong>2.随机访问</strong> 不划分信道,允许冲突,能够从冲突中"进行恢复" <strong>3.轮流</strong> 通过集中来调整共享访问从而避免冲突</p>
 </blockquote>
 <p>具体来看:</p>
-<h4 id="信道划分"><a href="#信道划分" class="headerlink" title="信道划分"></a>信道划分</h4><p><strong>TDMA</strong>:通过对信道进行时隙的划分,轮流访问信道。 个人理解TDMA是一种串行使用,对时间划分的话利用效率其实很低… <strong>FDMA</strong>:信道根据频段来进行划分,每个站点分配一个固定的频段,未被使用的频段空闲。 <strong>CDMA</strong>:每个节点分配一个唯一的编码,每个节点用其唯一的编码来对发送的数据进行编码,这样可以实现多个节点共存,信号可以叠加,可以同步传输而无冲突(如果编码正交化)</p>
-<h4 id="随机访问"><a href="#随机访问" class="headerlink" title="随机访问"></a>随机访问</h4><p>节点以满数据率发送数据包,节点之间没有协调者,当有2个或更多的发送节点的时候会发生冲突. 所以随机访问MAC协议还要求能够检测冲突并且能够从冲突中恢复(比如通过延时重传)。 随机访问MAC协议的实例:</p>
+<h4 id="信道划分">信道划分</h4>
+<p><strong>TDMA</strong>:通过对信道进行时隙的划分,轮流访问信道。 个人理解TDMA是一种串行使用,对时间划分的话利用效率其实很低... <strong>FDMA</strong>:信道根据频段来进行划分,每个站点分配一个固定的频段,未被使用的频段空闲。 <strong>CDMA</strong>:每个节点分配一个唯一的编码,每个节点用其唯一的编码来对发送的数据进行编码,这样可以实现多个节点共存,信号可以叠加,可以同步传输而无冲突(如果编码正交化)</p>
+<h4 id="随机访问">随机访问</h4>
+<p>节点以满数据率发送数据包,节点之间没有协调者,当有2个或更多的发送节点的时候会发生冲突. 所以随机访问MAC协议还要求能够检测冲突并且能够从冲突中恢复(比如通过延时重传)。 随机访问MAC协议的实例:</p>
 <ul>
 <li>ALOHA</li>
 <li>时隙ALOHA</li>
-<li>CSMA,CSMA&#x2F;CD,CSMA&#x2F;CA</li>
+<li>CSMA,CSMA/CD,CSMA/CA</li>
 </ul>
-<p><strong>ALOHA(非时隙):</strong> 简单,不需要同步,帧一到达立即传输 但是t0发送的帧会和[t0-1,t0+1]的发送的其它帧冲突 后出现的帧会覆盖前面出现的,所以传输成功概率为 P&#x3D;p(1-p)^2(N-1)^ <strong>时隙ALOHA:</strong> 假设情况: 所有的帧大小相同;时间被划分称为相同大小的时隙;一个时隙等于传送一帧的时间;所有节点只有在一个时隙开始的时候才能传送;节点需要同步;如果一个时隙有多个节点同时传送,所有节点都可以检测到冲突 实现: 节点发送新帧的时候等下一个时隙开始 如果没有冲突,节点可以在下一个时隙发送新帧 如果有冲突,节点在随后的时隙以概率p重传,直到成功 优点:</p>
+<p><strong>ALOHA(非时隙):</strong> 简单,不需要同步,帧一到达立即传输 但是t0发送的帧会和[t0-1,t0+1]的发送的其它帧冲突 后出现的帧会覆盖前面出现的,所以传输成功概率为 P=p(1-p)<sup>2(N-1)</sup> <strong>时隙ALOHA:</strong> 假设情况: 所有的帧大小相同;时间被划分称为相同大小的时隙;一个时隙等于传送一帧的时间;所有节点只有在一个时隙开始的时候才能传送;节点需要同步;如果一个时隙有多个节点同时传送,所有节点都可以检测到冲突 实现: 节点发送新帧的时候等下一个时隙开始 如果没有冲突,节点可以在下一个时隙发送新帧 如果有冲突,节点在随后的时隙以概率p重传,直到成功 优点:</p>
 <blockquote>
 <p>1.单个活跃节点满速率传送帧 2.高分散性,只用节点时隙同步 3.简单</p>
 </blockquote>
@@ -206,14 +212,17 @@
 <blockquote>
 <p>1.冲突,浪费时隙 2.空闲时隙 3.节点只有在传输数据包的时候才能检测到冲突</p>
 </blockquote>
-<p><img src="/images/2018/07/1-1.jpg" alt="blacsheep"> <strong>CSMA</strong> 可以类比人类的不打断他人 即传送之前侦听,如果信道空闲则传输,否则延时传输</p>
+<p><img src="/images/2018/07/1-1.jpg" alt="blacsheep" /> <strong>CSMA</strong> 可以类比人类的不打断他人 即传送之前侦听,如果信道空闲则传输,否则延时传输</p>
 <blockquote>
 <p>冲突可能: 传播延时可能导致两个节点没侦听到其它节点的传送。当发生冲突的时候,整个数据包传送时间被浪费。冲突概率由距离和传播延时决定</p>
 </blockquote>
-<p><strong>CSMA&#x2F;CD</strong> 基本思想: 当一个节点要发送数据的时候,先看是否有载波 如果没有,则发送数据,否则继续监听,一旦发现空闲就立刻传送数据。 如果发送中没有发生冲突,则传输成功,否则停止正常发送,转而发送一短暂的干扰信号强化冲突,让其他站点都知道出现了冲突。 p发送了干扰信号后，指数退避一随机时间,即假设该帧经过n次冲突后，适配器在{0,1,2,…,2^m^-1}中随机选取一个K值 ，其中m&#x3D;min(n,10),然后等待K*512比特时间后,回到第2步</p>
-<h4 id="轮转协议"><a href="#轮转协议" class="headerlink" title="轮转协议"></a>轮转协议</h4><p>两者的折中,主节点轮流邀请从属节点来传送数据 控制方式:控制令牌从一个节点传到另外一个节点。</p>
-<h3 id="交换局域网"><a href="#交换局域网" class="headerlink" title="交换局域网"></a>交换局域网</h3><p>主要是arp协议</p>
-<h4 id="arp协议"><a href="#arp协议" class="headerlink" title="arp协议"></a>arp协议</h4><p>数据帧的传输是依赖于MAC地址的,但是A往B发包的时候,只知道IP地址 问题:从B的IP怎么知道B的mac地址 每个局域网上的IP都有arp表,arp表中有局域网上的IP&#x2F;MAC的一一对应,当A知道B的IP,想发分组给B的时候,假设B的MAC不在A的arp表,那么A广播包含B的IP地址的ARP查询包,局域网的所有机器都可以收到ARP查询,当B收到查询的时候,回送一个有自己MAC的包给A,A缓存IP-to-MAC信息直到过期. 如果是对外网发包,那么过程如下 发送过程: 在路由器R中有两个ARP表，每个针对一个IP网络 (LAN) 在主机的路由表中发现路由器的IP：111.111.111.110 在主机的ARP表中发现MAC地址：E6-E9-00-17-BB4B 等 A创建一个分组，源地址为A，目的地址为B A使用ARP得到R的111.111.111.110的MAC地址 A创建一个链路层帧，该帧以R的MAC地址为目的地址 ，并包含 A-to-B的IP数据包 A的适配器发送帧,R的适配器收到帧 R从Ethernet帧中提取IP数据包,得知目的地址为B R使用 ARP得到B的MAC地址 R创建一个包含A-to-B的IP数据包的帧发送给B</p>
+<p><strong>CSMA/CD</strong> 基本思想: 当一个节点要发送数据的时候,先看是否有载波 如果没有,则发送数据,否则继续监听,一旦发现空闲就立刻传送数据。 如果发送中没有发生冲突,则传输成功,否则停止正常发送,转而发送一短暂的干扰信号强化冲突,让其他站点都知道出现了冲突。 p发送了干扰信号后，指数退避一随机时间,即假设该帧经过n次冲突后，适配器在{0,1,2,…,2<sup>m</sup>-1}中随机选取一个K值 ，其中m=min(n,10),然后等待K*512比特时间后,回到第2步</p>
+<h4 id="轮转协议">轮转协议</h4>
+<p>两者的折中,主节点轮流邀请从属节点来传送数据 控制方式:控制令牌从一个节点传到另外一个节点。</p>
+<h3 id="交换局域网">交换局域网</h3>
+<p>主要是arp协议</p>
+<h4 id="arp协议">arp协议</h4>
+<p>数据帧的传输是依赖于MAC地址的,但是A往B发包的时候,只知道IP地址 问题:从B的IP怎么知道B的mac地址 每个局域网上的IP都有arp表,arp表中有局域网上的IP/MAC的一一对应,当A知道B的IP,想发分组给B的时候,假设B的MAC不在A的arp表,那么A广播包含B的IP地址的ARP查询包,局域网的所有机器都可以收到ARP查询,当B收到查询的时候,回送一个有自己MAC的包给A,A缓存IP-to-MAC信息直到过期. 如果是对外网发包,那么过程如下 发送过程: 在路由器R中有两个ARP表，每个针对一个IP网络 (LAN) 在主机的路由表中发现路由器的IP：111.111.111.110 在主机的ARP表中发现MAC地址：E6-E9-00-17-BB4B 等 A创建一个分组，源地址为A，目的地址为B A使用ARP得到R的111.111.111.110的MAC地址 A创建一个链路层帧，该帧以R的MAC地址为目的地址 ，并包含 A-to-B的IP数据包 A的适配器发送帧,R的适配器收到帧 R从Ethernet帧中提取IP数据包,得知目的地址为B R使用 ARP得到B的MAC地址 R创建一个包含A-to-B的IP数据包的帧发送给B</p>
 
   </div>
 </article>
@@ -243,7 +252,7 @@
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">五.数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.</span> <span class="toc-text">链路层服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%B7%AF%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AE-MAC%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">多路访问协议(MAC协议)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%A1%E9%81%93%E5%88%92%E5%88%86"><span class="toc-number">1.3.1.</span> <span class="toc-text">信道划分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E8%AE%BF%E9%97%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text">随机访问</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AE%E8%BD%AC%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.3.</span> <span class="toc-text">轮转协议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">1.4.</span> <span class="toc-text">交换局域网</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#arp%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">arp协议</span></a></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94.%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">五.数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.</span> <span class="toc-text">链路层服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%B7%AF%E8%AE%BF%E9%97%AE%E5%8D%8F%E8%AE%AEmac%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">多路访问协议(MAC协议)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%A1%E9%81%93%E5%88%92%E5%88%86"><span class="toc-number">1.3.1.</span> <span class="toc-text">信道划分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E8%AE%BF%E9%97%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text">随机访问</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AE%E8%BD%AC%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.3.</span> <span class="toc-text">轮转协议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">1.4.</span> <span class="toc-text">交换局域网</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#arp%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">arp协议</span></a></li></ol></li></ol></li></ol>
       </div>
     
 

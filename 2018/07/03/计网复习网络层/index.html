@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="概述网络层工作流程 将分组从发送方发到接收方 发送方将数据段包装成分组发出去 接收方将分组解出数据段然后给传输层 网络层协议在每台主机和路由器上 剩下的直接在具体内容里看吧 虚电路和数据报网络数据报网络在网络层提供无连接服务 虚电路网络是有连接服务 可以对比传输层的TCP和UDP,但是也有区别  服务是主机到主机,提供给传输层(传输层是端到端,提供给应用进程的服务) 同一时间提供两种中的一种(传输">
+    <meta name="description" content="概述 网络层工作流程 将分组从发送方发到接收方 发送方将数据段包装成分组发出去 接收方将分组解出数据段然后给传输层 网络层协议在每台主机和路由器上 剩下的直接在具体内容里看吧 虚电路和数据报网络 数据报网络在网络层提供无连接服务 虚电路网络是有连接服务 可以对比传输层的TCP和UDP,但是也有区别  服务是主机到主机,提供给传输层(传输层是端到端,提供给应用进程的服务) 同一时间提供两种中的一种(">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计网复习(网络层)">
 <meta property="og:url" content="http://example.com/2018/07/03/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0%E7%BD%91%E7%BB%9C%E5%B1%82/index.html">
 <meta property="og:site_name" content="blacsheep&#39;s blog">
-<meta property="og:description" content="概述网络层工作流程 将分组从发送方发到接收方 发送方将数据段包装成分组发出去 接收方将分组解出数据段然后给传输层 网络层协议在每台主机和路由器上 剩下的直接在具体内容里看吧 虚电路和数据报网络数据报网络在网络层提供无连接服务 虚电路网络是有连接服务 可以对比传输层的TCP和UDP,但是也有区别  服务是主机到主机,提供给传输层(传输层是端到端,提供给应用进程的服务) 同一时间提供两种中的一种(传输">
+<meta property="og:description" content="概述 网络层工作流程 将分组从发送方发到接收方 发送方将数据段包装成分组发出去 接收方将分组解出数据段然后给传输层 网络层协议在每台主机和路由器上 剩下的直接在具体内容里看吧 虚电路和数据报网络 数据报网络在网络层提供无连接服务 虚电路网络是有连接服务 可以对比传输层的TCP和UDP,但是也有区别  服务是主机到主机,提供给传输层(传输层是端到端,提供给应用进程的服务) 同一时间提供两种中的一种(">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/2018/07/1.jpg">
 <meta property="og:image" content="http://example.com/images/2018/07/2.jpg">
@@ -136,7 +136,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E5%92%8C%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="toc-number">2.</span> <span class="toc-text">虚电路和数据报网络</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E7%BD%91%E7%BB%9C"><span class="toc-number">2.1.</span> <span class="toc-text">虚电路网络</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="toc-number">2.2.</span> <span class="toc-text">数据报网络</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">路由器工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E7%BB%93%E6%9E%84"><span class="toc-number">3.1.</span> <span class="toc-text">交换结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E7%AB%AF%E5%8F%A3"><span class="toc-number">3.2.</span> <span class="toc-text">输出端口</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE"><span class="toc-number">4.</span> <span class="toc-text">网际协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#IP%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">IP数据报格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%89%87%E5%92%8C%E9%87%8D%E7%BB%84"><span class="toc-number">4.2.</span> <span class="toc-text">分片和重组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ip%E5%AF%BB%E5%9D%80-%E4%BB%8B%E7%BB%8D"><span class="toc-number">4.3.</span> <span class="toc-text">ip寻址:介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%90%E7%BD%91"><span class="toc-number">4.3.1.</span> <span class="toc-text">子网</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="toc-number">4.3.2.</span> <span class="toc-text">子网掩码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%86%E7%B1%BBip"><span class="toc-number">4.3.3.</span> <span class="toc-text">分类ip</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#CIDR%E5%9C%B0%E5%9D%80%E5%9D%97"><span class="toc-number">4.3.4.</span> <span class="toc-text">CIDR地址块</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DHCP"><span class="toc-number">4.3.5.</span> <span class="toc-text">DHCP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#NAT"><span class="toc-number">4.3.6.</span> <span class="toc-text">NAT</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ICMP"><span class="toc-number">4.3.7.</span> <span class="toc-text">ICMP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ipv6"><span class="toc-number">4.3.8.</span> <span class="toc-text">ipv6</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E8%B7%AF%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">选路算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E7%8A%B6%E6%80%81%E7%AE%97%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">链路状态算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">距离向量算法</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E5%92%8C%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="toc-number">2.</span> <span class="toc-text">虚电路和数据报网络</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E7%BD%91%E7%BB%9C"><span class="toc-number">2.1.</span> <span class="toc-text">虚电路网络</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="toc-number">2.2.</span> <span class="toc-text">数据报网络</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">路由器工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E7%BB%93%E6%9E%84"><span class="toc-number">3.1.</span> <span class="toc-text">交换结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E7%AB%AF%E5%8F%A3"><span class="toc-number">3.2.</span> <span class="toc-text">输出端口</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE"><span class="toc-number">4.</span> <span class="toc-text">网际协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ip%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">IP数据报格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%89%87%E5%92%8C%E9%87%8D%E7%BB%84"><span class="toc-number">4.2.</span> <span class="toc-text">分片和重组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ip%E5%AF%BB%E5%9D%80%E4%BB%8B%E7%BB%8D"><span class="toc-number">4.3.</span> <span class="toc-text">ip寻址:介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%90%E7%BD%91"><span class="toc-number">4.3.1.</span> <span class="toc-text">子网</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="toc-number">4.3.2.</span> <span class="toc-text">子网掩码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%86%E7%B1%BBip"><span class="toc-number">4.3.3.</span> <span class="toc-text">分类ip</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#cidr%E5%9C%B0%E5%9D%80%E5%9D%97"><span class="toc-number">4.3.4.</span> <span class="toc-text">CIDR地址块</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dhcp"><span class="toc-number">4.3.5.</span> <span class="toc-text">DHCP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#nat"><span class="toc-number">4.3.6.</span> <span class="toc-text">NAT</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#icmp"><span class="toc-number">4.3.7.</span> <span class="toc-text">ICMP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ipv6"><span class="toc-number">4.3.8.</span> <span class="toc-text">ipv6</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E8%B7%AF%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">选路算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E7%8A%B6%E6%80%81%E7%AE%97%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">链路状态算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">距离向量算法</span></a></li></ol></li></ol>
       </div>
     
   </span>
@@ -181,34 +181,40 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong>网络层工作流程</strong> 将分组从发送方发到接收方 发送方将<strong>数据段</strong>包装成分组发出去 接收方将分组解出数据段然后给传输层 网络层协议在每台主机和路由器上 剩下的直接在具体内容里看吧</p>
-<h3 id="虚电路和数据报网络"><a href="#虚电路和数据报网络" class="headerlink" title="虚电路和数据报网络"></a>虚电路和数据报网络</h3><p>数据报网络在网络层提供无连接服务 虚电路网络是有连接服务 可以对比传输层的TCP和UDP,但是也有区别</p>
+    <h3 id="概述">概述</h3>
+<p><strong>网络层工作流程</strong> 将分组从发送方发到接收方 发送方将<strong>数据段</strong>包装成分组发出去 接收方将分组解出数据段然后给传输层 网络层协议在每台主机和路由器上 剩下的直接在具体内容里看吧</p>
+<h3 id="虚电路和数据报网络">虚电路和数据报网络</h3>
+<p>数据报网络在网络层提供无连接服务 虚电路网络是有连接服务 可以对比传输层的TCP和UDP,但是也有区别</p>
 <ul>
 <li>服务是主机到主机,提供给传输层(传输层是端到端,提供给应用进程的服务)</li>
 <li>同一时间提供两种中的一种(传输层:提供TCP和UDP)</li>
 <li>在端系统及网络核心实现(传输层是在端系统实现的)</li>
 </ul>
-<h4 id="虚电路网络"><a href="#虚电路网络" class="headerlink" title="虚电路网络"></a>虚电路网络</h4><p>和普通的电话线路相似,性能可靠,源端到目的端 特点:</p>
+<h4 id="虚电路网络">虚电路网络</h4>
+<p>和普通的电话线路相似,性能可靠,源端到目的端 特点:</p>
 <ul>
 <li>数据传输前建立虚电路,传输完毕拆除虚电路</li>
 <li>每个分组携带vc标识</li>
 <li>从源到目的的路径上的每个路由器都要维护每个连接的状态信息</li>
 <li>链路、路由器资源可能分配给vc</li>
 </ul>
-<h4 id="数据报网络"><a href="#数据报网络" class="headerlink" title="数据报网络"></a>数据报网络</h4><p>对于端到端的连接没有状态信息维护,分组使用目的主机的地址进行转发,同一个源到目的主机分组可能走不同的路径 <img src="/images/2018/07/1.jpg" alt="blacsheep"> 使用的是最长前缀匹配,不作过多说明</p>
-<h3 id="路由器工作原理"><a href="#路由器工作原理" class="headerlink" title="路由器工作原理"></a>路由器工作原理</h3><p>首先是路由器的两个主要功能:</p>
+<h4 id="数据报网络">数据报网络</h4>
+<p>对于端到端的连接没有状态信息维护,分组使用目的主机的地址进行转发,同一个源到目的主机分组可能走不同的路径 <img src="/images/2018/07/1.jpg" alt="blacsheep" /> 使用的是最长前缀匹配,不作过多说明</p>
+<h3 id="路由器工作原理">路由器工作原理</h3>
+<p>首先是路由器的两个主要功能:</p>
 <ul>
-<li>运行路由算法&#x2F;协议(RIP,OSPF,BGP),管理控制平面</li>
+<li>运行路由算法/协议(RIP,OSPF,BGP),管理控制平面</li>
 <li>将分组从输入链路转发到适当的输出链路,转发数据平面</li>
 </ul>
-<p>路由器的结构如下图 <img src="/images/2018/07/2.jpg" alt="blacsheep"> ####输入端口</p>
+<p>路由器的结构如下图 <img src="/images/2018/07/2.jpg" alt="blacsheep" /> ####输入端口</p>
 <ul>
 <li>根据分组中的目的地址,在输入端口的缓存中查找转发表得出适当的输出端口</li>
 <li>有硬件查找和线性搜索两种</li>
 <li>目标:要求输入端口的处理速度超过线路的处理速度</li>
 <li>排队:如果输入端口分组的到达速度快于转发速度,那么就会进行排队</li>
 </ul>
-<h4 id="交换结构"><a href="#交换结构" class="headerlink" title="交换结构"></a>交换结构</h4><p>在输入端口的路由表已经找到了输出端口,后面就要依靠交换结构来将分组从输入端口转到输出端口了 交换结构有三种</p>
+<h4 id="交换结构">交换结构</h4>
+<p>在输入端口的路由表已经找到了输出端口,后面就要依靠交换结构来将分组从输入端口转到输出端口了 交换结构有三种</p>
 <ul>
 <li>内存交换</li>
 </ul>
@@ -221,7 +227,8 @@
 <li>互联网络交换</li>
 </ul>
 <p>克服了总线带宽的限制</p>
-<h4 id="输出端口"><a href="#输出端口" class="headerlink" title="输出端口"></a>输出端口</h4><ul>
+<h4 id="输出端口">输出端口</h4>
+<ul>
 <li>缓存</li>
 </ul>
 <p>当分组从交换结构达到的速率快于输出链路速率的时候就需要缓存</p>
@@ -229,24 +236,35 @@
 <li>调度原则</li>
 </ul>
 <p>先到先服务FCFS,加权公平排队WFQ 抛弃原则:弃尾,主动队列管理,随机早期检测 当分组从交换结构达到的速率过快,输出端口缓冲区溢出的时候则会造成分组的丢失</p>
-<h3 id="网际协议"><a href="#网际协议" class="headerlink" title="网际协议"></a>网际协议</h3><p>Internet网络层 <img src="/images/2018/07/3.jpg" alt="blacsheep"></p>
-<h4 id="IP数据报格式"><a href="#IP数据报格式" class="headerlink" title="IP数据报格式"></a>IP数据报格式</h4><p>头部20字节,具体来看 <img src="/images/2018/07/4.jpg" alt="blacsheep"></p>
-<h4 id="分片和重组"><a href="#分片和重组" class="headerlink" title="分片和重组"></a>分片和重组</h4><p>例题 <img src="/images/2018/07/5.jpg" alt="blacsheep"> 每隔一个完整数据报偏移为1480&#x2F;8&#x3D;185,ID相同,除了最后一个数据报的fragflag为0其他的均为1,length为MTU</p>
-<h4 id="ip寻址-介绍"><a href="#ip寻址-介绍" class="headerlink" title="ip寻址:介绍"></a>ip寻址:介绍</h4><p>IP地址:分配给主机或路由器接口的32bit的标识符 接口:主机&#x2F;路由器和链路之间的边界</p>
+<h3 id="网际协议">网际协议</h3>
+<p>Internet网络层 <img src="/images/2018/07/3.jpg" alt="blacsheep" /></p>
+<h4 id="ip数据报格式">IP数据报格式</h4>
+<p>头部20字节,具体来看 <img src="/images/2018/07/4.jpg" alt="blacsheep" /></p>
+<h4 id="分片和重组">分片和重组</h4>
+<p>例题 <img src="/images/2018/07/5.jpg" alt="blacsheep" /> 每隔一个完整数据报偏移为1480/8=185,ID相同,除了最后一个数据报的fragflag为0其他的均为1,length为MTU</p>
+<h4 id="ip寻址介绍">ip寻址:介绍</h4>
+<p>IP地址:分配给主机或路由器接口的32bit的标识符 接口:主机/路由器和链路之间的边界</p>
 <ul>
 <li>路由器和主机都可以有多接口</li>
 <li>每个接口有一个ip地址</li>
 </ul>
-<h5 id="子网"><a href="#子网" class="headerlink" title="子网"></a>子网</h5><p>IP高位为子网部分 低位为主机部分 什么是一个子网?</p>
+<h5 id="子网">子网</h5>
+<p>IP高位为子网部分 低位为主机部分 什么是一个子网?</p>
 <ul>
 <li>设备接口的IP有相同的网络部分</li>
 <li>没有路由器的介入,物理上能够互相到达</li>
 </ul>
 <p>为了确定子网,分开主机和路由器的每个接口,从而产生了几个分离的网络岛,这些独立网络中的每一个叫做一个子网</p>
-<h5 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h5><p>和IP做AND运算,获得的结果相同则处于同一子网</p>
-<h5 id="分类ip"><a href="#分类ip" class="headerlink" title="分类ip"></a>分类ip</h5><p><img src="/images/2018/07/6.jpg" alt="blacsheep"></p>
-<h5 id="CIDR地址块"><a href="#CIDR地址块" class="headerlink" title="CIDR地址块"></a>CIDR地址块</h5><p>格式:a.b.c.d&#x2F;x</p>
-<h5 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h5><p>问:主机如何获得IP? windows:控制面板-&gt;网络-&gt;配置-&gt;tcp&#x2F;ip-&gt;属性 unix:&#x2F;etc&#x2F;rc.config</p>
+<h5 id="子网掩码">子网掩码</h5>
+<p>和IP做AND运算,获得的结果相同则处于同一子网</p>
+<h5 id="分类ip">分类ip</h5>
+<figure>
+<img src="/images/2018/07/6.jpg" alt="blacsheep" /><figcaption aria-hidden="true">blacsheep</figcaption>
+</figure>
+<h5 id="cidr地址块">CIDR地址块</h5>
+<p>格式:a.b.c.d/x</p>
+<h5 id="dhcp">DHCP</h5>
+<p>问:主机如何获得IP? windows:控制面板-&gt;网络-&gt;配置-&gt;tcp/ip-&gt;属性 unix:/etc/rc.config</p>
 <ul>
 <li>DHCP(动态主机配置协议)</li>
 </ul>
@@ -261,49 +279,40 @@
 </ul>
 </blockquote>
 <ul>
-<li>DHCP概述 主机广播”DHCP discover” DHCP回复”DHCP offer” 主机请求 “DHCP request” DHCP发送地址”DHCP ack”</li>
+<li>DHCP概述 主机广播"DHCP discover" DHCP回复"DHCP offer" 主机请求 "DHCP request" DHCP发送地址"DHCP ack"</li>
 </ul>
-<h5 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h5><p>动机:对外部网络来讲,本地网络只用一个IP地址:</p>
+<h5 id="nat">NAT</h5>
+<p>动机:对外部网络来讲,本地网络只用一个IP地址:</p>
 <ul>
-<li><p>不需要从ISP分配一系列IP,只要一个IP地址用于所有设备</p>
-</li>
-<li><p>本地网络改变设备的IP不需要通知外界</p>
-</li>
-<li><p>可以变更ISP而不用改变本地网络的设备的地址</p>
-</li>
-<li><p>本地网络内部不能被外界寻址(对外界不可见)</p>
-</li>
+<li><p>不需要从ISP分配一系列IP,只要一个IP地址用于所有设备</p></li>
+<li><p>本地网络改变设备的IP不需要通知外界</p></li>
+<li><p>可以变更ISP而不用改变本地网络的设备的地址</p></li>
+<li><p>本地网络内部不能被外界寻址(对外界不可见)</p></li>
 </ul>
 <p><strong>执行</strong> 对于NAT路由器</p>
 <ul>
-<li><p>对于外出的分组,替换每个外出分组的(源ip,端口)为(NAT IP,新端口),远程服务器用(NAT IP,新端口)作为目的地来响应</p>
-</li>
-<li><p>NAT转换表中,每个(源IP,端口)到(NAT IP，新端口)转换配对</p>
-</li>
-<li><p>进来的分组:对每个进来的分组,用保存在NAT表中的(源IP 端口)来替换目的域(NAT IP,新端口)</p>
-</li>
+<li><p>对于外出的分组,替换每个外出分组的(源ip,端口)为(NAT IP,新端口),远程服务器用(NAT IP,新端口)作为目的地来响应</p></li>
+<li><p>NAT转换表中,每个(源IP,端口)到(NAT IP，新端口)转换配对</p></li>
+<li><p>进来的分组:对每个进来的分组,用保存在NAT表中的(源IP 端口)来替换目的域(NAT IP,新端口)</p></li>
 </ul>
-<p>也就是用NATIP来做外访问外网的媒介,示意图如下 <img src="/images/2018/07/nat.png" alt="blacsheep"></p>
-<h5 id="ICMP"><a href="#ICMP" class="headerlink" title="ICMP"></a>ICMP</h5><p>用于主机路由器之间彼此交流网络层信息 - 差错报告:不可到达的主机,端口,协议</p>
+<p>也就是用NATIP来做外访问外网的媒介,示意图如下 <img src="/images/2018/07/nat.png" alt="blacsheep" /></p>
+<h5 id="icmp">ICMP</h5>
+<p>用于主机路由器之间彼此交流网络层信息 - 差错报告:不可到达的主机,端口,协议</p>
 <ul>
-<li>请求&#x2F;应答</li>
+<li>请求/应答</li>
 </ul>
-<p>位于IP之上 - ICMP消息装载在IP分组里 ICMP的类型 <img src="/images/2018/07/icmperr.png" alt="blacsheep"></p>
-<h5 id="ipv6"><a href="#ipv6" class="headerlink" title="ipv6"></a>ipv6</h5><p>初始动机:32-bit地址空间即将用尽 其他动机:改变格式可以帮助转发 IPv6数据报格式</p>
+<p>位于IP之上 - ICMP消息装载在IP分组里 ICMP的类型 <img src="/images/2018/07/icmperr.png" alt="blacsheep" /></p>
+<h5 id="ipv6">ipv6</h5>
+<p>初始动机:32-bit地址空间即将用尽 其他动机:改变格式可以帮助转发 IPv6数据报格式</p>
 <ul>
-<li><p>固定长度的40字节首部</p>
-</li>
-<li><p>不允许分片</p>
-</li>
+<li><p>固定长度的40字节首部</p></li>
+<li><p>不允许分片</p></li>
 </ul>
 <p><strong>ipv6和ipv4的不同</strong>:</p>
 <ul>
-<li><p>校验和:全部去掉,减少每一跳的处理时间</p>
-</li>
-<li><p>选项:允许,但是不是标准首部的一部分,而是用下一个首部域指出</p>
-</li>
-<li><p>ICMPv6:新版本的ICMP，增加了消息类型,比如分组太大,多波组管理功能</p>
-</li>
+<li><p>校验和:全部去掉,减少每一跳的处理时间</p></li>
+<li><p>选项:允许,但是不是标准首部的一部分,而是用下一个首部域指出</p></li>
+<li><p>ICMPv6:新版本的ICMP，增加了消息类型,比如分组太大,多波组管理功能</p></li>
 </ul>
 <p><strong>ipv4到ipv6的过渡</strong> 两种推荐方法:</p>
 <ul>
@@ -314,16 +323,17 @@
 <li>隧道:穿过ipv4路由器的时候,ipv6作为分组负载</li>
 </ul>
 <p>用ipv4包住ipv6</p>
-<h3 id="选路算法"><a href="#选路算法" class="headerlink" title="选路算法"></a>选路算法</h3><p>选路算法决定了路由器中转发表中的值 路由算法可以简单的分个类 比如<strong>全局或是分散</strong> <strong>全局</strong> 所有的路由器都有完整的网络拓扑结构和链路开销 使用链路状态算法(如dijkstra) <strong>分散</strong> 路由器只知道物理连接的邻居和到邻居的链路开销 通过邻居之间的反复计算处理和交换信息来构造路由表 使用距离矢量算法 或者是<strong>静态和动态的</strong> <strong>静态的</strong> 路由变化很慢，通常有人工设定 <strong>动态的</strong> 路由变化很快,周期性更新,而且直接影响链路开销的变化</p>
-<h4 id="链路状态算法"><a href="#链路状态算法" class="headerlink" title="链路状态算法"></a>链路状态算法</h4><p>也就是dijkstra算法 所有节点知道网络拓扑结构和链路开销(通过链路状态广播完成)</p>
-<h4 id="距离向量算法"><a href="#距离向量算法" class="headerlink" title="距离向量算法"></a>距离向量算法</h4><p>动态计算 d<del>x</del>(y)&#x3D;min<del>v</del>{c(x,y)+d<del>v</del>(y)} 方程举例: <img src="/images/2018/07/belman.png" alt="blacsheep"> <strong>基本思想</strong></p>
+<h3 id="选路算法">选路算法</h3>
+<p>选路算法决定了路由器中转发表中的值 路由算法可以简单的分个类 比如<strong>全局或是分散</strong> <strong>全局</strong> 所有的路由器都有完整的网络拓扑结构和链路开销 使用链路状态算法(如dijkstra) <strong>分散</strong> 路由器只知道物理连接的邻居和到邻居的链路开销 通过邻居之间的反复计算处理和交换信息来构造路由表 使用距离矢量算法 或者是<strong>静态和动态的</strong> <strong>静态的</strong> 路由变化很慢，通常有人工设定 <strong>动态的</strong> 路由变化很快,周期性更新,而且直接影响链路开销的变化</p>
+<h4 id="链路状态算法">链路状态算法</h4>
+<p>也就是dijkstra算法 所有节点知道网络拓扑结构和链路开销(通过链路状态广播完成)</p>
+<h4 id="距离向量算法">距离向量算法</h4>
+<p>动态计算 d<sub>x</sub>(y)=min<sub>v</sub>{c(x,y)+d<sub>v</sub>(y)} 方程举例: <img src="/images/2018/07/belman.png" alt="blacsheep" /> <strong>基本思想</strong></p>
 <ul>
-<li><p>每个节点周期性地给相邻节点发送自己的距离向量估计值</p>
-</li>
-<li><p>当节点x从它的任何一个邻居v收到一个新的距离向量估计值,就用B-F方程更新自己的距离向量估值</p>
-</li>
+<li><p>每个节点周期性地给相邻节点发送自己的距离向量估计值</p></li>
+<li><p>当节点x从它的任何一个邻居v收到一个新的距离向量估计值,就用B-F方程更新自己的距离向量估值</p></li>
 </ul>
-<p>简单正常情况下,距离向量估值D<del>x</del>(y)收敛到实际的最小路径开销d<del>x</del>(y)</p>
+<p>简单正常情况下,距离向量估值D<sub>x</sub>(y)收敛到实际的最小路径开销d<sub>x</sub>(y)</p>
 
   </div>
 </article>
@@ -353,7 +363,7 @@
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E5%92%8C%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="toc-number">2.</span> <span class="toc-text">虚电路和数据报网络</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E7%BD%91%E7%BB%9C"><span class="toc-number">2.1.</span> <span class="toc-text">虚电路网络</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="toc-number">2.2.</span> <span class="toc-text">数据报网络</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">路由器工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E7%BB%93%E6%9E%84"><span class="toc-number">3.1.</span> <span class="toc-text">交换结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E7%AB%AF%E5%8F%A3"><span class="toc-number">3.2.</span> <span class="toc-text">输出端口</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE"><span class="toc-number">4.</span> <span class="toc-text">网际协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#IP%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">IP数据报格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%89%87%E5%92%8C%E9%87%8D%E7%BB%84"><span class="toc-number">4.2.</span> <span class="toc-text">分片和重组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ip%E5%AF%BB%E5%9D%80-%E4%BB%8B%E7%BB%8D"><span class="toc-number">4.3.</span> <span class="toc-text">ip寻址:介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%90%E7%BD%91"><span class="toc-number">4.3.1.</span> <span class="toc-text">子网</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="toc-number">4.3.2.</span> <span class="toc-text">子网掩码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%86%E7%B1%BBip"><span class="toc-number">4.3.3.</span> <span class="toc-text">分类ip</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#CIDR%E5%9C%B0%E5%9D%80%E5%9D%97"><span class="toc-number">4.3.4.</span> <span class="toc-text">CIDR地址块</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DHCP"><span class="toc-number">4.3.5.</span> <span class="toc-text">DHCP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#NAT"><span class="toc-number">4.3.6.</span> <span class="toc-text">NAT</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ICMP"><span class="toc-number">4.3.7.</span> <span class="toc-text">ICMP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ipv6"><span class="toc-number">4.3.8.</span> <span class="toc-text">ipv6</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E8%B7%AF%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">选路算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E7%8A%B6%E6%80%81%E7%AE%97%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">链路状态算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">距离向量算法</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E5%92%8C%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="toc-number">2.</span> <span class="toc-text">虚电路和数据报网络</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E7%BD%91%E7%BB%9C"><span class="toc-number">2.1.</span> <span class="toc-text">虚电路网络</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C"><span class="toc-number">2.2.</span> <span class="toc-text">数据报网络</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">路由器工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E7%BB%93%E6%9E%84"><span class="toc-number">3.1.</span> <span class="toc-text">交换结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E7%AB%AF%E5%8F%A3"><span class="toc-number">3.2.</span> <span class="toc-text">输出端口</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE"><span class="toc-number">4.</span> <span class="toc-text">网际协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ip%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">IP数据报格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%89%87%E5%92%8C%E9%87%8D%E7%BB%84"><span class="toc-number">4.2.</span> <span class="toc-text">分片和重组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ip%E5%AF%BB%E5%9D%80%E4%BB%8B%E7%BB%8D"><span class="toc-number">4.3.</span> <span class="toc-text">ip寻址:介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%90%E7%BD%91"><span class="toc-number">4.3.1.</span> <span class="toc-text">子网</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="toc-number">4.3.2.</span> <span class="toc-text">子网掩码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%86%E7%B1%BBip"><span class="toc-number">4.3.3.</span> <span class="toc-text">分类ip</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#cidr%E5%9C%B0%E5%9D%80%E5%9D%97"><span class="toc-number">4.3.4.</span> <span class="toc-text">CIDR地址块</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dhcp"><span class="toc-number">4.3.5.</span> <span class="toc-text">DHCP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#nat"><span class="toc-number">4.3.6.</span> <span class="toc-text">NAT</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#icmp"><span class="toc-number">4.3.7.</span> <span class="toc-text">ICMP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ipv6"><span class="toc-number">4.3.8.</span> <span class="toc-text">ipv6</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E8%B7%AF%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">选路算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E7%8A%B6%E6%80%81%E7%AE%97%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">链路状态算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">距离向量算法</span></a></li></ol></li></ol>
       </div>
     
 
