@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="生成模型前段时间一直是很火的话题,之前的gpt,然后ai画图以及不久前的ai生成视频都证明生成模型是很有潜力的研究方向. 今天kaggle看的topic是一个GAN,直接让我想起了之前看的diffusion model一直没来得及写. 所以这里先把diffusion model写完然后等明天或后天写一下GAN相关. 这里我参考的教程主要是youtube上面的diffusion model from">
+<meta property="og:type" content="article">
+<meta property="og:title" content="diffusion model(1)">
+<meta property="og:url" content="http://example.com/2024/04/10/diffusion-model-1/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="生成模型前段时间一直是很火的话题,之前的gpt,然后ai画图以及不久前的ai生成视频都证明生成模型是很有潜力的研究方向. 今天kaggle看的topic是一个GAN,直接让我想起了之前看的diffusion model一直没来得及写. 所以这里先把diffusion model写完然后等明天或后天写一下GAN相关. 这里我参考的教程主要是youtube上面的diffusion model from">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/04/10/diffusion-model-1/stanford_cars.png">
+<meta property="og:image" content="http://example.com/2024/04/10/diffusion-model-1/noising_process.png">
+<meta property="article:published_time" content="2024-04-10T14:27:41.000Z">
+<meta property="article:modified_time" content="2024-04-10T19:20:35.118Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/04/10/diffusion-model-1/stanford_cars.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>diffusion model(1)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/04/09/Kaggle-warmup3-TimeSeries-3/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/04/10/diffusion-model-1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/04/10/diffusion-model-1/&text=diffusion model(1)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/04/10/diffusion-model-1/&title=diffusion model(1)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/04/10/diffusion-model-1/&is_video=false&description=diffusion model(1)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=diffusion model(1)&body=Check out this article: http://example.com/2024/04/10/diffusion-model-1/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/04/10/diffusion-model-1/&title=diffusion model(1)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/04/10/diffusion-model-1/&title=diffusion model(1)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/04/10/diffusion-model-1/&title=diffusion model(1)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/04/10/diffusion-model-1/&title=diffusion model(1)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/04/10/diffusion-model-1/&name=diffusion model(1)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/04/10/diffusion-model-1/&t=diffusion model(1)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E9%83%A8%E5%88%86"><span class="toc-number">2.</span> <span class="toc-text">代码部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9B%B8%E5%85%B3"><span class="toc-number">2.1.</span> <span class="toc-text">数据集相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#beta%E5%92%8Calpha%E8%AE%A1%E7%AE%97"><span class="toc-number">2.2.</span> <span class="toc-text">beta和alpha计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%BD%E5%85%A5%E6%95%B0%E6%8D%AE%E6%9F%A5%E7%9C%8Bnoising%E6%95%88%E6%9E%9C"><span class="toc-number">2.3.</span> <span class="toc-text">载入数据查看noising效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#unet"><span class="toc-number">2.4.</span> <span class="toc-text">Unet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#loss"><span class="toc-number">2.5.</span> <span class="toc-text">Loss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#train"><span class="toc-number">2.6.</span> <span class="toc-text">train</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        diffusion model(1)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-04-10T14:27:41.000Z" class="dt-published" itemprop="datePublished">2024-04-10</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/ML/">ML</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>生成模型前段时间一直是很火的话题,之前的gpt,然后ai画图以及不久前的ai生成视频都证明生成模型是很有潜力的研究方向. 今天kaggle看的topic是一个GAN,直接让我想起了之前看的diffusion model一直没来得及写. 所以这里先把diffusion model写完然后等明天或后天写一下GAN相关. 这里我参考的教程主要是youtube上面的<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=a4Yfz2FxXiY">diffusion model from scratch in PyTorch</a>, 而他的notebook也以及在<a target="_blank" rel="noopener" href="https://colab.research.google.com/drive/1sjy9odlSSy0RBVgMTgP7s99NXsqglsUL?usp=sharing#scrollTo=wLHSIArLcFK0">GoogleColab</a>上了.</p>
+<h2 id="工作原理">工作原理</h2>
+<p>正向过程: 向某类图片持续添加噪音直到整个图片完全变成噪音. 逆向过程: 通过从纯噪音逆向逐步去除噪音达到生成特定图片的目的.</p>
+<p>整个过程中下一个图片仅与上一个图片相关(markov chain).</p>
+<p>其中没有任何噪音的图片我们记为<code>$ x_0 $</code>, 纯噪音我们记为<code>$ x_t $</code>. 整个正向过程表现为:</p>
+<p><span class="math display">\[ q(x_t|x_{t-1}) = N(x_t;\sqrt{1-\beta_t}x_{t-1}, \beta_tI) \]</span></p>
+<p>其中<code>$ x_t $</code>是输出, 公式表示均值为$ x_{t-1} $ , 方差为 $ \beta_tI $ 的高斯分布.</p>
+<p>然后依据数学推导,我们可以直接得到从 $ x_0 $ 到 $ x_t $ 的推导: $ q(x_t|x_0) = N(x_t;\sqrt{\overline\alpha_{t}}x_0, (1-\overline\alpha_t)I) $</p>
+<p>其中 $ \alpha_t = 1 - \beta_t $, $ \overline\alpha_t = \prod_{s=1}^t \alpha_s $</p>
+<p>这个过程可以换元加高斯分布相加证明.</p>
+<h2 id="代码部分">代码部分</h2>
+<h3 id="数据集相关">数据集相关</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_images</span>(<span class="params">datset, num_samples=<span class="number">20</span>, cols=<span class="number">4</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot; Plots some samples from the dataset &quot;&quot;&quot;</span></span><br><span class="line">    plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>)) </span><br><span class="line">    <span class="keyword">for</span> i, img <span class="keyword">in</span> <span class="built_in">enumerate</span>(data):</span><br><span class="line">        <span class="keyword">if</span> i == num_samples:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        plt.subplot(<span class="built_in">int</span>(num_samples/cols) + <span class="number">1</span>, cols, i + <span class="number">1</span>)</span><br><span class="line">        plt.imshow(img[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">data = torchvision.datasets.StanfordCars(root=<span class="string">&quot;.&quot;</span>, download=<span class="literal">True</span>)</span><br><span class="line">show_images(data)</span><br></pre></td></tr></table></figure>
+<p>首先斯坦福大学的汽车数据集. 展示一下训练的图片大概长什么样子. <img src="stanford_cars.png" /></p>
+<h3 id="beta和alpha计算">beta和alpha计算</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">linear_beta_schedule</span>(<span class="params">timesteps, start=<span class="number">0.0001</span>, end=<span class="number">0.02</span></span>):</span><br><span class="line">    <span class="keyword">return</span> torch.linspace(start, end, timesteps)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_index_from_list</span>(<span class="params">vals, t, x_shape</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot; </span></span><br><span class="line"><span class="string">    Returns a specific index t of a passed list of values vals</span></span><br><span class="line"><span class="string">    while considering the batch dimension.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    batch_size = t.shape[<span class="number">0</span>]</span><br><span class="line">    out = vals.gather(-<span class="number">1</span>, t.cpu())</span><br><span class="line">    <span class="keyword">return</span> out.reshape(batch_size, *((<span class="number">1</span>,) * (<span class="built_in">len</span>(x_shape) - <span class="number">1</span>))).to(t.device)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">forward_diffusion_sample</span>(<span class="params">x_0, t, device=<span class="string">&quot;cpu&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot; </span></span><br><span class="line"><span class="string">    Takes an image and a timestep as input and </span></span><br><span class="line"><span class="string">    returns the noisy version of it</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    noise = torch.randn_like(x_0)</span><br><span class="line">    sqrt_alphas_cumprod_t = get_index_from_list(sqrt_alphas_cumprod, t, x_0.shape)</span><br><span class="line">    sqrt_one_minus_alphas_cumprod_t = get_index_from_list(</span><br><span class="line">        sqrt_one_minus_alphas_cumprod, t, x_0.shape</span><br><span class="line">    )</span><br><span class="line">    <span class="comment"># mean + variance</span></span><br><span class="line">    <span class="keyword">return</span> sqrt_alphas_cumprod_t.to(device) * x_0.to(device) \</span><br><span class="line">    + sqrt_one_minus_alphas_cumprod_t.to(device) * noise.to(device), noise.to(device)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Define beta schedule</span></span><br><span class="line">T = <span class="number">300</span></span><br><span class="line">betas = linear_beta_schedule(timesteps=T)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Pre-calculate different terms for closed form</span></span><br><span class="line">alphas = <span class="number">1.</span> - betas</span><br><span class="line">alphas_cumprod = torch.cumprod(alphas, axis=<span class="number">0</span>)</span><br><span class="line">alphas_cumprod_prev = F.pad(alphas_cumprod[:-<span class="number">1</span>], (<span class="number">1</span>, <span class="number">0</span>), value=<span class="number">1.0</span>)</span><br><span class="line">sqrt_recip_alphas = torch.sqrt(<span class="number">1.0</span> / alphas)</span><br><span class="line">sqrt_alphas_cumprod = torch.sqrt(alphas_cumprod)</span><br><span class="line">sqrt_one_minus_alphas_cumprod = torch.sqrt(<span class="number">1.</span> - alphas_cumprod)</span><br><span class="line">posterior_variance = betas * (<span class="number">1.</span> - alphas_cumprod_prev) / (<span class="number">1.</span> - alphas_cumprod)</span><br></pre></td></tr></table></figure>
+<p>这个部分主要是通过linspace生成均匀划分为T的一个范围, 然后依据这些生成 $ alpha $ , $ alpha $ 的累乘. 关键部分为forward_diffusion_sample这个函数,这个函数生成的数据即为我们上面公式写到的数据, 这个函数的作用也就是获取图片 $ x_0 $ 在第t步的时候加上了噪音的样子.</p>
+<h3 id="载入数据查看noising效果">载入数据查看noising效果</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms </span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">IMG_SIZE = <span class="number">64</span></span><br><span class="line">BATCH_SIZE = <span class="number">128</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_transformed_dataset</span>():</span><br><span class="line">    data_transforms = [</span><br><span class="line">        transforms.Resize((IMG_SIZE, IMG_SIZE)),</span><br><span class="line">        transforms.RandomHorizontalFlip(),</span><br><span class="line">        transforms.ToTensor(), <span class="comment"># Scales data into [0,1] </span></span><br><span class="line">        transforms.Lambda(<span class="keyword">lambda</span> t: (t * <span class="number">2</span>) - <span class="number">1</span>) <span class="comment"># Scale between [-1, 1] </span></span><br><span class="line">    ]</span><br><span class="line">    data_transform = transforms.Compose(data_transforms)</span><br><span class="line"></span><br><span class="line">    train = torchvision.datasets.StanfordCars(root=<span class="string">&quot;.&quot;</span>, download=<span class="literal">True</span>, </span><br><span class="line">                                         transform=data_transform)</span><br><span class="line"></span><br><span class="line">    test = torchvision.datasets.StanfordCars(root=<span class="string">&quot;.&quot;</span>, download=<span class="literal">True</span>, </span><br><span class="line">                                         transform=data_transform, split=<span class="string">&#x27;test&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> torch.utils.data.ConcatDataset([train, test])</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_tensor_image</span>(<span class="params">image</span>):</span><br><span class="line">    reverse_transforms = transforms.Compose([</span><br><span class="line">        transforms.Lambda(<span class="keyword">lambda</span> t: (t + <span class="number">1</span>) / <span class="number">2</span>),</span><br><span class="line">        transforms.Lambda(<span class="keyword">lambda</span> t: t.permute(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>)), <span class="comment"># CHW to HWC</span></span><br><span class="line">        transforms.Lambda(<span class="keyword">lambda</span> t: t * <span class="number">255.</span>),</span><br><span class="line">        transforms.Lambda(<span class="keyword">lambda</span> t: t.numpy().astype(np.uint8)),</span><br><span class="line">        transforms.ToPILImage(),</span><br><span class="line">    ])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Take first image of batch</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(image.shape) == <span class="number">4</span>:</span><br><span class="line">        image = image[<span class="number">0</span>, :, :, :] </span><br><span class="line">    plt.imshow(reverse_transforms(image))</span><br><span class="line"></span><br><span class="line">data = load_transformed_dataset()</span><br><span class="line">dataloader = DataLoader(data, batch_size=BATCH_SIZE, shuffle=<span class="literal">True</span>, drop_last=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Simulate forward diffusion</span></span><br><span class="line">image = <span class="built_in">next</span>(<span class="built_in">iter</span>(dataloader))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>))</span><br><span class="line">plt.axis(<span class="string">&#x27;off&#x27;</span>)</span><br><span class="line">num_images = <span class="number">10</span></span><br><span class="line">stepsize = <span class="built_in">int</span>(T/num_images)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> idx <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, T, stepsize):</span><br><span class="line">    t = torch.Tensor([idx]).<span class="built_in">type</span>(torch.int64)</span><br><span class="line">    plt.subplot(<span class="number">1</span>, num_images+<span class="number">1</span>, <span class="built_in">int</span>(idx/stepsize) + <span class="number">1</span>)</span><br><span class="line">    img, noise = forward_diffusion_sample(image, t)</span><br><span class="line">    show_tensor_image(img)</span><br></pre></td></tr></table></figure>
+<p>然后这里定义读取图片时应该进行的transform以及输出图片的时候的reversetransform函数,然后调用forward_diffusion_sample来查看noising的效果.</p>
+<p><img src="noising_process.png" /></p>
+<h3 id="unet">Unet</h3>
+<p>ok,到这里准备工作就差不多了. 接下来看下unet的结构 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Block</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_ch, out_ch, time_emb_dim, up=<span class="literal">False</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.time_mlp =  nn.Linear(time_emb_dim, out_ch)</span><br><span class="line">        <span class="keyword">if</span> up:</span><br><span class="line">            self.conv1 = nn.Conv2d(<span class="number">2</span>*in_ch, out_ch, <span class="number">3</span>, padding=<span class="number">1</span>)</span><br><span class="line">            self.transform = nn.ConvTranspose2d(out_ch, out_ch, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.conv1 = nn.Conv2d(in_ch, out_ch, <span class="number">3</span>, padding=<span class="number">1</span>)</span><br><span class="line">            self.transform = nn.Conv2d(out_ch, out_ch, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">        self.conv2 = nn.Conv2d(out_ch, out_ch, <span class="number">3</span>, padding=<span class="number">1</span>)</span><br><span class="line">        self.bnorm1 = nn.BatchNorm2d(out_ch)</span><br><span class="line">        self.bnorm2 = nn.BatchNorm2d(out_ch)</span><br><span class="line">        self.relu  = nn.ReLU()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, t, </span>):</span><br><span class="line">        <span class="comment"># First Conv</span></span><br><span class="line">        h = self.bnorm1(self.relu(self.conv1(x)))</span><br><span class="line">        <span class="comment"># Time embedding</span></span><br><span class="line">        time_emb = self.relu(self.time_mlp(t))</span><br><span class="line">        <span class="comment"># Extend last 2 dimensions</span></span><br><span class="line">        time_emb = time_emb[(..., ) + (<span class="literal">None</span>, ) * <span class="number">2</span>]</span><br><span class="line">        <span class="comment"># Add time channel</span></span><br><span class="line">        h = h + time_emb</span><br><span class="line">        <span class="comment"># Second Conv</span></span><br><span class="line">        h = self.bnorm2(self.relu(self.conv2(h)))</span><br><span class="line">        <span class="comment"># Down or Upsample</span></span><br><span class="line">        <span class="keyword">return</span> self.transform(h)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SinusoidalPositionEmbeddings</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.dim = dim</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, time</span>):</span><br><span class="line">        device = time.device</span><br><span class="line">        half_dim = self.dim // <span class="number">2</span></span><br><span class="line">        embeddings = math.log(<span class="number">10000</span>) / (half_dim - <span class="number">1</span>)</span><br><span class="line">        embeddings = torch.exp(torch.arange(half_dim, device=device) * -embeddings)</span><br><span class="line">        embeddings = time[:, <span class="literal">None</span>] * embeddings[<span class="literal">None</span>, :]</span><br><span class="line">        embeddings = torch.cat((embeddings.sin(), embeddings.cos()), dim=-<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># <span class="doctag">TODO:</span> Double check the ordering here</span></span><br><span class="line">        <span class="keyword">return</span> embeddings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SimpleUnet</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    A simplified variant of the Unet architecture.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        image_channels = <span class="number">3</span></span><br><span class="line">        down_channels = (<span class="number">64</span>, <span class="number">128</span>, <span class="number">256</span>, <span class="number">512</span>, <span class="number">1024</span>)</span><br><span class="line">        up_channels = (<span class="number">1024</span>, <span class="number">512</span>, <span class="number">256</span>, <span class="number">128</span>, <span class="number">64</span>)</span><br><span class="line">        out_dim = <span class="number">3</span> </span><br><span class="line">        time_emb_dim = <span class="number">32</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Time embedding</span></span><br><span class="line">        self.time_mlp = nn.Sequential(</span><br><span class="line">                SinusoidalPositionEmbeddings(time_emb_dim),</span><br><span class="line">                nn.Linear(time_emb_dim, time_emb_dim),</span><br><span class="line">                nn.ReLU()</span><br><span class="line">            )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Initial projection</span></span><br><span class="line">        self.conv0 = nn.Conv2d(image_channels, down_channels[<span class="number">0</span>], <span class="number">3</span>, padding=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Downsample</span></span><br><span class="line">        self.downs = nn.ModuleList([Block(down_channels[i], down_channels[i+<span class="number">1</span>], \</span><br><span class="line">                                    time_emb_dim) \</span><br><span class="line">                    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(down_channels)-<span class="number">1</span>)])</span><br><span class="line">        <span class="comment"># Upsample</span></span><br><span class="line">        self.ups = nn.ModuleList([Block(up_channels[i], up_channels[i+<span class="number">1</span>], \</span><br><span class="line">                                        time_emb_dim, up=<span class="literal">True</span>) \</span><br><span class="line">                    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(up_channels)-<span class="number">1</span>)])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Edit: Corrected a bug found by Jakub C (see YouTube comment)</span></span><br><span class="line">        self.output = nn.Conv2d(up_channels[-<span class="number">1</span>], out_dim, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, timestep</span>):</span><br><span class="line">        <span class="comment"># Embedd time</span></span><br><span class="line">        t = self.time_mlp(timestep)</span><br><span class="line">        <span class="comment"># Initial conv</span></span><br><span class="line">        x = self.conv0(x)</span><br><span class="line">        <span class="comment"># Unet</span></span><br><span class="line">        residual_inputs = []</span><br><span class="line">        <span class="keyword">for</span> down <span class="keyword">in</span> self.downs:</span><br><span class="line">            x = down(x, t)</span><br><span class="line">            residual_inputs.append(x)</span><br><span class="line">        <span class="keyword">for</span> up <span class="keyword">in</span> self.ups:</span><br><span class="line">            residual_x = residual_inputs.pop()</span><br><span class="line">            <span class="comment"># Add residual x as additional channels</span></span><br><span class="line">            x = torch.cat((x, residual_x), dim=<span class="number">1</span>)           </span><br><span class="line">            x = up(x, t)</span><br><span class="line">        <span class="keyword">return</span> self.output(x)</span><br><span class="line"></span><br><span class="line">model = SimpleUnet()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Num params: &quot;</span>, <span class="built_in">sum</span>(p.numel() <span class="keyword">for</span> p <span class="keyword">in</span> model.parameters()))</span><br><span class="line">model</span><br></pre></td></tr></table></figure></p>
+<p>这里的block作为unet的每层处理,下面的unet类直接对block进行堆叠,position_embedding作为position的记录,通过对cos和sin的concat来实现. 需要注意网上一般常见的unet都是有pool的,作者的上一版notebook也是有pool的,但现在已经换成了BN层.</p>
+<h3 id="loss">Loss</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_loss</span>(<span class="params">model, x_0, t</span>):</span><br><span class="line">    x_noisy, noise = forward_diffusion_sample(x_0, t, device)</span><br><span class="line">    noise_pred = model(x_noisy, t)</span><br><span class="line">    <span class="keyword">return</span> F.l1_loss(noise, noise_pred)</span><br></pre></td></tr></table></figure>
+<p>通过forward_dissusion_sample计算 $ x_0 $ 在第t步noising的值作为target, 模型输出值为noise_pred,然后计算f1_loss</p>
+<h3 id="train">train</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@torch.no_grad()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sample_timestep</span>(<span class="params">x, t</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Calls the model to predict the noise in the image and returns </span></span><br><span class="line"><span class="string">    the denoised image. </span></span><br><span class="line"><span class="string">    Applies noise to this image, if we are not in the last step yet.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    betas_t = get_index_from_list(betas, t, x.shape)</span><br><span class="line">    sqrt_one_minus_alphas_cumprod_t = get_index_from_list(</span><br><span class="line">        sqrt_one_minus_alphas_cumprod, t, x.shape</span><br><span class="line">    )</span><br><span class="line">    sqrt_recip_alphas_t = get_index_from_list(sqrt_recip_alphas, t, x.shape)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Call model (current image - noise prediction)</span></span><br><span class="line">    model_mean = sqrt_recip_alphas_t * (</span><br><span class="line">        x - betas_t * model(x, t) / sqrt_one_minus_alphas_cumprod_t</span><br><span class="line">    )</span><br><span class="line">    posterior_variance_t = get_index_from_list(posterior_variance, t, x.shape)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> t == <span class="number">0</span>:</span><br><span class="line">        <span class="comment"># As pointed out by Luis Pereira (see YouTube comment)</span></span><br><span class="line">        <span class="comment"># The t&#x27;s are offset from the t&#x27;s in the paper</span></span><br><span class="line">        <span class="keyword">return</span> model_mean</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        noise = torch.randn_like(x)</span><br><span class="line">        <span class="keyword">return</span> model_mean + torch.sqrt(posterior_variance_t) * noise </span><br><span class="line"></span><br><span class="line"><span class="meta">@torch.no_grad()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sample_plot_image</span>():</span><br><span class="line">    <span class="comment"># Sample noise</span></span><br><span class="line">    img_size = IMG_SIZE</span><br><span class="line">    img = torch.randn((<span class="number">1</span>, <span class="number">3</span>, img_size, img_size), device=device)</span><br><span class="line">    plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>))</span><br><span class="line">    plt.axis(<span class="string">&#x27;off&#x27;</span>)</span><br><span class="line">    num_images = <span class="number">10</span></span><br><span class="line">    stepsize = <span class="built_in">int</span>(T/num_images)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,T)[::-<span class="number">1</span>]:</span><br><span class="line">        t = torch.full((<span class="number">1</span>,), i, device=device, dtype=torch.long)</span><br><span class="line">        img = sample_timestep(img, t)</span><br><span class="line">        <span class="comment"># Edit: This is to maintain the natural range of the distribution</span></span><br><span class="line">        img = torch.clamp(img, -<span class="number">1.0</span>, <span class="number">1.0</span>)</span><br><span class="line">        <span class="keyword">if</span> i % stepsize == <span class="number">0</span>:</span><br><span class="line">            plt.subplot(<span class="number">1</span>, num_images, <span class="built_in">int</span>(i/stepsize)+<span class="number">1</span>)</span><br><span class="line">            show_tensor_image(img.detach().cpu())</span><br><span class="line">    plt.show()            </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># train here</span></span><br><span class="line"><span class="keyword">from</span> torch.optim <span class="keyword">import</span> Adam</span><br><span class="line"></span><br><span class="line">device = <span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span></span><br><span class="line">model.to(device)</span><br><span class="line">optimizer = Adam(model.parameters(), lr=<span class="number">0.001</span>)</span><br><span class="line">epochs = <span class="number">100</span> <span class="comment"># Try more!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">    <span class="keyword">for</span> step, batch <span class="keyword">in</span> <span class="built_in">enumerate</span>(dataloader):</span><br><span class="line">      optimizer.zero_grad()</span><br><span class="line"></span><br><span class="line">      t = torch.randint(<span class="number">0</span>, T, (BATCH_SIZE,), device=device).long()</span><br><span class="line">      loss = get_loss(model, batch[<span class="number">0</span>], t)</span><br><span class="line">      loss.backward()</span><br><span class="line">      optimizer.step()</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> epoch % <span class="number">5</span> == <span class="number">0</span> <span class="keyword">and</span> step == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch&#125;</span> | step <span class="subst">&#123;step:03d&#125;</span> Loss: <span class="subst">&#123;loss.item()&#125;</span> &quot;</span>)</span><br><span class="line">        sample_plot_image()</span><br></pre></td></tr></table></figure>
+<p>前面的sample_timestep返回的是论文中的ALGO2.sampling. 然后后续就是画出每一步的生成图了.</p>
+<p>train是取0-T中的随机整数作为timestep然后训练. 训练过程中调用sample_plot_image查看结果.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E9%83%A8%E5%88%86"><span class="toc-number">2.</span> <span class="toc-text">代码部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9B%B8%E5%85%B3"><span class="toc-number">2.1.</span> <span class="toc-text">数据集相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#beta%E5%92%8Calpha%E8%AE%A1%E7%AE%97"><span class="toc-number">2.2.</span> <span class="toc-text">beta和alpha计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%BD%E5%85%A5%E6%95%B0%E6%8D%AE%E6%9F%A5%E7%9C%8Bnoising%E6%95%88%E6%9E%9C"><span class="toc-number">2.3.</span> <span class="toc-text">载入数据查看noising效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#unet"><span class="toc-number">2.4.</span> <span class="toc-text">Unet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#loss"><span class="toc-number">2.5.</span> <span class="toc-text">Loss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#train"><span class="toc-number">2.6.</span> <span class="toc-text">train</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/04/10/diffusion-model-1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/04/10/diffusion-model-1/&text=diffusion model(1)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/04/10/diffusion-model-1/&title=diffusion model(1)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/04/10/diffusion-model-1/&is_video=false&description=diffusion model(1)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=diffusion model(1)&body=Check out this article: http://example.com/2024/04/10/diffusion-model-1/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/04/10/diffusion-model-1/&title=diffusion model(1)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/04/10/diffusion-model-1/&title=diffusion model(1)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/04/10/diffusion-model-1/&title=diffusion model(1)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/04/10/diffusion-model-1/&title=diffusion model(1)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/04/10/diffusion-model-1/&name=diffusion model(1)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/04/10/diffusion-model-1/&t=diffusion model(1)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
