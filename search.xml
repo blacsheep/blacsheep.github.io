@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>diffusion model(2)-LDM</title>
+      <link href="/2024/04/11/diffusion-model-2-LDM/"/>
+      <url>/2024/04/11/diffusion-model-2-LDM/</url>
+      
+        <content type="html"><![CDATA[<p>一开始是看的Stable diffusion的,以为是这里开始讲conditioning mechanisms的,后来发现他们idea是从LDM过来的,那么这次就学习一下LDM,这次没来得及看模型,这两天稍微有点忙,看周末会不会有空补一下了.</p><h2 id="latent-diffusion-models">Latent Diffusion Models</h2><p>LDM区别于我们之前看的一般diffusion model主要在于两点</p><ol type="1"><li><p>之前我们对一般扩散模型是直接喂图片数据. 而LDM对其进行了优化, 它设计了一个encoder和一个decoder, encoder对输入图片进行压缩将其转化到latent space, 然后进行一般diffusion操作之后我们同样会生成一个latent vector, 最后我们对这个生成的latent vector进行decode让其恢复到像素空间即可完成图片生成. 本质高维变低维进行处理. 论文将此方法称为Perceptual Compression.</p></li><li><p>第二个区别就是条件生成了, 其通过在unet主干网络添加cross-attention来进行针对prompt的图片生成.</p></li></ol><h2 id="perceptual-image-compression">Perceptual Image Compression</h2><p>本质实现一个编码解码器,然后这个编码解码器先去学习将图片映射到latent space,第二部再去训练diffusion model作为内层.</p><blockquote><p>感知压缩本质上是一个tradeoff，之前的很多扩散模型没有使用这个技巧也可以进行，但原有的非感知压缩的扩散模型有一个很大的问题在于，由于在像素空间上训练模型，如果我们希望生成一张分辨率很高的图片，这就意味着我们训练的空间也是一个很高维的空间。引入感知压缩就是说通过VAE这类自编码模型对原图片进行处理，忽略掉图片中的高频信息，只保留重要、基础的一些特征。这种方法带来的的好处就像引文部分说的一样，能够<strong>大幅降低训练和采样阶段的计算复杂度</strong>，让文图生成等任务能够在消费级GPU上，在10秒级别时间生成图片，大大降低了落地门槛。</p></blockquote><h2 id="采样因子-f">采样因子 $ f $</h2><p>f = H / h, 其中如果f = 1就相当于没有对空间进行压缩, 如果f越大, 就说明压缩程度越高,需要占用的资源更少但同样也更容易失真. 论文对比了f在{1,2,4,8,16,32},发现在4-16效果较好且推荐LDM-4和LDM-8</p><h2 id="cross-attention">cross attention</h2><p>这个就是为什么LDM可以做到text_to_img,针对text而言可以先做一些tokenization和embedding,之后和传入的img_feature一起做cross attention.</p><p>而作者则是写到了为了预处理y,他们引入了一种新的domain specific encoder $ $ 从而把任意源y编码到中间态 $ (y) $</p><p><img src="ldm_cross_attention.png" /></p><p>然后就是Q为img_feature,KV为text_embedding的attention机制.</p><p><img src="cross_attention.png" /></p><blockquote><p>https://arxiv.org/pdf/2112.10752.pdf<br />https://zhuanlan.zhihu.com/p/582693939<br />https://www.cnblogs.com/zackstang/p/17324257.html#_label5</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> ML </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>diffusion model(1)</title>
       <link href="/2024/04/10/diffusion-model-1/"/>
       <url>/2024/04/10/diffusion-model-1/</url>
