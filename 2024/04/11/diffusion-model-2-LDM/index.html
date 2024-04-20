@@ -16,7 +16,7 @@
 <meta property="og:image" content="http://example.com/2024/04/11/diffusion-model-2-LDM/ldm_cross_attention.png">
 <meta property="og:image" content="http://example.com/2024/04/11/diffusion-model-2-LDM/cross_attention.png">
 <meta property="article:published_time" content="2024-04-11T20:46:09.000Z">
-<meta property="article:modified_time" content="2024-04-15T20:49:50.703Z">
+<meta property="article:modified_time" content="2024-04-20T19:03:19.849Z">
 <meta property="article:author" content="blacsheep">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2024/04/11/diffusion-model-2-LDM/ldm_cross_attention.png">
@@ -99,6 +99,8 @@
     <br/>
     <span id="actions">
       <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/04/20/%E4%BB%8E%E9%9B%B6%E5%AE%9E%E7%8E%B0LDM-1/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
         <li><a class="icon" aria-label="Next post" href="/2024/04/10/diffusion-model-1/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
@@ -202,10 +204,11 @@
 <h3 id="perceptual-image-compression相关">Perceptual Image Compression相关</h3>
 <p>主体在ldm.models.autoencoder.VQModelInterface,其中关键部分为处理encode的decode的部分. 另外中间还有一个VQ过程.</p>
 <h4 id="vqvector-quantization">VQ(Vector Quantization)</h4>
-<p>似乎是一个很早的东西,不过我个人第一次见到,记录一下. 参考文章<a target="_blank" rel="noopener" href="https://blog.csdn.net/FRkid/article/details/40654841">VQ</a></p>
-<p>说白了就是VQ会将某个区间内的东西用某个值替换,比如0-1全部映射到0,1-2全部映射到1.</p>
-<p>不过缺陷就是完全空间划分可能导致不均匀,比如我们需要将0-255映射到4bit,然后所有值都在0-15,那么最后得到的图像就会全部为0.</p>
-<p>优化方式为聚类算法,比如KMean,手动选择所有点中的centroids,然后再针对centroids进行映射.</p>
+<p><del>似乎是一个很早的东西,不过我个人第一次见到,记录一下. 参考文章<a target="_blank" rel="noopener" href="https://blog.csdn.net/FRkid/article/details/40654841">VQ</a></del> <del>说白了就是VQ会将某个区间内的东西用某个值替换,比如0-1全部映射到0,1-2全部映射到1.</del> <del>不过缺陷就是完全空间划分可能导致不均匀,比如我们需要将0-255映射到4bit,然后所有值都在0-15,那么最后得到的图像就会全部为0.</del> <del>优化方式为聚类算法,比如KMean,手动选择所有点中的centroids,然后再针对centroids进行映射.</del></p>
+<p>4.16: 有点理解错了. 这里的VQ来自于CompVis的另一篇论文,<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2012.09841">Taming Transformers for High-Resolution Image Synthesis</a>,本质其实是VQGAN,所以大概的历史发展大概是VQVAE-&gt;VQGAN-&gt;LDM,其中LDM也可以看作是VQ+DDPM. 这个VQ就是压缩图片到隐藏空间的核心所在, 也是所谓的First stage model.</p>
+<p>最本质的VQ其实还是上面划掉的部分,化连续为离散,贴一篇讲解<a target="_blank" rel="noopener" href="https://www.spaces.ac.cn/archives/6760#VQ-VAE">VQVAE</a></p>
+<p>从这篇文章看到VQVAE一开始用VQ解决的问题是 1. PixelCNN这种需要离散数据的模型应该如何进行降维,建模,恢复. 2. 对待离散数据中无梯度部分应该如何处理(Straight-Through Estimator).</p>
+<p>而VQGAN, LDM继续延用了VQ这一思想, 这些模型把VQ丢到了第一阶段, 目的是训练一个所谓的autoencoder.</p>
 <h4 id="resnet">resnet</h4>
 <p>首先encoder和decoder里面每一个维度变化都是resnet作为基础块来处理的,对于他们写的resnet不需要太过关注内部处理,只用看最后返回是h+x即可. <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://github.com/CompVis/latent-diffusion/blob/main/ldm/modules/diffusionmodules/model.py#L121</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, temb</span>):</span><br><span class="line">        h = x</span><br><span class="line">        h = self.norm1(h)</span><br><span class="line">        h = nonlinearity(h)</span><br><span class="line">        h = self.conv1(h)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> temb <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            h = h + self.temb_proj(nonlinearity(temb))[:,:,<span class="literal">None</span>,<span class="literal">None</span>]</span><br><span class="line"></span><br><span class="line">        h = self.norm2(h)</span><br><span class="line">        h = nonlinearity(h)</span><br><span class="line">        h = self.dropout(h)</span><br><span class="line">        h = self.conv2(h)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.in_channels != self.out_channels:</span><br><span class="line">            <span class="keyword">if</span> self.use_conv_shortcut:</span><br><span class="line">                x = self.conv_shortcut(x)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                x = self.nin_shortcut(x)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> x+h</span><br></pre></td></tr></table></figure></p>
 <h4 id="encoder">encoder</h4>
@@ -223,12 +226,9 @@
 <p>那其实从结果来看就是x和condition进行cross attention然后输出丢进Unet,然后encode和decode那一套. 从代码执行逻辑来看和之前分析的确实也差不多,今天的分析暂时先到这,下次继续看,然后试试能不能自己来写一个简易LDM.</p>
 <h2 id="implementation4.14-4.15">implementation(4.14-4.15)</h2>
 <p>看了下dataset和具体实现部分,官方的代码感觉有点难读,然后注意到encoder的部分似乎实现和之前想的有点差异,第一阶段的encoder和decoder其实只是first_stage的其中一部分,最终使用似乎还是<a target="_blank" rel="noopener" href="https://github.com/CompVis/latent-diffusion/blob/main/ldm/models/autoencoder.py">ldm.models.autoencoder.VQModelInterface</a>. 然后模型的训练似乎也和之前想的不太一样,看官方的意思似乎是得先<strong>训练好</strong>autoencoder,之后再直接对autoencoder进行使用:encoder进latent space然后计算,预测之后decode做返回. 不过这里并不太了解encoder训练相关,最近还得多看一下,能找到的资料也非常少,官方的github代码可读性也不是很行.</p>
-<p>然后dataset是昨天看的,弄的MSCOCO,也只是一个练手小项目,随缘使用一个600k就行了,不过目前只是大概确认了一下数据,最后大概还需要写个dataset和dataloader之类的载入类.</p>
-<p>一开始没想到会有这么多问题,一个个解决看看,碰到很具体的问题再去看官方代码了.</p>
+<p>然后dataset弄的MSCOCO,练手小项目,随缘使用一个600k就行了,不过目前只是大概确认了一下数据,最后大概还需要写个dataset和dataloader之类的载入类.</p>
 <blockquote>
-<p>https://arxiv.org/pdf/2112.10752.pdf<br />
-https://zhuanlan.zhihu.com/p/582693939<br />
-https://www.cnblogs.com/zackstang/p/17324257.html#_label5</p>
+<p>https://arxiv.org/abs/2012.09841 https://arxiv.org/abs/2112.10752 https://www.spaces.ac.cn/archives/6760#VQ-VAE https://zhuanlan.zhihu.com/p/582693939 https://www.cnblogs.com/zackstang/p/17324257.html#_label5</p>
 </blockquote>
 
   </div>
