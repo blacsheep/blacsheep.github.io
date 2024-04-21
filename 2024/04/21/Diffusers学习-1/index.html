@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="ldm的VQGAN还在跑,先来看下huggingface现有的diffusion model的实现框架. 文档链接 diffusion model(ddpm) install 首先安装和import 123!pip install diffusers[&quot;torch&quot;] transformersfrom diffusers import DDPMPipeline pipline">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Diffusers学习(1)">
+<meta property="og:url" content="http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="ldm的VQGAN还在跑,先来看下huggingface现有的diffusion model的实现框架. 文档链接 diffusion model(ddpm) install 首先安装和import 123!pip install diffusers[&quot;torch&quot;] transformersfrom diffusers import DDPMPipeline pipline">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/pipline.png">
+<meta property="og:image" content="http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/plot_5img.png">
+<meta property="og:image" content="http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/bowl_of_cats.png">
+<meta property="article:published_time" content="2024-04-21T17:19:19.000Z">
+<meta property="article:modified_time" content="2024-04-21T20:01:03.483Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/pipline.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Diffusers学习(1)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/04/20/%E4%BB%8E%E9%9B%B6%E5%AE%9E%E7%8E%B0LDM-1/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&text=Diffusers学习(1)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&title=Diffusers学习(1)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&is_video=false&description=Diffusers学习(1)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Diffusers学习(1)&body=Check out this article: http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&title=Diffusers学习(1)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&title=Diffusers学习(1)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&title=Diffusers学习(1)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&title=Diffusers学习(1)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&name=Diffusers学习(1)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&t=Diffusers学习(1)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#diffusion-modelddpm"><span class="toc-number">1.</span> <span class="toc-text">diffusion model(ddpm)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#install"><span class="toc-number">1.1.</span> <span class="toc-text">install</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pipline"><span class="toc-number">1.2.</span> <span class="toc-text">pipline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E7%BB%86%E8%8A%82"><span class="toc-number">1.3.</span> <span class="toc-text">内部细节</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stable-diffusion"><span class="toc-number">2.</span> <span class="toc-text">stable diffusion</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pndmpseudo-numerical-methods-for-diffusion-models-on-manifolds"><span class="toc-number">2.1.</span> <span class="toc-text">PNDM(Pseudo Numerical Methods for Diffusion Models on Manifolds)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#load-from-pretrained"><span class="toc-number">2.2.</span> <span class="toc-text">load from pretrained</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#text-processing"><span class="toc-number">2.3.</span> <span class="toc-text">text processing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#train"><span class="toc-number">2.4.</span> <span class="toc-text">train</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#show-result"><span class="toc-number">2.5.</span> <span class="toc-text">show result</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Diffusers学习(1)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-04-21T17:19:19.000Z" class="dt-published" itemprop="datePublished">2024-04-21</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/ML/">ML</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>ldm的VQGAN还在跑,先来看下huggingface现有的diffusion model的实现框架.</p>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/docs/diffusers/using-diffusers/write_own_pipeline">文档链接</a></p>
+<h2 id="diffusion-modelddpm">diffusion model(ddpm)</h2>
+<h3 id="install">install</h3>
+<p>首先安装和import <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">!pip install diffusers[<span class="string">&quot;torch&quot;</span>] transformers</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> DDPMPipeline</span><br></pre></td></tr></table></figure></p>
+<h3 id="pipline">pipline</h3>
+<p>pipline简洁代码 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ddpm = DDPMPipeline.from_pretrained(<span class="string">&quot;google/ddpm-cat-256&quot;</span>, use_safetensors=<span class="literal">True</span>).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line">image = ddpm(num_inference_steps=<span class="number">30</span>).images[<span class="number">0</span>]</span><br><span class="line">image</span><br></pre></td></tr></table></figure></p>
+<p><img src="pipline.png" /></p>
+<p>效果其实一般.</p>
+<h3 id="内部细节">内部细节</h3>
+<p>还是和前面看的ddpm一样, Unet加上一个scheduler. 对生成结果进行绘图得到以下结果. <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> DDPMScheduler, UNet2DModel</span><br><span class="line"></span><br><span class="line">scheduler = DDPMScheduler.from_pretrained(<span class="string">&#x27;google/ddpm-cat-256&#x27;</span>)</span><br><span class="line">model = UNet2DModel.from_pretrained(<span class="string">&#x27;google/ddpm-cat-256&#x27;</span>, use_safetensors=<span class="literal">True</span>).to(<span class="string">&#x27;cuda&#x27;</span>)</span><br><span class="line">scheduler.set_timesteps(<span class="number">50</span>)</span><br><span class="line"></span><br><span class="line">noice = torch.randn((<span class="number">1</span>,<span class="number">3</span>,model.config.sample_size,model.config.sample_size), device=<span class="string">&#x27;cuda&#x27;</span>)</span><br><span class="line">img_index = <span class="number">0</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>))</span><br><span class="line"><span class="keyword">for</span> i, t <span class="keyword">in</span> <span class="built_in">enumerate</span>(scheduler.timesteps):</span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        noisy_residual = model(noice, t).sample</span><br><span class="line">    previous_noisy_sample = scheduler.step(noisy_residual, t, noice).prev_sample</span><br><span class="line">    noice = previous_noisy_sample</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">10</span> == <span class="number">0</span>:</span><br><span class="line">        image = (noice / <span class="number">2</span> + <span class="number">0.5</span>).clamp(<span class="number">0</span>, <span class="number">1</span>).squeeze()</span><br><span class="line">        image = (image.permute(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>) * <span class="number">255</span>).<span class="built_in">round</span>().to(torch.uint8).cpu().numpy()</span><br><span class="line">        image = Image.fromarray(image)</span><br><span class="line">        plt.subplot(<span class="number">1</span>, <span class="number">10</span>, i//<span class="number">10</span>+<span class="number">1</span>)</span><br><span class="line">        plt.imshow(image)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
+<p><img src="plot_5img.png" /></p>
+<h2 id="stable-diffusion">stable diffusion</h2>
+<h3 id="pndmpseudo-numerical-methods-for-diffusion-models-on-manifolds">PNDM(Pseudo Numerical Methods for Diffusion Models on Manifolds)</h3>
+<p>scheduler也是有不少的,从ddpm到ddim到pndm,具体可以看<a target="_blank" rel="noopener" href="https://animadversio.github.io/academic_notes/note-on-ddpm-ddim-pndm">Note on Variants of Diffusion Scheduler, DDPM DDIM PNDM</a>.</p>
+<p>大概来说就是ddpm基于markov,ddim是deterministic且对back process做了优化. pndm是对ddim做出了微分方程求解层面的优化.</p>
+<p>不过官方给的说法是stable diffusion默认用pndm,那我们就展现一下换scheduler有多简单,于是用的就是UniPCMultistepScheduler.</p>
+<h3 id="load-from-pretrained">load from pretrained</h3>
+<p>这里区别于前面的UNet,这里的UNet是conditional. 然后encoder用的AutoencoderKL.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> CLIPTextModel, CLIPTokenizer</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> AutoencoderKL, UNet2DConditionModel, PNDMScheduler</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> UniPCMultistepScheduler</span><br><span class="line"></span><br><span class="line">vae = AutoencoderKL.from_pretrained(<span class="string">&quot;CompVis/stable-diffusion-v1-4&quot;</span>, subfolder=<span class="string">&quot;vae&quot;</span>, use_safetensors=<span class="literal">True</span>)</span><br><span class="line">tokenizer = CLIPTokenizer.from_pretrained(<span class="string">&quot;CompVis/stable-diffusion-v1-4&quot;</span>, subfolder=<span class="string">&quot;tokenizer&quot;</span>)</span><br><span class="line">text_encoder = CLIPTextModel.from_pretrained(</span><br><span class="line">    <span class="string">&quot;CompVis/stable-diffusion-v1-4&quot;</span>, subfolder=<span class="string">&quot;text_encoder&quot;</span>, use_safetensors=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line">unet = UNet2DConditionModel.from_pretrained(</span><br><span class="line">    <span class="string">&quot;CompVis/stable-diffusion-v1-4&quot;</span>, subfolder=<span class="string">&quot;unet&quot;</span>, use_safetensors=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line">scheduler = UniPCMultistepScheduler.from_pretrained(<span class="string">&quot;CompVis/stable-diffusion-v1-4&quot;</span>, subfolder=<span class="string">&quot;scheduler&quot;</span>)</span><br><span class="line"></span><br><span class="line">torch_device = <span class="string">&quot;cuda&quot;</span></span><br><span class="line">vae.to(torch_device)</span><br><span class="line">text_encoder.to(torch_device)</span><br><span class="line">unet.to(torch_device)</span><br></pre></td></tr></table></figure>
+<h3 id="text-processing">text processing</h3>
+<p>文本方面就是先tokenize然后embedding,然后取padding token再做一次embedding最后concat</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># text processing</span></span><br><span class="line">prompt = [<span class="string">&quot;a photograph of a bowl of cats&quot;</span>]</span><br><span class="line">batch_size = <span class="built_in">len</span>(prompt)</span><br><span class="line"></span><br><span class="line"><span class="comment"># tokenizing</span></span><br><span class="line">text_input = tokenizer(</span><br><span class="line">    prompt, padding=<span class="string">&quot;max_length&quot;</span>, max_length=tokenizer.model_max_length, truncation=<span class="literal">True</span>, return_tensors=<span class="string">&quot;pt&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="comment"># generate text embedding</span></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    text_embeddings = text_encoder(text_input.input_ids.to(torch_device))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># generate text embedding for only padding tokens</span></span><br><span class="line">max_length = text_input.input_ids.shape[-<span class="number">1</span>]</span><br><span class="line">uncond_input = tokenizer([<span class="string">&quot;&quot;</span>] * batch_size, padding=<span class="string">&quot;max_length&quot;</span>, max_length=max_length, return_tensors=<span class="string">&quot;pt&quot;</span>)</span><br><span class="line">uncond_embeddings = text_encoder(uncond_input.input_ids.to(torch_device))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># concat embeddings</span></span><br><span class="line">text_embeddings = torch.cat([uncond_embeddings, text_embeddings])</span><br></pre></td></tr></table></figure>
+<h3 id="train">train</h3>
+<p>这里官方的generator会出问题,用cuda的话记得用<code>torch.cuda.manual_seed</code></p>
+<p>然后思路很简单, 直接check vae的downsample数,然后对维度直接进行调整,生成latent space的random input.</p>
+<p>然后unet里面传入text embedding作为hidden state. 然后这里guidance我不是很理解,大概是unet默认同时传出conditional和unconditional的result,然后这里手动做调整?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tqdm.auto <span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line"><span class="comment"># image settings</span></span><br><span class="line">height = <span class="number">512</span>  <span class="comment"># default height of Stable Diffusion</span></span><br><span class="line">width = <span class="number">512</span>  <span class="comment"># default width of Stable Diffusion</span></span><br><span class="line">num_inference_steps = <span class="number">25</span>  <span class="comment"># Number of denoising steps</span></span><br><span class="line">guidance_scale = <span class="number">7.5</span>  <span class="comment"># Scale for classifier-free guidance</span></span><br><span class="line">generator = torch.cuda.manual_seed(<span class="number">0</span>)  <span class="comment"># Seed generator to create the initial latent noise</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># latent noice</span></span><br><span class="line"><span class="comment"># 2 ** (len(vae.config.block_out_channels) - 1) == 8</span></span><br><span class="line">latents = torch.randn(</span><br><span class="line">    (batch_size, unet.config.in_channels, height // <span class="number">8</span>, width // <span class="number">8</span>),</span><br><span class="line">    generator=generator,</span><br><span class="line">    device=torch_device,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># scaling input with the noice distribution</span></span><br><span class="line">latents = latents * scheduler.init_noise_sigma</span><br><span class="line">scheduler.set_timesteps(num_inference_steps)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> tqdm(scheduler.timesteps):</span><br><span class="line">    <span class="comment"># expand the latents if we are doing classifier-free guidance to avoid doing two forward passes.</span></span><br><span class="line">    latent_model_input = torch.cat([latents] * <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    latent_model_input = scheduler.scale_model_input(latent_model_input, timestep=t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># predict the noise residual</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        noise_pred = unet(latent_model_input, t, encoder_hidden_states=text_embeddings).sample</span><br><span class="line"></span><br><span class="line">    <span class="comment"># perform guidance</span></span><br><span class="line">    noise_pred_uncond, noise_pred_text = noise_pred.chunk(<span class="number">2</span>)</span><br><span class="line">    noise_pred = noise_pred_uncond + guidance_scale * (noise_pred_text - noise_pred_uncond)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># compute the previous noisy sample x_t -&gt; x_t-1</span></span><br><span class="line">    latents = scheduler.step(noise_pred, t, latents).prev_sample</span><br></pre></td></tr></table></figure>
+<h3 id="show-result">show result</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">latents = <span class="number">1</span> / <span class="number">0.18215</span> * latents</span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    image = vae.decode(latents).sample</span><br><span class="line">image = (image / <span class="number">2</span> + <span class="number">0.5</span>).clamp(<span class="number">0</span>, <span class="number">1</span>).squeeze()</span><br><span class="line">image = (image.permute(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>) * <span class="number">255</span>).to(torch.uint8).cpu().numpy()</span><br><span class="line">image = Image.fromarray(image)</span><br><span class="line">image</span><br></pre></td></tr></table></figure>
+<p><img src="bowl_of_cats.png" /></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#diffusion-modelddpm"><span class="toc-number">1.</span> <span class="toc-text">diffusion model(ddpm)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#install"><span class="toc-number">1.1.</span> <span class="toc-text">install</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pipline"><span class="toc-number">1.2.</span> <span class="toc-text">pipline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E7%BB%86%E8%8A%82"><span class="toc-number">1.3.</span> <span class="toc-text">内部细节</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stable-diffusion"><span class="toc-number">2.</span> <span class="toc-text">stable diffusion</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pndmpseudo-numerical-methods-for-diffusion-models-on-manifolds"><span class="toc-number">2.1.</span> <span class="toc-text">PNDM(Pseudo Numerical Methods for Diffusion Models on Manifolds)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#load-from-pretrained"><span class="toc-number">2.2.</span> <span class="toc-text">load from pretrained</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#text-processing"><span class="toc-number">2.3.</span> <span class="toc-text">text processing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#train"><span class="toc-number">2.4.</span> <span class="toc-text">train</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#show-result"><span class="toc-number">2.5.</span> <span class="toc-text">show result</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&text=Diffusers学习(1)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&title=Diffusers学习(1)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&is_video=false&description=Diffusers学习(1)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Diffusers学习(1)&body=Check out this article: http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&title=Diffusers学习(1)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&title=Diffusers学习(1)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&title=Diffusers学习(1)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&title=Diffusers学习(1)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&name=Diffusers学习(1)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/04/21/Diffusers%E5%AD%A6%E4%B9%A0-1/&t=Diffusers学习(1)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
