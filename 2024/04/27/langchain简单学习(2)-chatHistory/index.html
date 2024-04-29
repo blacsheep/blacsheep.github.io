@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="文档: https:&#x2F;&#x2F;python.langchain.com&#x2F;docs&#x2F;use_cases&#x2F;question_answering&#x2F;chat_history&#x2F; 背景 QA过程中, 如果我们需要模型能够依据上下文来回答问题, 比如: &quot;你可以详细描述你刚刚说的第二点吗?&quot;. 这种情况就需要给模型加上背景信息. 首先给出最基础的RAG. 这是不涉及背景问答的RAG. 1234567891011121">
+<meta property="og:type" content="article">
+<meta property="og:title" content="langchain简单学习(2)-chatHistory">
+<meta property="og:url" content="http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="文档: https:&#x2F;&#x2F;python.langchain.com&#x2F;docs&#x2F;use_cases&#x2F;question_answering&#x2F;chat_history&#x2F; 背景 QA过程中, 如果我们需要模型能够依据上下文来回答问题, 比如: &quot;你可以详细描述你刚刚说的第二点吗?&quot;. 这种情况就需要给模型加上背景信息. 首先给出最基础的RAG. 这是不涉及背景问答的RAG. 1234567891011121">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/refomulated_question.png">
+<meta property="og:image" content="http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/chat_history_chain.png">
+<meta property="og:image" content="http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/QA_answer.png">
+<meta property="og:image" content="http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/source.png">
+<meta property="og:image" content="http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/official_history.png">
+<meta property="article:published_time" content="2024-04-27T09:35:06.000Z">
+<meta property="article:modified_time" content="2024-04-29T18:13:31.807Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/refomulated_question.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>langchain简单学习(2)-chatHistory</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/04/26/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&text=langchain简单学习(2)-chatHistory"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&title=langchain简单学习(2)-chatHistory"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&is_video=false&description=langchain简单学习(2)-chatHistory"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=langchain简单学习(2)-chatHistory&body=Check out this article: http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&title=langchain简单学习(2)-chatHistory"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&title=langchain简单学习(2)-chatHistory"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&title=langchain简单学习(2)-chatHistory"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&title=langchain简单学习(2)-chatHistory"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&name=langchain简单学习(2)-chatHistory&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&t=langchain简单学习(2)-chatHistory"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#contextualizing-the-question"><span class="toc-number">2.</span> <span class="toc-text">Contextualizing the question</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#messageplaceholder"><span class="toc-number">2.1.</span> <span class="toc-text">MessagePlaceholder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#history-aware-retriever"><span class="toc-number">2.2.</span> <span class="toc-text">history aware retriever</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BA%90%E7%A0%81"><span class="toc-number">2.2.1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E4%BB%A3%E7%A0%81"><span class="toc-number">2.2.2.</span> <span class="toc-text">实际代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#qa%E9%93%BE"><span class="toc-number">3.</span> <span class="toc-text">QA链</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final-result"><span class="toc-number">4.</span> <span class="toc-text">final result</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#return-source"><span class="toc-number">5.</span> <span class="toc-text">return source</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">6.</span> <span class="toc-text">持久化</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        langchain简单学习(2)-chatHistory
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-04-27T09:35:06.000Z" class="dt-published" itemprop="datePublished">2024-04-27</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/ML-NLP/">ML NLP</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>文档: <a target="_blank" rel="noopener" href="https://python.langchain.com/docs/use_cases/question_answering/chat_history/">https://python.langchain.com/docs/use_cases/question_answering/chat_history/</a></p>
+<h2 id="背景">背景</h2>
+<p>QA过程中, 如果我们需要模型能够依据上下文来回答问题, 比如: "你可以详细描述你刚刚说的第二点吗?". 这种情况就需要给模型加上背景信息.</p>
+<p>首先给出最基础的RAG. 这是不涉及背景问答的RAG.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> bs4</span><br><span class="line"><span class="keyword">from</span> langchain <span class="keyword">import</span> hub</span><br><span class="line"><span class="keyword">from</span> langchain_chroma <span class="keyword">import</span> Chroma</span><br><span class="line"><span class="keyword">from</span> langchain_community.document_loaders <span class="keyword">import</span> WebBaseLoader</span><br><span class="line"><span class="keyword">from</span> langchain_core.output_parsers <span class="keyword">import</span> StrOutputParser</span><br><span class="line"><span class="keyword">from</span> langchain_core.runnables <span class="keyword">import</span> RunnablePassthrough</span><br><span class="line"><span class="keyword">from</span> langchain_community.llms <span class="keyword">import</span> Ollama</span><br><span class="line"><span class="keyword">from</span> langchain_community.chat_models.ollama <span class="keyword">import</span> ChatOllama</span><br><span class="line"><span class="keyword">from</span> langchain_community.embeddings <span class="keyword">import</span> OllamaEmbeddings</span><br><span class="line"><span class="keyword">from</span> langchain_text_splitters <span class="keyword">import</span> RecursiveCharacterTextSplitter</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load, chunk and index the contents of the blog.</span></span><br><span class="line">loader = WebBaseLoader(</span><br><span class="line">    web_paths=(<span class="string">&quot;https://lilianweng.github.io/posts/2023-06-23-agent/&quot;</span>,),</span><br><span class="line">    bs_kwargs=<span class="built_in">dict</span>(</span><br><span class="line">        parse_only=bs4.SoupStrainer(</span><br><span class="line">            class_=(<span class="string">&quot;post-content&quot;</span>, <span class="string">&quot;post-title&quot;</span>, <span class="string">&quot;post-header&quot;</span>)</span><br><span class="line">        )</span><br><span class="line">    ),</span><br><span class="line">)</span><br><span class="line">docs = loader.load()</span><br><span class="line"></span><br><span class="line"><span class="comment"># split and save to chroma</span></span><br><span class="line">text_splitter = RecursiveCharacterTextSplitter(chunk_size=<span class="number">1000</span>, chunk_overlap=<span class="number">200</span>)</span><br><span class="line">splits = text_splitter.split_documents(docs)</span><br><span class="line">vectorstore = Chroma.from_documents(documents=splits, embedding=OllamaEmbeddings(model=<span class="string">&quot;nomic-embed-text&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Retrieve and generate using the relevant snippets of the blog.</span></span><br><span class="line">retriever = vectorstore.as_retriever()</span><br><span class="line">prompt = hub.pull(<span class="string">&quot;rlm/rag-prompt&quot;</span>)</span><br><span class="line">llm = Ollama(model=<span class="string">&quot;llama3&quot;</span>, keep_alive=-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">format_docs</span>(<span class="params">docs</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;\n\n&quot;</span>.join(doc.page_content <span class="keyword">for</span> doc <span class="keyword">in</span> docs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">rag_chain = (</span><br><span class="line">    &#123;<span class="string">&quot;context&quot;</span>: retriever | format_docs, <span class="string">&quot;question&quot;</span>: RunnablePassthrough()&#125;</span><br><span class="line">    | prompt</span><br><span class="line">    | llm</span><br><span class="line">    | StrOutputParser()</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="contextualizing-the-question">Contextualizing the question</h2>
+<p>要实现chat history, 首先得在前面加一条contextualizing链, 这条链的作用就是将问题情境化, 从而让最新的问题能够脱离背景, 进而可以连接另一条链来对问题进行回答. chat history的具体实现就是通过contextualizing chain来情境化问题, 比如我们要求模型:</p>
+<blockquote>
+<p>Given a chat history and the latest user question which might reference context in the chat history, formulate a standalone question which can be understood without the chat history. Do NOT answer the question, just <strong>reformulate</strong> it if needed and otherwise return it as is.</p>
+</blockquote>
+<p>这样返回的第二个问题就是可以回答的了. 然后这个问题会结合retriever返回相关doc, 附一个调试结果</p>
+<p><img src="refomulated_question.png" /></p>
+<h3 id="messageplaceholder">MessagePlaceholder</h3>
+<p>字面意思, Message占位符, 可以通过对应key传入信息. 这个会作为chat history的占位符使用.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_core.prompts <span class="keyword">import</span> MessagesPlaceholder</span><br><span class="line"></span><br><span class="line">prompt = MessagesPlaceholder(<span class="string">&quot;history&quot;</span>)</span><br><span class="line">prompt.format_messages() <span class="comment"># raises KeyError</span></span><br><span class="line"></span><br><span class="line">prompt = MessagesPlaceholder(<span class="string">&quot;history&quot;</span>, optional=<span class="literal">True</span>)</span><br><span class="line">prompt.format_messages() <span class="comment"># returns empty list []</span></span><br><span class="line"></span><br><span class="line">prompt.format_messages(</span><br><span class="line">    history=[</span><br><span class="line">        (<span class="string">&quot;system&quot;</span>, <span class="string">&quot;You are an AI assistant.&quot;</span>),</span><br><span class="line">        (<span class="string">&quot;human&quot;</span>, <span class="string">&quot;Hello!&quot;</span>),</span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line"><span class="comment"># -&gt; [</span></span><br><span class="line"><span class="comment">#     SystemMessage(content=&quot;You are an AI assistant.&quot;),</span></span><br><span class="line"><span class="comment">#     HumanMessage(content=&quot;Hello!&quot;),</span></span><br><span class="line"><span class="comment"># ]</span></span><br></pre></td></tr></table></figure>
+<h3 id="history-aware-retriever">history aware retriever</h3>
+<h4 id="源码">源码</h4>
+<p>有history就prompt转llm转parser然后retriever, 否则直接丢retriever.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">retrieve_documents: RetrieverOutputLike = RunnableBranch(</span><br><span class="line">    (</span><br><span class="line">        <span class="comment"># Both empty string and empty list evaluate to False</span></span><br><span class="line">        <span class="keyword">lambda</span> x: <span class="keyword">not</span> x.get(<span class="string">&quot;chat_history&quot;</span>, <span class="literal">False</span>),</span><br><span class="line">        <span class="comment"># If no chat history, then we just pass input to retriever</span></span><br><span class="line">        (<span class="keyword">lambda</span> x: x[<span class="string">&quot;input&quot;</span>]) | retriever,</span><br><span class="line">    ),</span><br><span class="line">    <span class="comment"># If chat history, then we pass inputs to LLM chain, then to retriever</span></span><br><span class="line">    prompt | llm | StrOutputParser() | retriever,</span><br><span class="line">).with_config(run_name=<span class="string">&quot;chat_retriever_chain&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="实际代码">实际代码</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> create_history_aware_retriever</span><br><span class="line"><span class="keyword">from</span> langchain_core.prompts <span class="keyword">import</span> ChatPromptTemplate, MessagesPlaceholder</span><br><span class="line"></span><br><span class="line">contextualize_q_system_prompt = <span class="string">&quot;&quot;&quot;Given a chat history and the latest user question \</span></span><br><span class="line"><span class="string">which might reference context in the chat history, formulate a standalone question \</span></span><br><span class="line"><span class="string">which can be understood without the chat history. Do NOT answer the question, \</span></span><br><span class="line"><span class="string">just reformulate it if needed and otherwise return it as is.&quot;&quot;&quot;</span></span><br><span class="line">contextualize_q_prompt = ChatPromptTemplate.from_messages(</span><br><span class="line">    [</span><br><span class="line">        (<span class="string">&quot;system&quot;</span>, contextualize_q_system_prompt),</span><br><span class="line">        MessagesPlaceholder(<span class="string">&quot;chat_history&quot;</span>),</span><br><span class="line">        (<span class="string">&quot;human&quot;</span>, <span class="string">&quot;&#123;input&#125;&quot;</span>),</span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line">history_aware_retriever = create_history_aware_retriever(</span><br><span class="line">    llm, retriever, contextualize_q_prompt</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="qa链">QA链</h2>
+<p>contextualizing结束, 连接QA链</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> create_retrieval_chain</span><br><span class="line"><span class="keyword">from</span> langchain.chains.combine_documents <span class="keyword">import</span> create_stuff_documents_chain</span><br><span class="line"></span><br><span class="line">qa_system_prompt = <span class="string">&quot;&quot;&quot;You are an assistant for question-answering tasks. \</span></span><br><span class="line"><span class="string">Use the following pieces of retrieved context to answer the question. \</span></span><br><span class="line"><span class="string">If you don&#x27;t know the answer, just say that you don&#x27;t know. \</span></span><br><span class="line"><span class="string">Use three sentences maximum and keep the answer concise.\</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#123;context&#125;&quot;&quot;&quot;</span></span><br><span class="line">qa_prompt = ChatPromptTemplate.from_messages(</span><br><span class="line">    [</span><br><span class="line">        (<span class="string">&quot;system&quot;</span>, qa_system_prompt),</span><br><span class="line">        MessagesPlaceholder(<span class="string">&quot;chat_history&quot;</span>),</span><br><span class="line">        (<span class="string">&quot;human&quot;</span>, <span class="string">&quot;&#123;input&#125;&quot;</span>),</span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)</span><br><span class="line"><span class="comment"># contextualizing_chain + QA_chain</span></span><br><span class="line">rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)</span><br></pre></td></tr></table></figure>
+<p><code>create_stuff_documents_chain</code>就是单纯的连接 dictionary | prompt | llm | outputparser. 其中output_parser不存在即为StrOutputParser.</p>
+<h2 id="final-result">final result</h2>
+<p>总流程</p>
+<p><img src="chat_history_chain.png" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_core.messages <span class="keyword">import</span> HumanMessage</span><br><span class="line"></span><br><span class="line">chat_history = []</span><br><span class="line"></span><br><span class="line">question = <span class="string">&quot;What is Task Decomposition?&quot;</span></span><br><span class="line">ai_msg_1 = rag_chain.invoke(&#123;<span class="string">&quot;input&quot;</span>: question, <span class="string">&quot;chat_history&quot;</span>: chat_history&#125;)</span><br><span class="line">chat_history.extend([HumanMessage(content=question), ai_msg_1[<span class="string">&quot;answer&quot;</span>]])</span><br><span class="line"></span><br><span class="line">second_question = <span class="string">&quot;What are common ways of doing it?&quot;</span></span><br><span class="line">ai_msg_2 = rag_chain.invoke(&#123;<span class="string">&quot;input&quot;</span>: second_question, <span class="string">&quot;chat_history&quot;</span>: chat_history&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(ai_msg_1[<span class="string">&quot;answer&quot;</span>])</span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"><span class="built_in">print</span>(ai_msg_2[<span class="string">&quot;answer&quot;</span>])</span><br></pre></td></tr></table></figure>
+<p><img src="QA_answer.png" /></p>
+<h2 id="return-source">return source</h2>
+<p>这部分是由<code>create_retrieval_chain</code>做到的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> document <span class="keyword">in</span> ai_msg_2[<span class="string">&quot;context&quot;</span>]:</span><br><span class="line">    <span class="built_in">print</span>(document)</span><br><span class="line">    <span class="built_in">print</span>()</span><br></pre></td></tr></table></figure>
+<p><img src="source.png" /></p>
+<h2 id="持久化">持久化</h2>
+<p>刚刚我们的history是通过手动extend一个list来实现的, 实际应用中可能会有持久化和自动化的需求.</p>
+<p>这里可以用到</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://python.langchain.com/docs/modules/memory/chat_messages/">BaseChatMessageHistory</a>: Store chat history.<br />
+</li>
+<li><a target="_blank" rel="noopener" href="https://python.langchain.com/docs/expression_language/how_to/message_history/">RunnableWithMessageHistory</a>: Wrapper for an LCEL chain and a BaseChatMessageHistory that handles injecting chat history into inputs and updating it after each invocation.</li>
+</ul>
+<p>那么前面一切照旧, 最后state加以处理</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_core.chat_history <span class="keyword">import</span> BaseChatMessageHistory</span><br><span class="line"><span class="keyword">from</span> langchain_community.chat_message_histories <span class="keyword">import</span> ChatMessageHistory</span><br><span class="line"><span class="keyword">from</span> langchain_core.runnables.history <span class="keyword">import</span> RunnableWithMessageHistory</span><br><span class="line"><span class="comment">### Statefully manage chat history ###</span></span><br><span class="line">store = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_session_history</span>(<span class="params">session_id: <span class="built_in">str</span></span>) -&gt; BaseChatMessageHistory:</span><br><span class="line">    <span class="keyword">if</span> session_id <span class="keyword">not</span> <span class="keyword">in</span> store:</span><br><span class="line">        store[session_id] = ChatMessageHistory()</span><br><span class="line">    <span class="keyword">return</span> store[session_id]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">conversational_rag_chain = RunnableWithMessageHistory(</span><br><span class="line">    rag_chain,</span><br><span class="line">    get_session_history,</span><br><span class="line">    input_messages_key=<span class="string">&quot;input&quot;</span>,</span><br><span class="line">    history_messages_key=<span class="string">&quot;chat_history&quot;</span>,</span><br><span class="line">    output_messages_key=<span class="string">&quot;answer&quot;</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">conversational_rag_chain.invoke(</span><br><span class="line">    &#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;What is Task Decomposition?&quot;</span>&#125;,</span><br><span class="line">    config=&#123;</span><br><span class="line">        <span class="string">&quot;configurable&quot;</span>: &#123;<span class="string">&quot;session_id&quot;</span>: <span class="string">&quot;abc123&quot;</span>&#125;</span><br><span class="line">    &#125;,  <span class="comment"># constructs a key &quot;abc123&quot; in `store`.</span></span><br><span class="line">)[<span class="string">&quot;answer&quot;</span>]</span><br><span class="line"><span class="comment"># &quot;Task decomposition is a technique that breaks down complex tasks into smaller and simpler steps. It involves decomposing big tasks into multiple manageable tasks, making it easier to understand the model&#x27;s thinking process and interpret the results. This approach is often used in prompting techniques like Chain of Thought (CoT) to enhance model performance on complex tasks.&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">conversational_rag_chain.invoke(</span><br><span class="line">    &#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;What are common ways of doing it?&quot;</span>&#125;,</span><br><span class="line">    config=&#123;<span class="string">&quot;configurable&quot;</span>: &#123;<span class="string">&quot;session_id&quot;</span>: <span class="string">&quot;abc123&quot;</span>&#125;&#125;,</span><br><span class="line">)[<span class="string">&quot;answer&quot;</span>]</span><br><span class="line"><span class="comment"># &#x27;Task decomposition can be achieved through various methods, including:\n\n* Chain of Thought (CoT): Instructing the model to &quot;think step by step&quot; to decompose hard tasks into smaller and simpler steps.\n* Behavioral cloning over actions: Using a set of source policies trained for specific tasks to generate learning histories and distill them into a neural network.\n\nI don\&#x27;t know about other common ways.&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>顺便一提, 这里session_id是指对话的session, 同一session下有记忆, 否则无记忆, 官方给出的示例就很有代表性.</p>
+<p><img src="official_history.png" /></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#contextualizing-the-question"><span class="toc-number">2.</span> <span class="toc-text">Contextualizing the question</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#messageplaceholder"><span class="toc-number">2.1.</span> <span class="toc-text">MessagePlaceholder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#history-aware-retriever"><span class="toc-number">2.2.</span> <span class="toc-text">history aware retriever</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BA%90%E7%A0%81"><span class="toc-number">2.2.1.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E4%BB%A3%E7%A0%81"><span class="toc-number">2.2.2.</span> <span class="toc-text">实际代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#qa%E9%93%BE"><span class="toc-number">3.</span> <span class="toc-text">QA链</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final-result"><span class="toc-number">4.</span> <span class="toc-text">final result</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#return-source"><span class="toc-number">5.</span> <span class="toc-text">return source</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">6.</span> <span class="toc-text">持久化</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&text=langchain简单学习(2)-chatHistory"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&title=langchain简单学习(2)-chatHistory"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&is_video=false&description=langchain简单学习(2)-chatHistory"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=langchain简单学习(2)-chatHistory&body=Check out this article: http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&title=langchain简单学习(2)-chatHistory"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&title=langchain简单学习(2)-chatHistory"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&title=langchain简单学习(2)-chatHistory"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&title=langchain简单学习(2)-chatHistory"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&name=langchain简单学习(2)-chatHistory&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/&t=langchain简单学习(2)-chatHistory"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
