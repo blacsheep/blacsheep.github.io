@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="kaggle上还在开着的competition, 第一感觉是bert加下游监督学习就结束了, 但是后面看到有人用llama3加prompt加微调的思路来处理, 感觉很有意思, 记录一下. 数据大概如下  首先任务类型: 给定text, 需要预测对应score, 考虑到score本身numerical, 加上官方的给定evaluation也是square(y_pred-y_true) 这个级别, 所">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kaggle-论文打分系统(bert,llama3思路)">
+<meta property="og:url" content="http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="kaggle上还在开着的competition, 第一感觉是bert加下游监督学习就结束了, 但是后面看到有人用llama3加prompt加微调的思路来处理, 感觉很有意思, 记录一下. 数据大概如下  首先任务类型: 给定text, 需要预测对应score, 考虑到score本身numerical, 加上官方的给定evaluation也是square(y_pred-y_true) 这个级别, 所">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/head.png">
+<meta property="og:image" content="http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/bert_regression.png">
+<meta property="og:image" content="http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/res_bert.png">
+<meta property="article:published_time" content="2024-05-02T14:45:53.000Z">
+<meta property="article:modified_time" content="2024-05-02T15:55:28.823Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/head.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Kaggle-论文打分系统(bert,llama3思路)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0(2)-chatHistory/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&text=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&title=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&is_video=false&description=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Kaggle-论文打分系统(bert,llama3思路)&body=Check out this article: http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&title=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&title=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&title=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&title=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&name=Kaggle-论文打分系统(bert,llama3思路)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&t=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#bert"><span class="toc-number">1.</span> <span class="toc-text">bert</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9Apath%E5%B9%B6%E6%9F%A5%E7%9C%8Bhead"><span class="toc-number">1.1.</span> <span class="toc-text">指定path并查看head</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#login-wandb"><span class="toc-number">1.2.</span> <span class="toc-text">login wandb</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#preprocessing"><span class="toc-number">1.3.</span> <span class="toc-text">preprocessing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9Aevaluation"><span class="toc-number">1.4.</span> <span class="toc-text">指定evaluation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#train"><span class="toc-number">1.5.</span> <span class="toc-text">train</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95test"><span class="toc-number">1.6.</span> <span class="toc-text">简单test</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83%E7%AD%96%E7%95%A5"><span class="toc-number">2.</span> <span class="toc-text">生成模型微调策略</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Kaggle-论文打分系统(bert,llama3思路)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-05-02T14:45:53.000Z" class="dt-published" itemprop="datePublished">2024-05-02</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Kaggle-warmup/">Kaggle-warmup</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>kaggle上还在开着的competition, 第一感觉是bert加下游监督学习就结束了, 但是后面看到有人用llama3加prompt加微调的思路来处理, 感觉很有意思, 记录一下. 数据大概如下</p>
+<p><img src="head.png" /></p>
+<p>首先任务类型: 给定text, 需要预测对应score, 考虑到score本身numerical, 加上官方的给定evaluation也是square(y_pred-y_true) 这个级别, 所以可以考虑是下游任务为regression的文本处理问题.</p>
+<h2 id="bert">bert</h2>
+<h3 id="指定path并查看head">指定path并查看head</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np <span class="comment"># linear algebra</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd <span class="comment"># data processing, CSV file I/O (e.g. pd.read_csv)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Input data files are available in the read-only &quot;../input/&quot; directory</span></span><br><span class="line"><span class="comment"># For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">for</span> dirname, _, filenames <span class="keyword">in</span> os.walk(<span class="string">&#x27;/kaggle/input&#x27;</span>):</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> filenames:</span><br><span class="line">        <span class="built_in">print</span>(os.path.join(dirname, filename))</span><br><span class="line"></span><br><span class="line">train_path = <span class="string">&#x27;/kaggle/input/learning-agency-lab-automated-essay-scoring-2/train.csv&#x27;</span></span><br><span class="line">test_path = <span class="string">&#x27;/kaggle/input/learning-agency-lab-automated-essay-scoring-2/test.csv&#x27;</span></span><br><span class="line">submission = <span class="string">&#x27;/kaggle/input/learning-agency-lab-automated-essay-scoring-2/sample_submission.csv&#x27;</span></span><br><span class="line"></span><br><span class="line">train_data = pd.read_csv(train_path)[[<span class="string">&#x27;full_text&#x27;</span>, <span class="string">&#x27;score&#x27;</span>]]</span><br><span class="line">test_data = pd.read_csv(test_path)[[<span class="string">&#x27;full_text&#x27;</span>]]</span><br><span class="line">train_data.head()</span><br></pre></td></tr></table></figure>
+<h3 id="login-wandb">login wandb</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">!pip install transformers datasets evaluate accelerate wandb</span><br><span class="line"><span class="keyword">import</span> wandb</span><br><span class="line"><span class="keyword">from</span> kaggle_secrets <span class="keyword">import</span> UserSecretsClient</span><br><span class="line">user_secrets = UserSecretsClient()</span><br><span class="line">wandb_token = user_secrets.get_secret(<span class="string">&quot;wandb_token&quot;</span>)</span><br><span class="line">! wandb login $wandb_token</span><br></pre></td></tr></table></figure>
+<h3 id="preprocessing">preprocessing</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> datasets <span class="keyword">import</span> Dataset</span><br><span class="line"></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(<span class="string">&#x27;distilbert/distilbert-base-uncased&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pre_processing</span>(<span class="params">example</span>):</span><br><span class="line">    <span class="keyword">return</span> tokenizer(example[<span class="string">&#x27;text&#x27;</span>], truncation=<span class="literal">True</span>, padding=<span class="string">&quot;max_length&quot;</span>, max_length=<span class="number">512</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train_data = train_data.rename(columns=&#123;<span class="string">&#x27;full_text&#x27;</span>:<span class="string">&#x27;text&#x27;</span>&#125;)</span><br><span class="line">train_data = train_data.rename(columns=&#123;<span class="string">&#x27;score&#x27;</span>:<span class="string">&#x27;label&#x27;</span>&#125;)</span><br><span class="line">train_data[<span class="string">&#x27;label&#x27;</span>] = train_data[<span class="string">&#x27;label&#x27;</span>].astype(<span class="built_in">float</span>)</span><br><span class="line">test_data = test_data.rename(columns=&#123;<span class="string">&#x27;full_text&#x27;</span>:<span class="string">&#x27;text&#x27;</span>&#125;)</span><br><span class="line"></span><br><span class="line">train_df, val_df = train_test_split(train_data, test_size=<span class="number">.2</span>)</span><br><span class="line"></span><br><span class="line">train_dataset = Dataset.from_pandas(train_df)</span><br><span class="line">valid_dataset = Dataset.from_pandas(val_df)</span><br><span class="line">test_dataset = Dataset.from_pandas(test_data)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tokenized_train = train_dataset.<span class="built_in">map</span>(pre_processing, batched=<span class="literal">True</span>)</span><br><span class="line">tokenized_valid = valid_dataset.<span class="built_in">map</span>(pre_processing, batched=<span class="literal">True</span>)</span><br><span class="line">tokenized_test = test_dataset.<span class="built_in">map</span>(pre_processing, batched=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="指定evaluation">指定evaluation</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_absolute_error</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> r2_score</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">compute_metrics_for_regression</span>(<span class="params">eval_pred</span>):</span><br><span class="line">    logits, labels = eval_pred</span><br><span class="line">    labels = labels.reshape(-<span class="number">1</span>)</span><br><span class="line">    mse = mean_squared_error(labels, logits)</span><br><span class="line">    mae = mean_absolute_error(labels, logits)</span><br><span class="line">    r2 = r2_score(labels, logits)</span><br><span class="line">    single_squared_errors = ((logits - labels).flatten()**<span class="number">2</span>).tolist()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute accuracy </span></span><br><span class="line">    <span class="comment"># Based on the fact that the rounded score = true score only if |single_squared_errors| &lt; 0.5</span></span><br><span class="line">    accuracy = <span class="built_in">sum</span>([<span class="number">1</span> <span class="keyword">for</span> e <span class="keyword">in</span> single_squared_errors <span class="keyword">if</span> e &lt; <span class="number">0.25</span>]) / <span class="built_in">len</span>(single_squared_errors)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;mse&quot;</span>: mse, <span class="string">&quot;mae&quot;</span>: mae, <span class="string">&quot;r2&quot;</span>: r2, <span class="string">&quot;accuracy&quot;</span>: accuracy&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="train">train</h3>
+<p>注意num_labels = 1, bert里面做好了处理</p>
+<p><img src="bert_regression.png" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoModelForSequenceClassification, TrainingArguments, Trainer</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> DataCollatorWithPadding</span><br><span class="line"></span><br><span class="line">model = AutoModelForSequenceClassification.from_pretrained(<span class="string">&#x27;distilbert/distilbert-base-uncased&#x27;</span>, num_labels=<span class="number">1</span>)</span><br><span class="line">data_collator = DataCollatorWithPadding(tokenizer=tokenizer)</span><br><span class="line"></span><br><span class="line">training_args = TrainingArguments(</span><br><span class="line">    output_dir=<span class="string">&#x27;./essay_score&#x27;</span>,</span><br><span class="line">    learning_rate=<span class="number">2e-5</span>,</span><br><span class="line">    per_device_train_batch_size=<span class="number">16</span>,</span><br><span class="line">    per_device_eval_batch_size=<span class="number">16</span>,</span><br><span class="line">    num_train_epochs=<span class="number">2</span>,</span><br><span class="line">    weight_decay=<span class="number">0.01</span>,</span><br><span class="line">    evaluation_strategy=<span class="string">&#x27;epoch&#x27;</span>,</span><br><span class="line">    save_strategy=<span class="string">&#x27;epoch&#x27;</span>,</span><br><span class="line">    load_best_model_at_end=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RegressionTrainer</span>(<span class="title class_ inherited__">Trainer</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_loss</span>(<span class="params">self, model, inputs, return_outputs=<span class="literal">False</span></span>):</span><br><span class="line">        labels = inputs.pop(<span class="string">&quot;labels&quot;</span>)</span><br><span class="line">        outputs = model(**inputs)</span><br><span class="line">        logits = outputs[<span class="number">0</span>][:, <span class="number">0</span>]</span><br><span class="line">        loss = torch.nn.functional.mse_loss(logits, labels)</span><br><span class="line">        <span class="keyword">return</span> (loss, outputs) <span class="keyword">if</span> return_outputs <span class="keyword">else</span> loss</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">trainer = RegressionTrainer(</span><br><span class="line">    model=model,</span><br><span class="line">    args=training_args,</span><br><span class="line">    train_dataset=tokenized_train,</span><br><span class="line">    eval_dataset=tokenized_valid,</span><br><span class="line">    data_collator=data_collator,</span><br><span class="line">    compute_metrics = compute_metrics_for_regression,   </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">trainer.train()</span><br></pre></td></tr></table></figure>
+<h3 id="简单test">简单test</h3>
+<p>可以用validation_data</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">output = trainer.predict(tokenized_valid)</span><br><span class="line">res = <span class="built_in">list</span>(<span class="built_in">zip</span>(output.predictions.reshape(-<span class="number">1</span>).<span class="built_in">round</span>(),val_df[<span class="string">&#x27;label&#x27;</span>]))</span><br><span class="line">count = <span class="built_in">len</span>(res)</span><br><span class="line">true = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i, j <span class="keyword">in</span> res:</span><br><span class="line">    <span class="keyword">if</span> i==j:</span><br><span class="line">        true+=<span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(true/count)</span><br><span class="line"><span class="built_in">list</span>(res)</span><br></pre></td></tr></table></figure>
+<p><img src="res_bert.png" /></p>
+<h2 id="生成模型微调策略">生成模型微调策略</h2>
+<p>来源: <a target="_blank" rel="noopener" href="https://www.kaggle.com/code/abdullahmeda/llama-3-8b-instruct-baseline-train">Llama 3 8b Instruct Baseline | Train</a></p>
+<p>然后submission代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gc</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"><span class="keyword">from</span> peft <span class="keyword">import</span> PeftModel</span><br><span class="line"><span class="keyword">from</span> types <span class="keyword">import</span> SimpleNamespace</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer, AutoModelForCausalLM</span><br><span class="line"></span><br><span class="line">torch.backends.cuda.enable_flash_sdp(<span class="literal">False</span>)</span><br><span class="line">torch.backends.cuda.enable_mem_efficient_sdp(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>(<span class="params">args</span>):</span><br><span class="line">    config = SimpleNamespace(</span><br><span class="line">        data_dir = <span class="string">&#x27;/kaggle/input/learning-agency-lab-automated-essay-scoring-2&#x27;</span>,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    model     = AutoModelForCausalLM.from_pretrained(</span><br><span class="line">        args.model_pth,</span><br><span class="line">        torch_dtype=torch.bfloat16,</span><br><span class="line">        device_map=<span class="string">&quot;auto&quot;</span>,</span><br><span class="line">        trust_remote_code=<span class="literal">True</span>,</span><br><span class="line">    )</span><br><span class="line">    model     = PeftModel.from_pretrained(model, args.lora_pth)</span><br><span class="line">    tokenizer = AutoTokenizer.from_pretrained(args.model_pth, padding_side=<span class="string">&#x27;right&#x27;</span>) </span><br><span class="line">    tokenizer.pad_token = tokenizer.eos_token</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">preprocess</span>(<span class="params">sample, text=<span class="literal">False</span>, infer_mode=<span class="literal">False</span>, max_seq=args.max_length, return_tensors=<span class="literal">None</span></span>):</span><br><span class="line">        sys_prompt = <span class="string">&quot;Please read the following essay and assign a score of 1,2,3,4,5,6 where 6 is the best. Output only a single number with no explanation.\n\n&quot;</span></span><br><span class="line">        prompt = sample[<span class="string">&quot;full_text&quot;</span>]</span><br><span class="line">        <span class="keyword">if</span> infer_mode: answer = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">else</span>: answer = <span class="built_in">str</span>(sample[<span class="string">&quot;score&quot;</span>])</span><br><span class="line"></span><br><span class="line">        messages = [</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: sys_prompt + prompt&#125;,</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;assistant&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">f&quot;\n\nThe score is: &quot;</span> + answer&#125;</span><br><span class="line">        ]</span><br><span class="line">        formatted_sample = tokenizer.apply_chat_template(messages, tokenize=<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">if</span> infer_mode: formatted_sample = formatted_sample.replace(<span class="string">&quot;&lt;|eot_id|&gt;&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">        tokenized_sample = tokenizer(formatted_sample, padding=<span class="literal">True</span>, return_tensors=return_tensors, </span><br><span class="line">                                     truncation=<span class="literal">True</span>, add_special_tokens=<span class="literal">False</span>, max_length=max_seq) </span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> return_tensors==<span class="string">&quot;pt&quot;</span>:</span><br><span class="line">            tokenized_sample[<span class="string">&quot;labels&quot;</span>] = tokenized_sample[<span class="string">&quot;input_ids&quot;</span>].clone()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tokenized_sample[<span class="string">&quot;labels&quot;</span>] = tokenized_sample[<span class="string">&quot;input_ids&quot;</span>].copy()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> text: <span class="keyword">return</span> formatted_sample</span><br><span class="line">        <span class="keyword">else</span>: <span class="keyword">return</span> tokenized_sample</span><br><span class="line">    </span><br><span class="line">    df_test = pd.read_csv(<span class="string">f&#x27;<span class="subst">&#123;config.data_dir&#125;</span>/test.csv&#x27;</span>)</span><br><span class="line">    sub     = pd.read_csv(<span class="string">f&#x27;<span class="subst">&#123;config.data_dir&#125;</span>/sample_submission.csv&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    test_preds = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i,row <span class="keyword">in</span> tqdm(df_test.iterrows(), total=<span class="built_in">len</span>(df_test)):</span><br><span class="line"></span><br><span class="line">        tokenized_sample = preprocess(row, infer_mode=<span class="literal">True</span>, max_seq=args.max_length, return_tensors=<span class="string">&quot;pt&quot;</span>)</span><br><span class="line">        generated_ids = model.generate(**tokenized_sample.to(<span class="string">&#x27;cuda&#x27;</span>), max_new_tokens=<span class="number">2</span>,</span><br><span class="line">                                       pad_token_id=tokenizer.eos_token_id, do_sample=<span class="literal">False</span>)</span><br><span class="line">        decoded = tokenizer.batch_decode(generated_ids, skip_special_tokens=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            answer = decoded[<span class="number">0</span>].rsplit(<span class="string">&quot;The score is: &quot;</span>, <span class="number">1</span>)[<span class="number">1</span>]</span><br><span class="line">            test_preds.append( <span class="built_in">int</span>(answer) )</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            test_preds.append( <span class="number">3</span> )</span><br><span class="line">            </span><br><span class="line">    sub.score = test_preds</span><br><span class="line">    sub.score = sub.score.astype(<span class="string">&#x27;int&#x27;</span>)</span><br><span class="line">    sub.to_csv(args.sub_pth, index=<span class="literal">False</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">del</span> model, tokenizer</span><br><span class="line">    torch.cuda.empty_cache(); gc.collect()</span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    parser = argparse.ArgumentParser()</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--model_pth&quot;</span>,  <span class="built_in">type</span>=<span class="built_in">str</span>, required=<span class="literal">True</span>, <span class="built_in">help</span>=<span class="string">&quot;Path to the pretrained model&quot;</span> )</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--lora_pth&quot;</span>,   <span class="built_in">type</span>=<span class="built_in">str</span>, required=<span class="literal">True</span>, <span class="built_in">help</span>=<span class="string">&quot;Path to the PEFT LoRA adapter&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--sub_pth&quot;</span>,    <span class="built_in">type</span>=<span class="built_in">str</span>, required=<span class="literal">True</span>, <span class="built_in">help</span>=<span class="string">&quot;Path to save submission file&quot;</span> )</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--max_length&quot;</span>, <span class="built_in">type</span>=<span class="built_in">int</span>, required=<span class="literal">True</span>, <span class="built_in">help</span>=<span class="string">&quot;Max length of input sequence&quot;</span> )</span><br><span class="line">    args = parser.parse_args()</span><br><span class="line"></span><br><span class="line">    main(args)</span><br></pre></td></tr></table></figure>
+<p>train部分大多数就是设置微调参数, 看submission相关可以发现主要思路就是让模型来回答问题:</p>
+<p><code>Please read the following essay and assign a score of 1,2,3,4,5,6 where 6 is the best. Output only a single number with no explanation.</code></p>
+<p>类似的, 我们应该也可以按之前unsloth微调的策略来做处理, 这份llama3微调最后测试结果是0.773.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#bert"><span class="toc-number">1.</span> <span class="toc-text">bert</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9Apath%E5%B9%B6%E6%9F%A5%E7%9C%8Bhead"><span class="toc-number">1.1.</span> <span class="toc-text">指定path并查看head</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#login-wandb"><span class="toc-number">1.2.</span> <span class="toc-text">login wandb</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#preprocessing"><span class="toc-number">1.3.</span> <span class="toc-text">preprocessing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9Aevaluation"><span class="toc-number">1.4.</span> <span class="toc-text">指定evaluation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#train"><span class="toc-number">1.5.</span> <span class="toc-text">train</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95test"><span class="toc-number">1.6.</span> <span class="toc-text">简单test</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83%E7%AD%96%E7%95%A5"><span class="toc-number">2.</span> <span class="toc-text">生成模型微调策略</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&text=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&title=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&is_video=false&description=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Kaggle-论文打分系统(bert,llama3思路)&body=Check out this article: http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&title=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&title=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&title=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&title=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&name=Kaggle-论文打分系统(bert,llama3思路)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/05/02/Kaggle-%E8%AE%BA%E6%96%87%E6%89%93%E5%88%86%E7%B3%BB%E7%BB%9F-bert-llama3%E6%80%9D%E8%B7%AF/&t=Kaggle-论文打分系统(bert,llama3思路)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
