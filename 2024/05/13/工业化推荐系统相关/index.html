@@ -19,10 +19,16 @@
 <meta property="og:image" content="http://example.com/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/%E5%8F%8D%E8%BD%AC%E5%AE%9E%E9%AA%8C.png">
 <meta property="og:image" content="http://example.com/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/userCF.png">
 <meta property="og:image" content="http://example.com/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/two_tower.png">
+<meta property="og:image" content="http://example.com/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/neg_sample.png">
+<meta property="og:image" content="http://example.com/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/two_tower_mainloss.png">
+<meta property="og:image" content="http://example.com/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/twotower_mainloss_withbias.png">
+<meta property="og:image" content="http://example.com/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/twotower_self.png">
+<meta property="og:image" content="http://example.com/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/two_tower_loss.png">
+<meta property="og:image" content="http://example.com/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/x2abc.png">
 <meta property="og:image" content="http://example.com/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/non_recall.png">
 <meta property="og:image" content="http://example.com/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92.png">
 <meta property="article:published_time" content="2024-05-13T08:16:55.000Z">
-<meta property="article:modified_time" content="2024-05-14T09:45:18.883Z">
+<meta property="article:modified_time" content="2024-05-16T00:22:57.293Z">
 <meta property="article:author" content="blacsheep">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/%E9%9A%8F%E6%9C%BA%E5%88%86%E6%A1%B6.png">
@@ -137,7 +143,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tutorial-reference"><span class="toc-number">2.</span> <span class="toc-text">Tutorial &amp; Reference</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#background"><span class="toc-number">3.</span> <span class="toc-text">Background</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#data%E7%9B%B8%E5%85%B3"><span class="toc-number">3.1.</span> <span class="toc-text">Data相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E6%A0%87%E7%9F%AD%E6%9C%9F%E6%8C%87%E6%A0%87"><span class="toc-number">3.2.</span> <span class="toc-text">指标(短期指标)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%97%E6%9E%81%E6%98%9F%E6%8C%87%E6%A0%87%E9%95%BF%E6%9C%9F%E6%8C%87%E6%A0%87"><span class="toc-number">3.3.</span> <span class="toc-text">北极星指标(长期指标)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">3.4.</span> <span class="toc-text">实验流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ab%E6%B5%8B%E8%AF%95"><span class="toc-number">3.4.1.</span> <span class="toc-text">AB测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E5%88%86%E6%A1%B6"><span class="toc-number">3.4.1.1.</span> <span class="toc-text">随机分桶</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%B1%82%E5%AE%9E%E9%AA%8C"><span class="toc-number">3.4.1.2.</span> <span class="toc-text">分层实验</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#holdout%E6%9C%BA%E5%88%B6"><span class="toc-number">3.4.1.3.</span> <span class="toc-text">Holdout机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E8%BD%AC%E5%AE%9E%E9%AA%8C"><span class="toc-number">3.4.1.4.</span> <span class="toc-text">反转实验</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pipline"><span class="toc-number">4.</span> <span class="toc-text">Pipline</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AC%E5%9B%9E"><span class="toc-number">4.1.</span> <span class="toc-text">召回</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#itemcf"><span class="toc-number">4.1.1.</span> <span class="toc-text">itemCF</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#similarity"><span class="toc-number">4.1.1.1.</span> <span class="toc-text">similarity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cosine-similarity"><span class="toc-number">4.1.1.2.</span> <span class="toc-text">cosine similarity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%B8%9A%E5%8C%96%E4%BD%BF%E7%94%A8"><span class="toc-number">4.1.1.3.</span> <span class="toc-text">工业化使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swing"><span class="toc-number">4.1.2.</span> <span class="toc-text">Swing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#usercf"><span class="toc-number">4.1.3.</span> <span class="toc-text">userCF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E8%A1%A5%E5%85%85not-working"><span class="toc-number">4.1.4.</span> <span class="toc-text">矩阵补充(not working)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%B8%9A%E7%95%8C%E5%81%9A%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%A4%84%E7%90%86"><span class="toc-number">4.1.4.1.</span> <span class="toc-text">工业界做法(复杂度处理)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%A1%94%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.1.5.</span> <span class="toc-text">双塔模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%84"><span class="toc-number">4.1.5.1.</span> <span class="toc-text">结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83"><span class="toc-number">4.1.5.2.</span> <span class="toc-text">训练</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E9%80%82%E5%90%88%E5%8F%AC%E5%9B%9E%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.1.6.</span> <span class="toc-text">不适合召回的模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B2%97%E6%8E%92%E5%92%8C%E7%B2%BE%E6%8E%92"><span class="toc-number">4.2.</span> <span class="toc-text">粗排和精排</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%8E%92"><span class="toc-number">4.3.</span> <span class="toc-text">重排</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tutorial-reference"><span class="toc-number">2.</span> <span class="toc-text">Tutorial &amp; Reference</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#background"><span class="toc-number">3.</span> <span class="toc-text">Background</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#data%E7%9B%B8%E5%85%B3"><span class="toc-number">3.1.</span> <span class="toc-text">Data相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E6%A0%87%E7%9F%AD%E6%9C%9F%E6%8C%87%E6%A0%87"><span class="toc-number">3.2.</span> <span class="toc-text">指标(短期指标)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%97%E6%9E%81%E6%98%9F%E6%8C%87%E6%A0%87%E9%95%BF%E6%9C%9F%E6%8C%87%E6%A0%87"><span class="toc-number">3.3.</span> <span class="toc-text">北极星指标(长期指标)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">3.4.</span> <span class="toc-text">实验流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ab%E6%B5%8B%E8%AF%95"><span class="toc-number">3.4.1.</span> <span class="toc-text">AB测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E5%88%86%E6%A1%B6"><span class="toc-number">3.4.1.1.</span> <span class="toc-text">随机分桶</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%B1%82%E5%AE%9E%E9%AA%8C"><span class="toc-number">3.4.1.2.</span> <span class="toc-text">分层实验</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#holdout%E6%9C%BA%E5%88%B6"><span class="toc-number">3.4.1.3.</span> <span class="toc-text">Holdout机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E8%BD%AC%E5%AE%9E%E9%AA%8C"><span class="toc-number">3.4.1.4.</span> <span class="toc-text">反转实验</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pipline"><span class="toc-number">4.</span> <span class="toc-text">Pipline</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AC%E5%9B%9E"><span class="toc-number">4.1.</span> <span class="toc-text">召回</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#itemcf"><span class="toc-number">4.1.1.</span> <span class="toc-text">itemCF</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#similarity"><span class="toc-number">4.1.1.1.</span> <span class="toc-text">similarity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cosine-similarity"><span class="toc-number">4.1.1.2.</span> <span class="toc-text">cosine similarity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%B8%9A%E5%8C%96%E4%BD%BF%E7%94%A8"><span class="toc-number">4.1.1.3.</span> <span class="toc-text">工业化使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swing"><span class="toc-number">4.1.2.</span> <span class="toc-text">Swing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#usercf"><span class="toc-number">4.1.3.</span> <span class="toc-text">userCF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E8%A1%A5%E5%85%85not-working"><span class="toc-number">4.1.4.</span> <span class="toc-text">矩阵补充(not working)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%B8%9A%E7%95%8C%E5%81%9A%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%A4%84%E7%90%86"><span class="toc-number">4.1.4.1.</span> <span class="toc-text">工业界做法(复杂度处理)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%A1%94%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.1.5.</span> <span class="toc-text">双塔模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%84"><span class="toc-number">4.1.5.1.</span> <span class="toc-text">结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83"><span class="toc-number">4.1.5.2.</span> <span class="toc-text">训练</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A3%E8%B4%9F%E6%A0%B7%E6%9C%AC"><span class="toc-number">4.1.5.3.</span> <span class="toc-text">正负样本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E4%B8%8A%E5%8F%AC%E5%9B%9E"><span class="toc-number">4.1.5.4.</span> <span class="toc-text">线上召回</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E9%87%8F%E6%9B%B4%E6%96%B0%E5%92%8C%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0"><span class="toc-number">4.1.5.5.</span> <span class="toc-text">全量更新和增量更新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-number">4.1.5.6.</span> <span class="toc-text">自监督学习</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#deep-retrieval%E5%AD%97%E8%8A%82"><span class="toc-number">4.1.6.</span> <span class="toc-text">Deep Retrieval(字节)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E5%AF%B9%E8%B7%AF%E5%BE%84%E7%9A%84%E5%85%B4%E8%B6%A3"><span class="toc-number">4.1.6.1.</span> <span class="toc-text">用户对路径的兴趣</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E5%AF%B9%E8%B7%AF%E5%BE%84%E7%9A%84%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%BC%8F"><span class="toc-number">4.1.6.2.</span> <span class="toc-text">用户对路径的学习方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%89%A9%E5%93%81%E8%A1%A8%E5%BE%81"><span class="toc-number">4.1.6.3.</span> <span class="toc-text">学习物品表征</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%8F%AC%E5%9B%9E%E9%80%9A%E9%81%93"><span class="toc-number">4.1.7.</span> <span class="toc-text">其他召回通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E9%80%82%E5%90%88%E5%8F%AC%E5%9B%9E%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.1.8.</span> <span class="toc-text">不适合召回的模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B2%97%E6%8E%92%E5%92%8C%E7%B2%BE%E6%8E%92"><span class="toc-number">4.2.</span> <span class="toc-text">粗排和精排</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%8E%92"><span class="toc-number">4.3.</span> <span class="toc-text">重排</span></a></li></ol></li></ol>
       </div>
     
   </span>
@@ -336,7 +342,7 @@ s(i, j) = \sum_{u \in U_i \cap U_j} \sum_{v \in U_i \cap U_j} \frac{1}{\alpha + 
 <ol type="1">
 <li>只利用了embedding, 其他所有信息都没有使用(比如物品的物品属性, 关键词, 地理位置等, 用户的性别,年龄,感兴趣类别等).<br />
 </li>
-<li>其次, 负样本选择也有问题: 样本曝光之后被点击算正样本是正确的, 但是不点击并不代表是用户不感兴趣, 只能算作score没有正样本高(个人思考, 后续视频还没看完).<br />
+<li>其次, 负样本选择也有问题: 样本曝光之后被点击算正样本是正确的, 但是不点击并不代表是用户不感兴趣, 只能算作score没有真正的正样本高,这种样本其实本身应该被算作正样本, 最起码在召回阶段应该是正样本, 在后面的精排阶段算作负样本是可以的.<br />
 </li>
 <li>训练方法只用了内积, 不如余弦相似度.<br />
 </li>
@@ -372,10 +378,152 @@ s(i, j) = \sum_{u \in U_i \cap U_j} \sum_{v \in U_i \cap U_j} \frac{1}{\alpha + 
 <ol type="1">
 <li>pointwise: 独立看待每个样本, 然后做二分类. 鼓励正样本预测1, 负样本预测-1. 然后样本一般正:负=1:2或者1:3(作者原话:"我也不知道为什么但互联网大厂的人都这么做").<br />
 </li>
-<li>pairwise: 正负样本每一组每一组地看. 基本思路是鼓励预测的正样本相似度大于负样本相似度; 如果cos(a, b+) - cos(a, b-) &gt; threshold, 则我们认为没有损失. 损失函数可以用triplet hinge loss: <code>$ L(a, b+, b-) = max&#123;0, cos(a, b-) + threshold - cos(a, b+)&#125; $</code>, 或者换成logistic也可以, 反正能正确反应正负样本关系即可.<br />
+<li>pairwise: 正负样本每一组每一组地看. 基本思路是鼓励预测的正样本相似度大于负样本相似度; 如果cos(a, b+) - cos(a, b-) &gt; threshold, 则我们认为没有损失. 损失函数可以用triplet hinge loss: <code>$ L(a, b+, b-) = max\&#123;0, cos(a, b-) + threshold - cos(a, b+)\&#125; $</code>, 或者换成logistic也可以, 反正能正确反应正负样本关系即可.<br />
 </li>
 <li>listwise: 取一个正样本和多个负样本, 然后用softmax和crossentropy, 目标是softmax之后的正样本趋近于1, 而负样本趋近于0.</li>
 </ol>
+<h4 id="正负样本">正负样本</h4>
+<p><strong>正样本</strong>: 曝光且有点击的用户物品二元组.</p>
+<p>问题: 少量物品会占大多数点击,导致正样本大多数是热门物品.</p>
+<p>解决方案: 过采样冷门物品和降采样热门物品.</p>
+<ul>
+<li>过采样(up-sampling): 一个样本出现多次.<br />
+</li>
+<li>降采样(down-sampling): 一些样本被抛弃.</li>
+</ul>
+<p><strong>负样本</strong>: 主要有三个阶段</p>
+<ul>
+<li>召回没被选到的 -&gt; 简单负样本<br />
+</li>
+<li>粗排和精排没有选到的 -&gt; 困难负样本<br />
+</li>
+<li>参加重排但是用户没有点击的 -&gt; 召回阶段应该被算作正样本, 排序阶段算负样本</li>
+</ul>
+<p><strong>简单负样本</strong>:<br />
+未被召回的物品大概率是用户不感兴趣的, 而未被召回的物品约等于全体物品, 所以可以直接从全体物品抽样做负样本.</p>
+<p>但是如果<strong>均匀抽样</strong>, 因为大部分物品都是冷门物品, 那么相当于冷门物品更容易被当作负样本, 而正样本大多数是热门物品, 这样对冷门物品不公平.</p>
+<p>所以一般采用<strong>非均匀抽样</strong>, 目的是<strong>打压热门物品</strong>, 负样本抽样概率和热门程度相关, 比如可以用采样概率正比于点击率的0.75次方来表示.</p>
+<p>但这种方式在batch内采样可能会出现问题: 一个batch提供的是用户和物品的二元组, 用户点击了其中一个物品而没有点击其他物品, 从而保证有n*(n-1)个简单负样本. 然而一个batch中一个物品的出现概率是正比于其点击次数的, 物品成为负样本的概率本应该正比于点击率的0.75次方, 但是这里却变成了点击率的一次方: 这导致了对热门物品惩罚过狠, 会造成偏差.</p>
+<p>小红书采用了<a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/3298689.3346996">Sampling-bias-corrected neural modeling for large corpus item recommendations</a>里的策略来做出调整, 具体做法如下:</p>
+<ul>
+<li>物品被抽样到的概率 <code>$ p_i \propto 点击次数 $</code>.<br />
+</li>
+<li>一般用于预估用户兴趣采用的是 <code>$ cos(a, b_i) $</code>.<br />
+</li>
+<li>做训练的时候应该调整为 <code>$ cos(a, b_i) - logp_i $</code> 从而避免对热门物品的过分打压, 而等线上做召回的时候还是用 <code>$ cos(a, b_i) $</code>.</li>
+</ul>
+<p><strong>困难负样本</strong>:</p>
+<p>召回阶段淘汰的物品(全体物品, 即简单负样本): 容易区分<br />
+被粗排淘汰的物品(困难负样本): 比较难区分<br />
+精排靠后的物品(困难负样本): 非常难区分</p>
+<p><strong>工业界做法</strong>:</p>
+<p>混合几种负样本, 50%简单负样本, 50%是困难负样本</p>
+<p><strong>为什么曝光为点击不可以用作负样本</strong></p>
+<p><img src="neg_sample.png" /></p>
+<h4 id="线上召回">线上召回</h4>
+<p>双塔模型首先是特征提取部分, 这里分为用户特征和物品特征两部分.</p>
+<p>其中物品特征由于计算量大, 所以我们必须选择离线计算存储的方式: 首先模型进行训练, 训练完毕之后我们把物品的特征向量存进向量数据库, 然后向量数据库建索引以方便查找. 之后线上有需求的时候直接通过索引取出物品特征.</p>
+<p>而用户特征我们可以选择离线存储然后索引获取; 也可以选择线上直接算一个. 因为用户向量只有一个, 所以计算量不大, 线上实时计算是可以接受的. 这样做的好处是用户的兴趣随时变化的话我们也能够检测得到, 推荐效果会更好.</p>
+<h4 id="全量更新和增量更新">全量更新和增量更新</h4>
+<p>全量更新: 指的是每天一次, 在昨天的模型基础之上对昨天的新数据进行重新学习(类似LLM的全调参)</p>
+<p>增量更新: 用户的兴趣随时会发生改变, 那么就需要实时收集线上数据做流式处理, 生成tfrecord然后对模型做增量更新(指学习embedding而不做神经网络的学习). 最后发布用户的id embedding供用户塔线上计算.</p>
+<p><strong>只做增量不做全量更新会导致偏差</strong>: 短时间的流式信息是没有被shuffle的, 训练效果不如全量更新时shuffle来的效果好, 其次我个人理解是全量更新除此之外还会保持神经网络对embedding层的适应, 从而使模型效果更好.</p>
+<h4 id="自监督学习">自监督学习</h4>
+<p>解决问题: 推荐系统的头部效应-&gt;即少部分物品占大部分点击, 大部分物品展少量点击-&gt;高点击物品表征学得好,低点击物品表征学得差.</p>
+<p>带自监督学习的双塔模型基本模型还是双塔模型, 不过loss由两部分构成: 一部分是mainLoss, 另一部分是selfloss(自监督loss).</p>
+<p>第一部分的loss是crossentropy, 如下图. 其中数据取自batch, 每个用户对应一个item, 即1对n的listwise learning.</p>
+<p><img src="two_tower_mainloss.png" /></p>
+<p>上面这个损失函数还有点小问题, 即我们前面提到过的纠偏, 训练的时候 <code>$ cos(a_i, b_j) $</code> 得换成 <code>$ cos(a_i, b_j) - logp_j $</code>.</p>
+<p><img src="twotower_mainloss_withbias.png" /></p>
+<p>第二部分是自监督学习, 具体结构如下图</p>
+<p><img src="twotower_self.png" /></p>
+<p>具体想法就是对物品做特征变换,物品i可以生成特征bi'和bi'',物品j可以生成特征bj'和bj''.</p>
+<p>然后我们的目标是</p>
+<ol type="1">
+<li>让物品i和物品j的特征差异尽量大.<br />
+</li>
+<li>而单个物品i经过不同特征变换的输出特征应该尽量相似.</li>
+</ol>
+<p><strong>特征变换种类</strong>:</p>
+<ol type="1">
+<li>random mask: 随机挑选一些离散特征, 直接对其mask, 比如类目本来是{数码,摄影}, mask之后变成{default}.<br />
+</li>
+<li>dropout: 如果物品是多值离散特征, 我们随机丢弃其中50%的值, 比如{数码,摄影}, dropout之后变成{数码}.<br />
+</li>
+<li>互补特征: 相当于把特征split为两份, 两份互不重叠.<br />
+</li>
+<li>mask关联特征: mask掉一系列关联性强的特征.</li>
+</ol>
+<p>对于关联特征这个仔细说一下: 我们取p(u)为u特征出现的概率, p(v)为v特征出现的概率, 那么我们可以用互信息(mutual information)来表示特征之间的关联.</p>
+<p><span class="math display">\[
+MI(U,V) = \sum_{u \in U} \sum_{v \in V} p(u,v) \cdot log\frac{p(u,v)}{p(u)p(v)}
+\]</span></p>
+<p><strong>做法</strong>: 假设有k个特征, 那么就可以构成k * k的特征矩阵, 然后我们随机选一个种子, 找到与种子最相关的k/2种特征, mask掉最相关的k/2, 然后保留剩下k/2.</p>
+<p><strong>好处</strong>: 比其他的特征变换效果更好</p>
+<p><strong>坏处</strong>: 方法复杂, 实现难度大, 不容易维护.</p>
+<p>最终损失函数</p>
+<p><img src="two_tower_loss.png" /></p>
+<h3 id="deep-retrieval字节">Deep Retrieval(字节)</h3>
+<p>类似阿里的TDM. 双塔模型把物品表示为向量, 而deep retrieval把物品表示为路径, 然后线上查找用户最匹配的路径.</p>
+<p>整体步骤如下:</p>
+<ol type="1">
+<li>给定用户特征x, 用神经网络预测用户对路径path = [a, b, c]的兴趣, 分数记为 p(path | x).<br />
+</li>
+<li>用beam search来寻找分数p(path | x)最高的s条path.<br />
+</li>
+<li>利用索引 path -&gt; List_item来召回路径上的n个物品.<br />
+</li>
+<li>对返回的最多s*n个物品做初步排序, 然后返回分数最高的若干物品.</li>
+</ol>
+<h4 id="用户对路径的兴趣">用户对路径的兴趣</h4>
+<p>假设路径为path = [a, b, c], 用户特征为x. 那么:</p>
+<ul>
+<li>给定x, 用户对节点a的兴趣为p1(a | x)<br />
+</li>
+<li>给定x,a, 用户对节点b的兴趣为p2(b | a;x)<br />
+</li>
+<li>给定x,a,b, 用户对节点c的兴趣为p3(c | a,b;x)</li>
+</ul>
+<p>最终用户对path = [a, b, c]的兴趣为:<br />
+p(a, b, c|x) = p1(a | x) * p2(b | a;x) * p3(c | a,b;x)</p>
+<p><img src="x2abc.png" /></p>
+<p>注意图中神经网络是不同的神经网络, 不共享参数.</p>
+<h4 id="用户对路径的学习方式">用户对路径的学习方式</h4>
+<p>首先这里为了让模型学到用户和路径的关系, 我们样本层面只用到了正样本, 即 click(user, item) = 1. 然后使用下面的思路训练神经网络</p>
+<ul>
+<li>假设物品可以表征为J条路径:[a1, a2, a3], ... [aj, bj, cj].<br />
+</li>
+<li>用户的兴趣为 p(a, b, c|x) = p1(a | x) * p2(b | a;x) * p3(c | a,b;x)<br />
+</li>
+<li>如果用户点击了物品说明用户对物品感兴趣<br />
+</li>
+<li>那么就存在 <code>$ \sum_&#123;j=1&#125;^&#123;J&#125; p(a_j, b_j, c_j | x) $</code> 尽可能大.<br />
+</li>
+<li>所以损失函数可以用 <code>$ loss = -log(\sum_&#123;j=1&#125;^&#123;J&#125; p(a_j, b_j, c_j | x)) $</code>.</li>
+</ul>
+<h4 id="学习物品表征">学习物品表征</h4>
+<p>前面说到用户的兴趣为<code>$ p(a, b, c|x) = p_1(a | x) \times p_2(b | a;x) \times p_3(c | a,b;x) $</code>, 我们把这个表示为 <code>$ p(path | user) $</code>.</p>
+<p>那么item和path的相关性就可以表示为:</p>
+<p><span class="math display">\[
+score(item, path) = \sum_{user}p(path|user) \times click(user, item)
+\]</span></p>
+<p>前面为用户对路径的兴趣, 后面为用户是否点击了物品. 然后我们依据score来选出J条路径作为item的表征.</p>
+<p>即我们通过将user作为中介, 尝试获得item的路径表征.</p>
+<p><strong>loss</strong>:<br />
+即然选出了J条路径 <code>$ \Pi = \&#123;path_1 ... path_j\&#125; $</code>来作为物品表征.</p>
+<p>那么损失函数就可以写成</p>
+<p><span class="math display">\[
+loss(item, \Pi) = - log(\sum_{j=1}^J score(item, path_j))
+\]</span></p>
+<p>即路径与物品越相关, score就越大, loss就越小.</p>
+<p><strong>regularization</strong>:</p>
+<p>为了避免过多物品集中在一条path的情况, 我们加上正则项. <span class="math display">\[
+reg(path_j) = (number\,of\,items\,on\,path_j)^4.
+\]</span></p>
+<h3 id="其他召回通道">其他召回通道</h3>
+<p><strong>地理位置召回</strong>: GeoHash召回, 同城召回.</p>
+<p><strong>作者召回</strong>: 关注的作者, 有交互的作者, 相似的作者.</p>
+<p><strong>缓存召回</strong>: 设置缓存,复用前面做精排的结果. 缓存机制: 一旦成功曝光就移出缓存;超出缓存大小移除最先进入的;最多召回10次,达到后退场;最多保存3天,满3天退场.</p>
 <h3 id="不适合召回的模型"><strong>不适合召回的模型</strong></h3>
 <p>召回的目标是大量数据, 所以需求遍历的模型就不适合召回.</p>
 <p><img src="non_recall.png" /></p>
@@ -418,7 +566,7 @@ s(i, j) = \sum_{u \in U_i \cap U_j} \sum_{v \in U_i \cap U_j} \frac{1}{\alpha + 
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tutorial-reference"><span class="toc-number">2.</span> <span class="toc-text">Tutorial &amp; Reference</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#background"><span class="toc-number">3.</span> <span class="toc-text">Background</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#data%E7%9B%B8%E5%85%B3"><span class="toc-number">3.1.</span> <span class="toc-text">Data相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E6%A0%87%E7%9F%AD%E6%9C%9F%E6%8C%87%E6%A0%87"><span class="toc-number">3.2.</span> <span class="toc-text">指标(短期指标)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%97%E6%9E%81%E6%98%9F%E6%8C%87%E6%A0%87%E9%95%BF%E6%9C%9F%E6%8C%87%E6%A0%87"><span class="toc-number">3.3.</span> <span class="toc-text">北极星指标(长期指标)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">3.4.</span> <span class="toc-text">实验流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ab%E6%B5%8B%E8%AF%95"><span class="toc-number">3.4.1.</span> <span class="toc-text">AB测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E5%88%86%E6%A1%B6"><span class="toc-number">3.4.1.1.</span> <span class="toc-text">随机分桶</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%B1%82%E5%AE%9E%E9%AA%8C"><span class="toc-number">3.4.1.2.</span> <span class="toc-text">分层实验</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#holdout%E6%9C%BA%E5%88%B6"><span class="toc-number">3.4.1.3.</span> <span class="toc-text">Holdout机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E8%BD%AC%E5%AE%9E%E9%AA%8C"><span class="toc-number">3.4.1.4.</span> <span class="toc-text">反转实验</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pipline"><span class="toc-number">4.</span> <span class="toc-text">Pipline</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AC%E5%9B%9E"><span class="toc-number">4.1.</span> <span class="toc-text">召回</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#itemcf"><span class="toc-number">4.1.1.</span> <span class="toc-text">itemCF</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#similarity"><span class="toc-number">4.1.1.1.</span> <span class="toc-text">similarity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cosine-similarity"><span class="toc-number">4.1.1.2.</span> <span class="toc-text">cosine similarity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%B8%9A%E5%8C%96%E4%BD%BF%E7%94%A8"><span class="toc-number">4.1.1.3.</span> <span class="toc-text">工业化使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swing"><span class="toc-number">4.1.2.</span> <span class="toc-text">Swing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#usercf"><span class="toc-number">4.1.3.</span> <span class="toc-text">userCF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E8%A1%A5%E5%85%85not-working"><span class="toc-number">4.1.4.</span> <span class="toc-text">矩阵补充(not working)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%B8%9A%E7%95%8C%E5%81%9A%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%A4%84%E7%90%86"><span class="toc-number">4.1.4.1.</span> <span class="toc-text">工业界做法(复杂度处理)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%A1%94%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.1.5.</span> <span class="toc-text">双塔模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%84"><span class="toc-number">4.1.5.1.</span> <span class="toc-text">结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83"><span class="toc-number">4.1.5.2.</span> <span class="toc-text">训练</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E9%80%82%E5%90%88%E5%8F%AC%E5%9B%9E%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.1.6.</span> <span class="toc-text">不适合召回的模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B2%97%E6%8E%92%E5%92%8C%E7%B2%BE%E6%8E%92"><span class="toc-number">4.2.</span> <span class="toc-text">粗排和精排</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%8E%92"><span class="toc-number">4.3.</span> <span class="toc-text">重排</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tutorial-reference"><span class="toc-number">2.</span> <span class="toc-text">Tutorial &amp; Reference</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#background"><span class="toc-number">3.</span> <span class="toc-text">Background</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#data%E7%9B%B8%E5%85%B3"><span class="toc-number">3.1.</span> <span class="toc-text">Data相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E6%A0%87%E7%9F%AD%E6%9C%9F%E6%8C%87%E6%A0%87"><span class="toc-number">3.2.</span> <span class="toc-text">指标(短期指标)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%97%E6%9E%81%E6%98%9F%E6%8C%87%E6%A0%87%E9%95%BF%E6%9C%9F%E6%8C%87%E6%A0%87"><span class="toc-number">3.3.</span> <span class="toc-text">北极星指标(长期指标)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">3.4.</span> <span class="toc-text">实验流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ab%E6%B5%8B%E8%AF%95"><span class="toc-number">3.4.1.</span> <span class="toc-text">AB测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E5%88%86%E6%A1%B6"><span class="toc-number">3.4.1.1.</span> <span class="toc-text">随机分桶</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%B1%82%E5%AE%9E%E9%AA%8C"><span class="toc-number">3.4.1.2.</span> <span class="toc-text">分层实验</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#holdout%E6%9C%BA%E5%88%B6"><span class="toc-number">3.4.1.3.</span> <span class="toc-text">Holdout机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E8%BD%AC%E5%AE%9E%E9%AA%8C"><span class="toc-number">3.4.1.4.</span> <span class="toc-text">反转实验</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pipline"><span class="toc-number">4.</span> <span class="toc-text">Pipline</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AC%E5%9B%9E"><span class="toc-number">4.1.</span> <span class="toc-text">召回</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#itemcf"><span class="toc-number">4.1.1.</span> <span class="toc-text">itemCF</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#similarity"><span class="toc-number">4.1.1.1.</span> <span class="toc-text">similarity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cosine-similarity"><span class="toc-number">4.1.1.2.</span> <span class="toc-text">cosine similarity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%B8%9A%E5%8C%96%E4%BD%BF%E7%94%A8"><span class="toc-number">4.1.1.3.</span> <span class="toc-text">工业化使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swing"><span class="toc-number">4.1.2.</span> <span class="toc-text">Swing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#usercf"><span class="toc-number">4.1.3.</span> <span class="toc-text">userCF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E8%A1%A5%E5%85%85not-working"><span class="toc-number">4.1.4.</span> <span class="toc-text">矩阵补充(not working)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%B8%9A%E7%95%8C%E5%81%9A%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%A4%84%E7%90%86"><span class="toc-number">4.1.4.1.</span> <span class="toc-text">工业界做法(复杂度处理)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%A1%94%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.1.5.</span> <span class="toc-text">双塔模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%84"><span class="toc-number">4.1.5.1.</span> <span class="toc-text">结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83"><span class="toc-number">4.1.5.2.</span> <span class="toc-text">训练</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A3%E8%B4%9F%E6%A0%B7%E6%9C%AC"><span class="toc-number">4.1.5.3.</span> <span class="toc-text">正负样本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E4%B8%8A%E5%8F%AC%E5%9B%9E"><span class="toc-number">4.1.5.4.</span> <span class="toc-text">线上召回</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E9%87%8F%E6%9B%B4%E6%96%B0%E5%92%8C%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0"><span class="toc-number">4.1.5.5.</span> <span class="toc-text">全量更新和增量更新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-number">4.1.5.6.</span> <span class="toc-text">自监督学习</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#deep-retrieval%E5%AD%97%E8%8A%82"><span class="toc-number">4.1.6.</span> <span class="toc-text">Deep Retrieval(字节)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E5%AF%B9%E8%B7%AF%E5%BE%84%E7%9A%84%E5%85%B4%E8%B6%A3"><span class="toc-number">4.1.6.1.</span> <span class="toc-text">用户对路径的兴趣</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E5%AF%B9%E8%B7%AF%E5%BE%84%E7%9A%84%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%BC%8F"><span class="toc-number">4.1.6.2.</span> <span class="toc-text">用户对路径的学习方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%89%A9%E5%93%81%E8%A1%A8%E5%BE%81"><span class="toc-number">4.1.6.3.</span> <span class="toc-text">学习物品表征</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%8F%AC%E5%9B%9E%E9%80%9A%E9%81%93"><span class="toc-number">4.1.7.</span> <span class="toc-text">其他召回通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E9%80%82%E5%90%88%E5%8F%AC%E5%9B%9E%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.1.8.</span> <span class="toc-text">不适合召回的模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B2%97%E6%8E%92%E5%92%8C%E7%B2%BE%E6%8E%92"><span class="toc-number">4.2.</span> <span class="toc-text">粗排和精排</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%8E%92"><span class="toc-number">4.3.</span> <span class="toc-text">重排</span></a></li></ol></li></ol>
       </div>
     
 
