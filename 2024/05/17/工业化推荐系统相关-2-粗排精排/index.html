@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="粗排和精排 很相似, 但是精排模型更大, 特征更多. 输入用户特征, 物品特征以及统计特征, 模型预测并输出相关指标, 最终我们对输出指标打分, 这个分数就作为最终排序分数. 回忆一下指标:  点击率(CTR): 点击次数 &#x2F; 曝光次数  点赞率: 点赞次数 &#x2F; 点击次数  收藏率: 收藏次数 &#x2F; 点击次数  转发率: 转发次数 &#x2F; 点击次数   我们首先对各种指标进行预测, 然后融合这些预估分数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工业化推荐系统相关(2)-粗排精排">
+<meta property="og:url" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="粗排和精排 很相似, 但是精排模型更大, 特征更多. 输入用户特征, 物品特征以及统计特征, 模型预测并输出相关指标, 最终我们对输出指标打分, 这个分数就作为最终排序分数. 回忆一下指标:  点击率(CTR): 点击次数 &#x2F; 曝光次数  点赞率: 点赞次数 &#x2F; 点击次数  收藏率: 收藏次数 &#x2F; 点击次数  转发率: 转发次数 &#x2F; 点击次数   我们首先对各种指标进行预测, 然后融合这些预估分数">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92.png">
+<meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/%E5%A4%9A%E7%9B%AE%E6%A0%87%E6%A8%A1%E5%9E%8B.png">
+<meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/MMoE_first.png">
+<meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/MMoE_second.png">
+<meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/%E8%A7%86%E9%A2%91%E5%BB%BA%E6%A8%A1.png">
+<meta property="article:published_time" content="2024-05-17T12:41:35.000Z">
+<meta property="article:modified_time" content="2024-05-17T15:38:25.419Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>工业化推荐系统相关(2)-粗排精排</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/05/13/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&text=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&title=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&is_video=false&description=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=工业化推荐系统相关(2)-粗排精排&body=Check out this article: http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&title=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&title=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&title=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&title=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&name=工业化推荐系统相关(2)-粗排精排&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&t=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B2%97%E6%8E%92%E5%92%8C%E7%B2%BE%E6%8E%92"><span class="toc-number">1.</span> <span class="toc-text">粗排和精排</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%9B%AE%E6%A0%87%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">多目标模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82"><span class="toc-number">1.1.1.</span> <span class="toc-text">模型细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E7%9A%84%E5%9B%B0%E9%9A%BE-%E7%B1%BB%E5%88%AB%E4%B8%8D%E5%B9%B3%E8%A1%A1"><span class="toc-number">1.1.3.</span> <span class="toc-text">训练的困难-类别不平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%8D%E9%87%87%E6%A0%B7%E6%A0%A1%E5%87%86"><span class="toc-number">1.1.4.</span> <span class="toc-text">降采样校准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mmoemulti-gate-mixture-of-experts"><span class="toc-number">1.2.</span> <span class="toc-text">MMoE(Multi-gate Mixture-of-Experts)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.1.</span> <span class="toc-text">存在问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E4%BC%B0%E5%88%86%E6%95%B0%E8%9E%8D%E5%90%88"><span class="toc-number">1.3.</span> <span class="toc-text">预估分数融合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%BB%BA%E6%A8%A1"><span class="toc-number">1.4.</span> <span class="toc-text">视频播放建模</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%95%BF"><span class="toc-number">1.4.1.</span> <span class="toc-text">时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%92%AD"><span class="toc-number">1.4.2.</span> <span class="toc-text">完播</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#todo"><span class="toc-number">1.5.</span> <span class="toc-text">TODO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%8E%92"><span class="toc-number">1.6.</span> <span class="toc-text">重排</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        工业化推荐系统相关(2)-粗排精排
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-05-17T12:41:35.000Z" class="dt-published" itemprop="datePublished">2024-05-17</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/ML-Recommender-System/">ML Recommender System</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="粗排和精排">粗排和精排</h1>
+<p>很相似, 但是精排模型更大, 特征更多.</p>
+<p>输入用户特征, 物品特征以及统计特征, 模型预测并输出相关指标, 最终我们对输出指标打分, 这个分数就作为最终排序分数.</p>
+<p>回忆一下指标:</p>
+<ul>
+<li>点击率(CTR): 点击次数 / 曝光次数<br />
+</li>
+<li>点赞率: 点赞次数 / 点击次数<br />
+</li>
+<li>收藏率: 收藏次数 / 点击次数<br />
+</li>
+<li>转发率: 转发次数 / 点击次数</li>
+</ul>
+<p><img src="粗排精排.png" /></p>
+<p>我们首先对各种指标进行预测, 然后融合这些预估分数(比如加权), 然后对结果做截断和排序.</p>
+<h2 id="多目标模型">多目标模型</h2>
+<h3 id="模型细节">模型细节</h3>
+<p>更加详细一点的模型细节:</p>
+<p><img src="多目标模型.png" /></p>
+<h3 id="损失函数">损失函数</h3>
+<p>训练的时候用的交叉熵做损失函数. 比如点击率预测为p1, 目标为y1.</p>
+<p><span class="math display">\[
+CrossEntropy(y_1, p_1) = - (y_1 \cdot lnp_1 + (1 - y_1) \cdot ln(1 - p_1))
+\]</span></p>
+<p>然后我们做加权</p>
+<p><span class="math display">\[
+Loss = \sum_{i=1}^4 \alpha_i \cdot CrossEntropy(y_i, p_i)
+\]</span></p>
+<h3 id="训练的困难-类别不平衡">训练的困难-类别不平衡</h3>
+<p>困难: 每100次曝光, 我们可能有10次点击, 90次未点击; 每100次点击, 我们可能有10次收藏, 90次未收藏.</p>
+<p>解决方案: 我们可以做down-sampling, 保留一部分负样本并舍弃其他负样本, 从而让正负样本更平衡, 同时还能节省计算.</p>
+<h3 id="降采样校准">降采样校准</h3>
+<p>但是这样又会有问题, 我们对负样本做downsampling会导致模型对点击率有高估. 所以这里我们还得做校准.</p>
+<p>假设我们对负样本降采样, 使用 <code>$ \alpha n_&#123;-&#125;$</code> 个负样本, 其中 <code>$ \alpha \in (0, 1) $</code> 是采样率.</p>
+<p>那么我们会有:</p>
+<p><span class="math display">\[
+真实点击率 p_{true} = \frac{n_{+}}{n_{+}+n_{-}}, 预估点击率 p_{pred} = \frac{n_{+}}{n_{+}+ \alpha \cdot n_{-}}\\
+=&gt; p_{true} = \frac{\alpha \cdot p_{pred}}{(1-p_{pred}) + \alpha \cdot p_{pred}}
+\]</span></p>
+<h2 id="mmoemulti-gate-mixture-of-experts">MMoE(Multi-gate Mixture-of-Experts)</h2>
+<p>说人话就是输入特征输出<strong>n个expert向量</strong>, 然后生成<strong>指标数量个权重</strong></p>
+<p><img src="MMoE_first.png" /></p>
+<p>这个图里面就是3个expert以及2个指标的例子,然后上层通过权重对expert做加权然后再丢进神经网络预测指标. expert数量是超参数, 需要调.</p>
+<p><img src="MMoE_second.png" /></p>
+<h3 id="存在问题">存在问题</h3>
+<p><strong>polarize</strong>: softmax输出单值接近1, 而其他值接近0.</p>
+<p>这种情况下可能某个指标的预测只用到了一个expert, 而其他的expert就没有派上用场.</p>
+<p><strong>解决方案</strong>: 对softmax的输出用dropout, 如果发生了极化现象且dropout的值恰好为单值1, 那么模型的预测效果就会很差, 这样一来模型就会尽力避免极化.</p>
+<h2 id="预估分数融合">预估分数融合</h2>
+<p>前面的模型可以输出各种分数, 但是我们还需要对各种分数进行融合才能获取到最终的排序, 这里有很多不同的加权方式.</p>
+<p><strong>最简单的直接加权</strong>: <code>$ p_&#123;click&#125; + w_1 \cdot p_&#123;like&#125; + w_2 \cdot p_&#123;collect&#125; ... $</code></p>
+<p><strong>点击率乘其他加权</strong>: <code>$ p_&#123;click&#125; \cdot(1 + w_1 \cdot p_&#123;like&#125; + w_2 \cdot p_&#123;collect&#125; ... )$</code></p>
+<p>这里 <code>$ p_&#123;click&#125; \cdot p_&#123;like&#125; $</code> 其实就是 <code>$ \frac&#123;n_&#123;点击数量&#125;&#125;&#123;n_&#123;曝光数量&#125;&#125; \cdot \frac&#123;n_&#123;点赞数量&#125;&#125;&#123;n_&#123;点击数量&#125;&#125; $</code> , 最终代表的就是曝光后点赞的数量.</p>
+<p><strong>海外某短视频app的融分方式</strong>: <code>$ (1+w_1 \cdot p_&#123;time&#125;)^&#123;a_1&#125; \cdot (1+w_2 \cdot p_&#123;like&#125;)^&#123;a_2&#125; $</code></p>
+<p><strong>国内某视频app的融分方式</strong>: 假设预估时长为 <code>$ p_&#123;time&#125; $</code>, 同时假设其排名为 <code>$ r_&#123;time&#125; $</code>, 那么其得分为 <code>$ \frac&#123;1&#125;&#123;r_&#123;time&#125;^&#123;a&#125; + b&#125; $</code></p>
+<p>最终融合分数: <code>$ \frac&#123;1&#125;&#123;r_&#123;time&#125;^&#123;a_1&#125; + \beta_1&#125; + \frac&#123;1&#125;&#123;r_&#123;click&#125;^&#123;a_2&#125; + \beta_2&#125; + \frac&#123;1&#125;&#123;r_&#123;like&#125;^&#123;a_3&#125; + \beta_3&#125; + ...$</code></p>
+<p><strong>国内某电商app的融分方式</strong>:</p>
+<p>流程: 曝光, 点击, 加购物车, 付款.</p>
+<p>模型估计: <code>$ p_&#123;click&#125; $</code>, <code>$ p_&#123;cart&#125; $</code>, <code>$ p_&#123;pay&#125; $</code></p>
+<p>分数: <code>$ p_&#123;click&#125;^&#123;a_1&#125; \times p_&#123;cart&#125;^&#123;a_2&#125; \times p_&#123;pay&#125;^&#123;a_3&#125; \times price^&#123;a_4&#125;$</code></p>
+<h2 id="视频播放建模">视频播放建模</h2>
+<h3 id="时长">时长</h3>
+<p>区别于图文, 视频类型还涉及到播放时长和完播率.</p>
+<p>然而直接用regression建模播放时长效果并不好, youtube有一篇论文专门解决这个. 我并没有直接去看原论文,这里就只记录作者介绍的方法.</p>
+<p><img src="视频建模.png" /></p>
+<p>这里我们对输出做sigmoid然后对y_true也做1 / 1+y的处理.</p>
+<p>训练的时候我们用交叉熵, 这样最后我们只需要对输出取exp(z)即可表示时长.</p>
+<h3 id="完播">完播</h3>
+<p>两种建模方式</p>
+<p><strong>回归</strong>: 假设视频10分钟, 用户看了4分钟, 那么y=0.4. 我们通过预测播放率来拟合y, <code>$ loss = y \cdot logp + (1-y) \cdot log(1-p) $</code> .</p>
+<p><strong>二分类</strong>: 比如我们将完播80%作为标准, 大于8分钟为正样本, 小于8分钟为负样本. 然后我们来预测模型为正样本的概率.</p>
+<p>然而不管怎么样, 我们都不可以直接把输出的完播率用到融分公式. 因为视频的长度越长相对的完播率就会越低, 所以我们必须先用视频时长来拟合完播率, 最后再用预估完播率做调整.</p>
+<p><span class="math display">\[
+p_{finish} = \frac{预估完播率}{f视频长度}
+\]</span></p>
+<p>最后我们用 <code>$ p_&#123;finish&#125; $</code> 来加入融分公式.</p>
+<h2 id="todo">TODO</h2>
+<h2 id="重排">重排</h2>
+<p>多样性抽样: MRR, DPP</p>
+<p>依据为精排分数以及内容多样性, 抽样之后规则打散, 搭配运营策略呈现.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B2%97%E6%8E%92%E5%92%8C%E7%B2%BE%E6%8E%92"><span class="toc-number">1.</span> <span class="toc-text">粗排和精排</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%9B%AE%E6%A0%87%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">多目标模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82"><span class="toc-number">1.1.1.</span> <span class="toc-text">模型细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E7%9A%84%E5%9B%B0%E9%9A%BE-%E7%B1%BB%E5%88%AB%E4%B8%8D%E5%B9%B3%E8%A1%A1"><span class="toc-number">1.1.3.</span> <span class="toc-text">训练的困难-类别不平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%8D%E9%87%87%E6%A0%B7%E6%A0%A1%E5%87%86"><span class="toc-number">1.1.4.</span> <span class="toc-text">降采样校准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mmoemulti-gate-mixture-of-experts"><span class="toc-number">1.2.</span> <span class="toc-text">MMoE(Multi-gate Mixture-of-Experts)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.1.</span> <span class="toc-text">存在问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E4%BC%B0%E5%88%86%E6%95%B0%E8%9E%8D%E5%90%88"><span class="toc-number">1.3.</span> <span class="toc-text">预估分数融合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%BB%BA%E6%A8%A1"><span class="toc-number">1.4.</span> <span class="toc-text">视频播放建模</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%95%BF"><span class="toc-number">1.4.1.</span> <span class="toc-text">时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%92%AD"><span class="toc-number">1.4.2.</span> <span class="toc-text">完播</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#todo"><span class="toc-number">1.5.</span> <span class="toc-text">TODO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%8E%92"><span class="toc-number">1.6.</span> <span class="toc-text">重排</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&text=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&title=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&is_video=false&description=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=工业化推荐系统相关(2)-粗排精排&body=Check out this article: http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&title=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&title=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&title=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&title=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&name=工业化推荐系统相关(2)-粗排精排&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/&t=工业化推荐系统相关(2)-粗排精排"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
