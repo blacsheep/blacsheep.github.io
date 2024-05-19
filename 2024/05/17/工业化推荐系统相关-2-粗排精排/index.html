@@ -14,12 +14,19 @@
 <meta property="og:description" content="粗排和精排 很相似, 但是精排模型更大, 特征更多. 输入用户特征, 物品特征以及统计特征, 模型预测并输出相关指标, 最终我们对输出指标打分, 这个分数就作为最终排序分数. 回忆一下指标:  点击率(CTR): 点击次数 &#x2F; 曝光次数  点赞率: 点赞次数 &#x2F; 点击次数  收藏率: 收藏次数 &#x2F; 点击次数  转发率: 转发次数 &#x2F; 点击次数   我们首先对各种指标进行预测, 然后融合这些预估分数">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92.png">
+<meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/pipline.png">
 <meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/%E5%A4%9A%E7%9B%AE%E6%A0%87%E6%A8%A1%E5%9E%8B.png">
 <meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/MMoE_first.png">
 <meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/MMoE_second.png">
+<meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/three_tower.png">
+<meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/FM_optimized.png">
+<meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/Cross_Network.png">
+<meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/DCN.png">
+<meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/voice_LHUC.png">
+<meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/Rank_LHUC.png">
 <meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/%E8%A7%86%E9%A2%91%E5%BB%BA%E6%A8%A1.png">
 <meta property="article:published_time" content="2024-05-17T12:41:35.000Z">
-<meta property="article:modified_time" content="2024-05-17T15:38:25.419Z">
+<meta property="article:modified_time" content="2024-05-19T16:11:33.130Z">
 <meta property="article:author" content="blacsheep">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92.png">
@@ -134,7 +141,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B2%97%E6%8E%92%E5%92%8C%E7%B2%BE%E6%8E%92"><span class="toc-number">1.</span> <span class="toc-text">粗排和精排</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%9B%AE%E6%A0%87%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">多目标模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82"><span class="toc-number">1.1.1.</span> <span class="toc-text">模型细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E7%9A%84%E5%9B%B0%E9%9A%BE-%E7%B1%BB%E5%88%AB%E4%B8%8D%E5%B9%B3%E8%A1%A1"><span class="toc-number">1.1.3.</span> <span class="toc-text">训练的困难-类别不平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%8D%E9%87%87%E6%A0%B7%E6%A0%A1%E5%87%86"><span class="toc-number">1.1.4.</span> <span class="toc-text">降采样校准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mmoemulti-gate-mixture-of-experts"><span class="toc-number">1.2.</span> <span class="toc-text">MMoE(Multi-gate Mixture-of-Experts)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.1.</span> <span class="toc-text">存在问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E4%BC%B0%E5%88%86%E6%95%B0%E8%9E%8D%E5%90%88"><span class="toc-number">1.3.</span> <span class="toc-text">预估分数融合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%BB%BA%E6%A8%A1"><span class="toc-number">1.4.</span> <span class="toc-text">视频播放建模</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%95%BF"><span class="toc-number">1.4.1.</span> <span class="toc-text">时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%92%AD"><span class="toc-number">1.4.2.</span> <span class="toc-text">完播</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#todo"><span class="toc-number">1.5.</span> <span class="toc-text">TODO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%8E%92"><span class="toc-number">1.6.</span> <span class="toc-text">重排</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B2%97%E6%8E%92%E5%92%8C%E7%B2%BE%E6%8E%92"><span class="toc-number">1.</span> <span class="toc-text">粗排和精排</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#profile"><span class="toc-number">1.0.1.</span> <span class="toc-text">Profile</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#user-profile"><span class="toc-number">1.0.1.1.</span> <span class="toc-text">User Profile</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#item-profile"><span class="toc-number">1.0.1.2.</span> <span class="toc-text">Item Profile</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1%E7%89%B9%E5%BE%81"><span class="toc-number">1.0.2.</span> <span class="toc-text">统计特征</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%BB%9F%E8%AE%A1%E7%89%B9%E5%BE%81"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">用户统计特征</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%94%E8%AE%B0%E7%89%A9%E5%93%81%E7%BB%9F%E8%AE%A1%E7%89%B9%E5%BE%81"><span class="toc-number">1.0.2.2.</span> <span class="toc-text">笔记(物品)统计特征</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E7%89%B9%E5%BE%81context"><span class="toc-number">1.0.3.</span> <span class="toc-text">场景特征(context)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E5%A4%84%E7%90%86"><span class="toc-number">1.0.4.</span> <span class="toc-text">特征处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="toc-number">1.0.5.</span> <span class="toc-text">整体流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%A9%E5%93%81%E7%BB%9F%E8%AE%A1%E7%89%B9%E5%BE%81"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">物品统计特征</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%9B%AE%E6%A0%87%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">多目标模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82"><span class="toc-number">1.1.1.</span> <span class="toc-text">模型细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E7%9A%84%E5%9B%B0%E9%9A%BE-%E7%B1%BB%E5%88%AB%E4%B8%8D%E5%B9%B3%E8%A1%A1"><span class="toc-number">1.1.3.</span> <span class="toc-text">训练的困难-类别不平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%8D%E9%87%87%E6%A0%B7%E6%A0%A1%E5%87%86"><span class="toc-number">1.1.4.</span> <span class="toc-text">降采样校准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mmoemulti-gate-mixture-of-experts"><span class="toc-number">1.2.</span> <span class="toc-text">MMoE(Multi-gate Mixture-of-Experts)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.1.</span> <span class="toc-text">存在问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%A1%94%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">三塔模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fmfactorization-machine"><span class="toc-number">1.4.</span> <span class="toc-text">FM(Factorization Machine)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dcn"><span class="toc-number">1.5.</span> <span class="toc-text">DCN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lhuc"><span class="toc-number">1.6.</span> <span class="toc-text">LHUC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E4%BC%B0%E5%88%86%E6%95%B0%E8%9E%8D%E5%90%88"><span class="toc-number">1.7.</span> <span class="toc-text">预估分数融合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%BB%BA%E6%A8%A1"><span class="toc-number">1.8.</span> <span class="toc-text">视频播放建模</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%95%BF"><span class="toc-number">1.8.1.</span> <span class="toc-text">时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%92%AD"><span class="toc-number">1.8.2.</span> <span class="toc-text">完播</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#todo"><span class="toc-number">1.9.</span> <span class="toc-text">TODO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%8E%92"><span class="toc-number">1.10.</span> <span class="toc-text">重排</span></a></li></ol></li></ol>
       </div>
     
   </span>
@@ -193,7 +200,69 @@
 <li>转发率: 转发次数 / 点击次数</li>
 </ul>
 <p><img src="粗排精排.png" /></p>
-<p>我们首先对各种指标进行预测, 然后融合这些预估分数(比如加权), 然后对结果做截断和排序.</p>
+<p>我们首先对各种指标进行预测, 然后融合这些预估分数(比如加权), 然后对结果做截断和排序. ## 特征数据</p>
+<h3 id="profile">Profile</h3>
+<p>主要描述静态的用户和物品的特征</p>
+<h4 id="user-profile">User Profile</h4>
+<ul>
+<li>用户id(在对应阶段做embedding)<br />
+</li>
+<li>人口统计学数据: 性别, 年龄<br />
+</li>
+<li>账号信息: 新老账号, 活跃度<br />
+</li>
+<li>用户感兴趣的类别, 关键词, 品牌等</li>
+</ul>
+<h4 id="item-profile">Item Profile</h4>
+<ul>
+<li>物品ID(对应阶段做embedding)<br />
+</li>
+<li>发布时间<br />
+</li>
+<li>GeoHash, 所在城市<br />
+</li>
+<li>标题, 类目, 关键词, 品牌<br />
+</li>
+<li>字数, 图片数, 视频清晰度, 标签数<br />
+</li>
+<li>内容信息量, 图片美学</li>
+</ul>
+<h3 id="统计特征">统计特征</h3>
+<p>描述一定时间内的用户和物品的统计数据</p>
+<h4 id="用户统计特征">用户统计特征</h4>
+<ul>
+<li>30天/7天/1天/1小时的曝光数,点击数,点赞数等<br />
+</li>
+<li>对图文笔记点击率, 对视频的点击率<br />
+</li>
+<li>对不同笔记类型的点击率</li>
+</ul>
+<h4 id="笔记物品统计特征">笔记(物品)统计特征</h4>
+<ul>
+<li>笔记30天/7天/1天/1小时的曝光数,点击数,点赞数等<br />
+</li>
+<li>男用户的点击率, 女用户的点击率等<br />
+</li>
+<li>作者的粉丝数量, 发布的笔记数量, 以及笔记的消费指标等</li>
+</ul>
+<h3 id="场景特征context">场景特征(context)</h3>
+<p>场景特征是依据用户请求的当前场景获取的.</p>
+<ul>
+<li>用户当前GeoHash, 城市等<br />
+</li>
+<li>发送请求的当前时间等<br />
+</li>
+<li>当前是否是周末, 是否是节日等<br />
+</li>
+<li>设备信息(比如安卓用户和苹果用户可能倾向不一样)</li>
+</ul>
+<h3 id="特征处理">特征处理</h3>
+<p>离散变量embedding, 连续变量做分桶变成离散, 或者取log(1+x)之类的平滑操作以防止数值过大.</p>
+<h3 id="整体流程">整体流程</h3>
+<p><img src="pipline.png" /></p>
+<p>首先用户发送请求, 主服务器接受请求然后转发给召回服务器, 召回服务器多路召回并把结果(召回物品id)返回给主服务器.</p>
+<p>然后主服务器将物品id信息,用户id信息和context发给排序服务器, 排序服务器从对应数据库中取出数据. 其中用户数据库压力小(因为用户为1), 物品数据库压力大(压力乘以召回数大小). 也因此用户特征可以略微复杂一些,但物品特征需要尽量简单,否则到时候物品服务器压力会很大. 最后统计信息是包含实时结果的, 所以需要尽快将最新信息上传并提取. 特征打包过后丢tf服务器做计算, 最后返回结果.</p>
+<h4 id="物品统计特征">物品统计特征</h4>
 <h2 id="多目标模型">多目标模型</h2>
 <h3 id="模型细节">模型细节</h3>
 <p>更加详细一点的模型细节:</p>
@@ -227,6 +296,45 @@ Loss = \sum_{i=1}^4 \alpha_i \cdot CrossEntropy(y_i, p_i)
 <p><strong>polarize</strong>: softmax输出单值接近1, 而其他值接近0.</p>
 <p>这种情况下可能某个指标的预测只用到了一个expert, 而其他的expert就没有派上用场.</p>
 <p><strong>解决方案</strong>: 对softmax的输出用dropout, 如果发生了极化现象且dropout的值恰好为单值1, 那么模型的预测效果就会很差, 这样一来模型就会尽力避免极化.</p>
+<h2 id="三塔模型">三塔模型</h2>
+<p><img src="three_tower.png" /></p>
+<p>其中用户塔和物品塔还是双塔模型里面的.</p>
+<ul>
+<li>用户塔可以很大, 反正只有算单用户向量, 线上实时计算.<br />
+</li>
+<li>物品塔可以较大, 因为物品塔向量大多数静态, 所以可以计算完毕之后直接离线存储, 需要的时候直接索引提取. 如果击中缓存直接提取, 没击中缓存实时计算.<br />
+</li>
+<li>交叉塔统计特征的动态变化, 不可以缓存; 一旦有n个物品就需要n次推理, 因此交叉塔需要尽量小.</li>
+</ul>
+<p>然后前面向量计算完了再做concatenation之后丢上层模型计算指标, 这里还是需要n次推理, 不过这里的n次推理计算量比交叉塔大(粗排推理大部分计算量在模型上层).</p>
+<h2 id="fmfactorization-machine">FM(Factorization Machine)</h2>
+<p>FM说白了就是对线性模型的x求二阶交叉并做简化.</p>
+<p><strong>一阶线性</strong>: <code>$ p = b + \sum_&#123;i=1&#125;^d w_ix_i $</code></p>
+<p><strong>二阶线性</strong>: <code>$ p = b + \sum_&#123;i=1&#125;^d w_ix_i + \sum_&#123;i=1&#125;^d\sum_&#123;j=i+1&#125;^d u_&#123;ij&#125;x_ix_j$</code></p>
+<p>这里复杂度为 <code>$ O(d^2) $</code></p>
+<p><strong>Factorization Machine</strong>: <code>$ p = b + \sum_&#123;i=1&#125;^d w_ix_i + \sum_&#123;i=1&#125;^d\sum_&#123;j=i+1&#125;^d (v_i^Tv_j)x_ix_j$</code></p>
+<p>其实就是把 <code>$ u_&#123;ij&#125; $</code> 变成 <code>$ v_i^Tv_j $</code>, 即将权重矩阵分解为了两个小矩阵, 矩阵维度从 d * d 变成了 d * k.</p>
+<p>然后这里作者其实少讲了一点, 就是FM模型其实是对稀疏特征有优化的, 假设x_i和x_j为稀疏特征, 那么交叉之后很多项都会是0, 权重u_ij就会变得非常难学习. 然而FM做了优化之后, 其实最终结果是从O(kn^2)化简成了O(kn). 这里直接贴图不用latex了.</p>
+<p><img src="FM_optimized.png" /></p>
+<p>可以发现最终其实j已经不见了, 其实就是每一个 <code>$ v_&#123;i,l&#125; $</code> 对应一个 <code>$ x_i $</code> . 即计算用的是一阶, 但是混合结果是二阶交叉, 即绕了个弯子: 既利用一阶特征学习到了权重, 又保证模型后面增加的是交叉项.</p>
+<p>然后FM的好处就是一般涉及到特征交叉就可以用, 推荐场合效果显著. 不过现在也逐渐被淘汰了.</p>
+<h2 id="dcn">DCN</h2>
+<p>可以增加模型复杂度并提升模型性能, 其本身可以用在召回或者排序中的所有神经网络层里面. 交叉层公式如下:</p>
+<p><span class="math display">\[
+x_{i+1} = x_0 \odot (Wx_i + b) + x_0
+\]</span></p>
+<p>即每次用x_0和上一次的输出结果求hadamard product, 然后最后加上x_0防梯度消失.</p>
+<p>交叉网络即多个交叉层连接</p>
+<p><img src="Cross_Network.png" /></p>
+<p>深度交叉网络则是在交叉网络的基础之上再加上全连网络.</p>
+<p><img src="DCN.png" /></p>
+<h2 id="lhuc">LHUC</h2>
+<p>本身为语音识别里的技术, 希望可以让语音信号能够结合说话者的特征.</p>
+<p><img src="voice_LHUC.png" /></p>
+<p>模型本身对语音信号连接全连层,对说话者特征也是连接全连层并且最后加上一层sigmoid*2让输出在0-2之间, 从而对语音信号有的放大有的缩小.</p>
+<p>如果使用两层那么就要用两个不同的神经网络负责说话者特征的处理, 然后依然是和语音信号求hadamard product. 最后输出.</p>
+<p>推荐系统场合将语音信号换成物品特征, 说话者特征换成用户特征.</p>
+<p><img src="Rank_LHUC.png" /></p>
 <h2 id="预估分数融合">预估分数融合</h2>
 <p>前面的模型可以输出各种分数, 但是我们还需要对各种分数进行融合才能获取到最终的排序, 这里有很多不同的加权方式.</p>
 <p><strong>最简单的直接加权</strong>: <code>$ p_&#123;click&#125; + w_1 \cdot p_&#123;like&#125; + w_2 \cdot p_&#123;collect&#125; ... $</code></p>
@@ -288,7 +396,7 @@ p_{finish} = \frac{预估完播率}{f视频长度}
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B2%97%E6%8E%92%E5%92%8C%E7%B2%BE%E6%8E%92"><span class="toc-number">1.</span> <span class="toc-text">粗排和精排</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%9B%AE%E6%A0%87%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">多目标模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82"><span class="toc-number">1.1.1.</span> <span class="toc-text">模型细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E7%9A%84%E5%9B%B0%E9%9A%BE-%E7%B1%BB%E5%88%AB%E4%B8%8D%E5%B9%B3%E8%A1%A1"><span class="toc-number">1.1.3.</span> <span class="toc-text">训练的困难-类别不平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%8D%E9%87%87%E6%A0%B7%E6%A0%A1%E5%87%86"><span class="toc-number">1.1.4.</span> <span class="toc-text">降采样校准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mmoemulti-gate-mixture-of-experts"><span class="toc-number">1.2.</span> <span class="toc-text">MMoE(Multi-gate Mixture-of-Experts)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.1.</span> <span class="toc-text">存在问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E4%BC%B0%E5%88%86%E6%95%B0%E8%9E%8D%E5%90%88"><span class="toc-number">1.3.</span> <span class="toc-text">预估分数融合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%BB%BA%E6%A8%A1"><span class="toc-number">1.4.</span> <span class="toc-text">视频播放建模</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%95%BF"><span class="toc-number">1.4.1.</span> <span class="toc-text">时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%92%AD"><span class="toc-number">1.4.2.</span> <span class="toc-text">完播</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#todo"><span class="toc-number">1.5.</span> <span class="toc-text">TODO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%8E%92"><span class="toc-number">1.6.</span> <span class="toc-text">重排</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B2%97%E6%8E%92%E5%92%8C%E7%B2%BE%E6%8E%92"><span class="toc-number">1.</span> <span class="toc-text">粗排和精排</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#profile"><span class="toc-number">1.0.1.</span> <span class="toc-text">Profile</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#user-profile"><span class="toc-number">1.0.1.1.</span> <span class="toc-text">User Profile</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#item-profile"><span class="toc-number">1.0.1.2.</span> <span class="toc-text">Item Profile</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1%E7%89%B9%E5%BE%81"><span class="toc-number">1.0.2.</span> <span class="toc-text">统计特征</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%BB%9F%E8%AE%A1%E7%89%B9%E5%BE%81"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">用户统计特征</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%94%E8%AE%B0%E7%89%A9%E5%93%81%E7%BB%9F%E8%AE%A1%E7%89%B9%E5%BE%81"><span class="toc-number">1.0.2.2.</span> <span class="toc-text">笔记(物品)统计特征</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E7%89%B9%E5%BE%81context"><span class="toc-number">1.0.3.</span> <span class="toc-text">场景特征(context)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E5%A4%84%E7%90%86"><span class="toc-number">1.0.4.</span> <span class="toc-text">特征处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="toc-number">1.0.5.</span> <span class="toc-text">整体流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%A9%E5%93%81%E7%BB%9F%E8%AE%A1%E7%89%B9%E5%BE%81"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">物品统计特征</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%9B%AE%E6%A0%87%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">多目标模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82"><span class="toc-number">1.1.1.</span> <span class="toc-text">模型细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E7%9A%84%E5%9B%B0%E9%9A%BE-%E7%B1%BB%E5%88%AB%E4%B8%8D%E5%B9%B3%E8%A1%A1"><span class="toc-number">1.1.3.</span> <span class="toc-text">训练的困难-类别不平衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%8D%E9%87%87%E6%A0%B7%E6%A0%A1%E5%87%86"><span class="toc-number">1.1.4.</span> <span class="toc-text">降采样校准</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mmoemulti-gate-mixture-of-experts"><span class="toc-number">1.2.</span> <span class="toc-text">MMoE(Multi-gate Mixture-of-Experts)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.1.</span> <span class="toc-text">存在问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%A1%94%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">三塔模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fmfactorization-machine"><span class="toc-number">1.4.</span> <span class="toc-text">FM(Factorization Machine)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dcn"><span class="toc-number">1.5.</span> <span class="toc-text">DCN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lhuc"><span class="toc-number">1.6.</span> <span class="toc-text">LHUC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E4%BC%B0%E5%88%86%E6%95%B0%E8%9E%8D%E5%90%88"><span class="toc-number">1.7.</span> <span class="toc-text">预估分数融合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%BB%BA%E6%A8%A1"><span class="toc-number">1.8.</span> <span class="toc-text">视频播放建模</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%95%BF"><span class="toc-number">1.8.1.</span> <span class="toc-text">时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%92%AD"><span class="toc-number">1.8.2.</span> <span class="toc-text">完播</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#todo"><span class="toc-number">1.9.</span> <span class="toc-text">TODO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%8E%92"><span class="toc-number">1.10.</span> <span class="toc-text">重排</span></a></li></ol></li></ol>
       </div>
     
 
