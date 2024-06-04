@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="感觉自己DSA还是不太行, 补一下贪心算法. 316. Remove Duplicate Letters Given a string s, remove duplicate letters so that every letter appears once and only once. You must make sure your result is the smallest in lexic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DSA-greedy学习">
+<meta property="og:url" content="http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="感觉自己DSA还是不太行, 补一下贪心算法. 316. Remove Duplicate Letters Given a string s, remove duplicate letters so that every letter appears once and only once. You must make sure your result is the smallest in lexic">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-03T11:54:30.000Z">
+<meta property="article:modified_time" content="2024-06-04T00:54:40.551Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>DSA-greedy学习</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/05/24/%E6%9D%82%E8%B0%88/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&text=DSA-greedy学习"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&title=DSA-greedy学习"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&is_video=false&description=DSA-greedy学习"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=DSA-greedy学习&body=Check out this article: http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&title=DSA-greedy学习"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&title=DSA-greedy学习"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&title=DSA-greedy学习"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&title=DSA-greedy学习"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&name=DSA-greedy学习&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&t=DSA-greedy学习"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#remove-duplicate-letters"><span class="toc-number">1.</span> <span class="toc-text">316. Remove Duplicate Letters</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#greedy-stack"><span class="toc-number">1.1.</span> <span class="toc-text">greedy + stack</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#jump-game"><span class="toc-number">2.</span> <span class="toc-text">55. Jump Game</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#dp"><span class="toc-number">2.1.</span> <span class="toc-text">dp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#greedy"><span class="toc-number">2.2.</span> <span class="toc-text">greedy</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#jump-game-ii"><span class="toc-number">3.</span> <span class="toc-text">45. Jump Game II</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#greedy-1"><span class="toc-number">3.1.</span> <span class="toc-text">greedy</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#longest-palindrome"><span class="toc-number">4.</span> <span class="toc-text">409. Longest Palindrome</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#todo"><span class="toc-number">5.</span> <span class="toc-text">TODO</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        DSA-greedy学习
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-03T11:54:30.000Z" class="dt-published" itemprop="datePublished">2024-06-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>感觉自己DSA还是不太行, 补一下贪心算法.</p>
+<h1 id="remove-duplicate-letters">316. Remove Duplicate Letters</h1>
+<p>Given a string <code>s</code>, remove duplicate letters so that every letter appears once and only once. You must make sure your result is the smallest in lexicographical order among all possible results.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Example 1:</span><br><span class="line">    Input: s = &quot;bcabc&quot;</span><br><span class="line">    Output: &quot;abc&quot;</span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line">    Input: s = &quot;cbacdcbc&quot;</span><br><span class="line">    Output: &quot;acdb&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="greedy-stack">greedy + stack</h2>
+<p>太笨了, 完全想不出来. 这里用了last_occ存了最后出现的位置, 防止字符丢失, 然后用一个stack存字符, 只要stack的最后一个元素后续还有occurance并且stack[-1]比当前大, 我们就直接把stack里面的元素丢掉.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeDuplicateLetters</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        stack = []</span><br><span class="line">        seen = <span class="built_in">set</span>()</span><br><span class="line">        last_occ = &#123;c: i <span class="keyword">for</span> i, c <span class="keyword">in</span> <span class="built_in">enumerate</span>(s)&#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i, c <span class="keyword">in</span> <span class="built_in">enumerate</span>(s):</span><br><span class="line">            <span class="keyword">if</span> c <span class="keyword">not</span> <span class="keyword">in</span> seen:</span><br><span class="line">                <span class="keyword">while</span> stack <span class="keyword">and</span> c &lt; stack[-<span class="number">1</span>] <span class="keyword">and</span> i &lt; last_occ[stack[-<span class="number">1</span>]]:</span><br><span class="line">                    seen -= &#123;stack.pop()&#125;</span><br><span class="line">                seen.add(c)</span><br><span class="line">                stack.append(c)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(stack)</span><br></pre></td></tr></table></figure>
+<p>难点在于子问题的解决, 即只要不影响最终结果(i &lt; last_occ[stack[-1]]), 我们就可以丢弃stack里的值换更小的value(c &lt; stack[-1]).</p>
+<h1 id="jump-game">55. Jump Game</h1>
+<p>You are given an integer array <code>nums</code>. You are initially positioned at the array's <strong>first index</strong>, and each element in the array represents your maximum jump length at that position.</p>
+<p>Return <code>true</code> if you can reach the last index, or <code>false</code> otherwise.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Example 1:</span><br><span class="line">    Input: nums = [2,3,1,1,4]</span><br><span class="line">    Output: true</span><br><span class="line">    Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.</span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line">    Input: nums = [3,2,1,0,4]</span><br><span class="line">    Output: false</span><br><span class="line">    Explanation: You will always arrive at index 3 no matter what. Its maximum jump length is 0, which makes it impossible to reach the last index.</span><br></pre></td></tr></table></figure>
+<h2 id="dp">dp</h2>
+<p>第一感觉是dp, 也确实ac了, 但是时间复杂度太高了.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">canJump</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        dp = [<span class="literal">False</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(nums))]</span><br><span class="line">        dp[-<span class="number">1</span>] = <span class="literal">True</span></span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line">        <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">2</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            v = nums[i]</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(v+<span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> i+j &lt; n:</span><br><span class="line">                    <span class="keyword">if</span> dp[i+j] == <span class="literal">True</span> <span class="keyword">and</span> dp[i]==<span class="literal">False</span>:</span><br><span class="line">                        dp[i] = <span class="literal">True</span></span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="greedy">greedy</h2>
+<p>本质思路是直接遍历列表, 对于每个元素, 我们在遍历其大小的时候选择使剩余step最大的方案. 如果某个步骤剩余step到了0, 就说明到不了终点,返回False.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">canJump</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> count &lt; <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="keyword">elif</span> i &gt; count:</span><br><span class="line">                count = i</span><br><span class="line">            count -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<h1 id="jump-game-ii">45. Jump Game II</h1>
+<p>You are given a <strong>0-indexed</strong> array of integers <code>nums</code> of length <code>n</code>. You are initially positioned at <code>nums[0]</code>.</p>
+<p>Each element <code>nums[i]</code> represents the maximum length of a forward jump from index <code>i</code>. In other words, if you are at <code>nums[i]</code>, you can jump to any <code>nums[i + j]</code> where:</p>
+<p><code>0 &lt;= j &lt;= nums[i]</code> and <code>i + j &lt; n</code></p>
+<p>Return the minimum number of jumps to reach <code>nums[n - 1]</code>. The test cases are generated such that you can reach <code>nums[n - 1]</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Example 1:</span><br><span class="line">    Input: nums = [2,3,1,1,4]</span><br><span class="line">    Output: 2</span><br><span class="line">    Explanation: The minimum number of jumps to reach the last index is 2. Jump 1 step from index 0 to 1, then 3 steps to the last index.</span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line">    Input: nums = [2,3,0,1,4]</span><br><span class="line">    Output: 2</span><br></pre></td></tr></table></figure>
+<h2 id="greedy-1">greedy</h2>
+<p>每次跳的区间都划分出来, 实际时间复杂度O(n), 空间复杂度O(1).</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">jump</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        prev = <span class="literal">None</span></span><br><span class="line">        curr = <span class="number">0</span></span><br><span class="line">        furthest = <span class="number">0</span></span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> furthest &lt; n - <span class="number">1</span>:</span><br><span class="line">            ans += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> prev <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                furthest = nums[curr]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(prev+<span class="number">1</span>, curr+<span class="number">1</span>):</span><br><span class="line">                    furthest = <span class="built_in">max</span>(furthest, i + nums[i])</span><br><span class="line">            prev = curr</span><br><span class="line">            curr = furthest</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<h1 id="longest-palindrome">409. Longest Palindrome</h1>
+<p>打卡题</p>
+<p>Given a string <code>s</code> which consists of lowercase or uppercase letters, return the length of the <strong>longest palindrome</strong> that can be built with those letters.</p>
+<p>Letters are case sensitive, for example, "Aa" is not considered a palindrome.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Example 1:</span><br><span class="line">    Input: s = &quot;abccccdd&quot;</span><br><span class="line">    Output: 7</span><br><span class="line">    Explanation: One longest palindrome that can be built is &quot;dccaccd&quot;, whose length is 7.</span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line">    Input: s = &quot;a&quot;</span><br><span class="line">    Output: 1</span><br><span class="line">    Explanation: The longest palindrome that can be built is &quot;a&quot;, whose length is 1.</span><br></pre></td></tr></table></figure>
+<p>偶数全加,奇数-1然后全加, 最后如果存在奇数就+1</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">longestPalindrome</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        ctr = Counter(s)</span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        exist = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> k, v <span class="keyword">in</span> ctr.items():</span><br><span class="line">            <span class="keyword">if</span> v%<span class="number">2</span>:</span><br><span class="line">                ans += v - <span class="number">1</span></span><br><span class="line">                exist = <span class="number">1</span> </span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                ans += v</span><br><span class="line">        <span class="keyword">return</span> ans + exist</span><br></pre></td></tr></table></figure>
+<h1 id="todo">TODO</h1>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#remove-duplicate-letters"><span class="toc-number">1.</span> <span class="toc-text">316. Remove Duplicate Letters</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#greedy-stack"><span class="toc-number">1.1.</span> <span class="toc-text">greedy + stack</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#jump-game"><span class="toc-number">2.</span> <span class="toc-text">55. Jump Game</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#dp"><span class="toc-number">2.1.</span> <span class="toc-text">dp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#greedy"><span class="toc-number">2.2.</span> <span class="toc-text">greedy</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#jump-game-ii"><span class="toc-number">3.</span> <span class="toc-text">45. Jump Game II</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#greedy-1"><span class="toc-number">3.1.</span> <span class="toc-text">greedy</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#longest-palindrome"><span class="toc-number">4.</span> <span class="toc-text">409. Longest Palindrome</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#todo"><span class="toc-number">5.</span> <span class="toc-text">TODO</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&text=DSA-greedy学习"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&title=DSA-greedy学习"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&is_video=false&description=DSA-greedy学习"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=DSA-greedy学习&body=Check out this article: http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&title=DSA-greedy学习"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&title=DSA-greedy学习"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&title=DSA-greedy学习"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&title=DSA-greedy学习"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&name=DSA-greedy学习&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/03/DSA-greedy%E5%AD%A6%E4%B9%A0/&t=DSA-greedy学习"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

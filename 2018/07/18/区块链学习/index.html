@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="近期也没啥事情,准备复现一下之前的题目,发现有两道区块链的题,这里先学习一下区块链,之后再写题目的解答 区块链 1.区块链的本质 首先看来,区块链是什么? 区块链是一种特殊的分布式数据库 区块链的作用是存储信息,任何需要保存的信息都可以写入,也可以从中读取,所以说是数据库 任何人都可以架设服务器加入区块链网络,成为一个节点。 区块链的一个很大的特点:没有中心 每一个节点都是平等的,都保存着整个数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BlockChain&amp;Bitcoin学习">
+<meta property="og:url" content="http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="近期也没啥事情,准备复现一下之前的题目,发现有两道区块链的题,这里先学习一下区块链,之后再写题目的解答 区块链 1.区块链的本质 首先看来,区块链是什么? 区块链是一种特殊的分布式数据库 区块链的作用是存储信息,任何需要保存的信息都可以写入,也可以从中读取,所以说是数据库 任何人都可以架设服务器加入区块链网络,成为一个节点。 区块链的一个很大的特点:没有中心 每一个节点都是平等的,都保存着整个数据">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/2018/07/blockchain-1.png">
+<meta property="og:image" content="http://example.com/images/2018/07/blockchain-2.png">
+<meta property="og:image" content="http://example.com/images/2018/07/blockchain-3.png">
+<meta property="og:image" content="http://example.com/images/2018/07/blockchain4.png">
+<meta property="article:published_time" content="2018-07-17T17:08:18.000Z">
+<meta property="article:modified_time" content="2023-07-10T02:13:29.455Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2018/07/blockchain-1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>BlockChain&amp;Bitcoin学习</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2018/07/22/dz%E6%BC%8F%E6%B4%9E%E6%95%B4%E7%90%86/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2018/07/16/xman%E9%80%89%E6%8B%94%E8%B5%9Bweb%E9%83%A8%E5%88%86/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&text=BlockChain&amp;Bitcoin学习"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&title=BlockChain&amp;Bitcoin学习"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&is_video=false&description=BlockChain&amp;Bitcoin学习"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=BlockChain&amp;Bitcoin学习&body=Check out this article: http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&title=BlockChain&amp;Bitcoin学习"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&title=BlockChain&amp;Bitcoin学习"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&title=BlockChain&amp;Bitcoin学习"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&title=BlockChain&amp;Bitcoin学习"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&name=BlockChain&amp;Bitcoin学习&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&t=BlockChain&amp;Bitcoin学习"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E9%93%BE"><span class="toc-number">1.</span> <span class="toc-text">区块链</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="toc-number">1.1.</span> <span class="toc-text">1.区块链的本质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97"><span class="toc-number">1.2.</span> <span class="toc-text">2.区块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hash%E7%9A%84%E4%B8%8D%E5%8F%AF%E4%BF%AE%E6%94%B9"><span class="toc-number">1.3.</span> <span class="toc-text">3.hash的不可修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%87%E7%9F%BF"><span class="toc-number">1.4.</span> <span class="toc-text">4.采矿</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%BE%E5%BA%A6%E7%B3%BB%E6%95%B0"><span class="toc-number">1.5.</span> <span class="toc-text">5.难度系数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%BE%E5%BA%A6%E7%B3%BB%E6%95%B0%E7%9A%84%E5%8A%A8%E6%80%81%E8%B0%83%E8%8A%82"><span class="toc-number">1.6.</span> <span class="toc-text">6.难度系数的动态调节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E9%93%BE%E5%88%86%E5%8F%89"><span class="toc-number">1.7.</span> <span class="toc-text">7.区块链分叉</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.8.</span> <span class="toc-text">8.总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bitcoin"><span class="toc-number">2.</span> <span class="toc-text">bitcoin</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86"><span class="toc-number">2.1.</span> <span class="toc-text">1.非对称加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bitcoin%E9%92%B1%E5%8C%85"><span class="toc-number">2.2.</span> <span class="toc-text">2.bitcoin钱包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%98%93%E8%BF%87%E7%A8%8B"><span class="toc-number">2.3.</span> <span class="toc-text">3.交易过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%98%93%E7%A1%AE%E8%AE%A4%E5%92%8C%E5%8C%BA%E5%9D%97%E9%93%BE"><span class="toc-number">2.4.</span> <span class="toc-text">4.交易确认和区块链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%BF%E5%B7%A5%E6%94%B6%E7%9B%8A"><span class="toc-number">2.5.</span> <span class="toc-text">5.矿工收益</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E6%89%A9%E5%AE%B9"><span class="toc-number">2.6.</span> <span class="toc-text">区块扩容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">2.7.</span> <span class="toc-text">最后</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        BlockChain&amp;Bitcoin学习
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-07-17T17:08:18.000Z" class="dt-published" itemprop="datePublished">2018-07-18</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>近期也没啥事情,准备复现一下之前的题目,发现有两道区块链的题,这里先学习一下区块链,之后再写题目的解答</p>
+<h2 id="区块链">区块链</h2>
+<h3 id="区块链的本质">1.区块链的本质</h3>
+<p>首先看来,区块链是什么? <strong>区块链是一种特殊的分布式数据库</strong> 区块链的作用是存储信息,任何需要保存的信息都可以写入,也可以从中读取,所以说是数据库 任何人都可以架设服务器加入区块链网络,成为一个节点。 区块链的一个很大的特点:<strong>没有中心</strong> 每一个节点都是平等的,都保存着整个数据库,你可以向任意一个节点写入或读取数据,所有节点最后都会同步,保证区块链一致。</p>
+<h3 id="区块">2.区块</h3>
+<p>区块链由一个个区块组成,区块就很想数据库的记录,每次写入数据就是创建一个区块。 每个区块包含两个部分</p>
+<blockquote>
+<p>1.区块头(Head):记录当前区块的特征值 2.区块体(Body):实际数据</p>
+</blockquote>
+<p>区块头包含很多当前区块的特征值</p>
+<blockquote>
+<p>1.生成时间 2.实际数据的hash 3.上一个区块的hash ...</p>
+</blockquote>
+<p>因此,有两个推论:</p>
+<blockquote>
+<p>1.每个区块链的hash都不一样,可以通过hash标识区块 2.如果区块的内容变了,它的hash一定会变</p>
+</blockquote>
+<h3 id="hash的不可修改">3.hash的不可修改</h3>
+<p>区块和hash一一对应,每个区块的hash都是针对区块头计算的,也就是把区块头的各项值按顺序连接组成一个很长的字符串,然后对这个字符串计算hash</p>
+<blockquote>
+<p>Hash=SHA256(区块头)</p>
+</blockquote>
+<p>公式注意进行sha256运算的只是头部,并不包括内容,也就是hash由区块头唯一确定 前面说过,区块头包含很多东西,其中有当前区块体的hash,也有上一区块的区块的hash,那么就是说,如果当前区块体的内容变了,或者上一区块的hash变了,那么就会导致当前区块的hash改变 这一点对区块链有重大意义。如果有人修改了一个区块,该区块的hash就变了,为了让后面的区块能找到它,那么这个人还必须修改后面的所有区块,否则被改掉的区块就脱离区块链了。 而这就是后面要讨论的,因为hash的计算很耗时,短时间修改多个区块几乎不可能发生,除非有人<strong>掌握了全网51%以上的计算能力</strong> 这是这种机制,区块链保证了自身的可靠性,数据一旦写入就无法被篡改,就像历史一样,无法再进行改变,每个区块连接一个区块,也就是区块链的名字的由来。</p>
+<h3 id="采矿">4.采矿</h3>
+<p>由于要保证节点之间的同步,所以新的区块的添加速度不能太快。试想一下,你刚刚同步了一个区块,准备基于它生成下一个区块,但这时别的节点又有新区块生成,你不得不放弃做了一半的计算,再去同步,因为每个区块的后面只能跟着一个区块,你永远只能在最新的区块后面,生成下一个区块。所以,你别无选择,一听到信号,就必须立刻同步。 为了尽力避免这种情况,区块链的发明者中本聪(假名)故意让添加新区块变得困难。他的设计是平均每10分钟,全网才能生成一个新区块,一个小时就6个 而这个速度并不是通过命令实现的,而是故意设了海量的计算。也就是说,只有通过极其大量的计算,才能得到当前区块的有效hash,从而把新区快添加到区块链,计算量太大,所以快不起来 而这个计算有效hash的过程就叫采矿,操纵矿机的人就叫矿工</p>
+<h3 id="难度系数">5.难度系数</h3>
+<p>难度系数决定了你算出来的hash是否是有效hash,也就是这个导致了平均每10分钟全网只能产生一个区块. 区块头包含一个难度系数,这个值决定了hash计算的难度,举例来说,第100000个区块的难度系数是14484.16236122 <img src="/images/2018/07/blockchain-1.png" alt="blacsheep" /> 区块链协议规定,使用一个常量除以难度系数,可以得到目标值。显然难度系数越大,目标值就越小 <img src="/images/2018/07/blockchain-2.png" alt="blacsheep" /> hash的有效性和目标值相关,只有小于目标的hash才是有效的,否则hash无效,必须重算。由于目标值很小,hash小于该值的机会很小,可能计算10亿次才算中一次所以采矿慢 前面说过当前区块的hash由区块头唯一决定,如果对同意区块反复计算hash就意味着区块头必须不停变化,否则不可能计算出不一样的hash 区块头里面所有的特征值都是固定的,为了让区块头发生变化,中本聪故意加了一个随机项叫做Nonce Nonce是一个随机值,矿工的作用就是猜出Nonce,使得目标hash可以小于目标值,从而能够写入区块链。 Nonce非常难猜,目前只能通过穷举法来获取,根据协议,Nonce是一个32位的二进制数值,最大可到21.47亿,第100000个区块的Nonce值为274148111,可以理解成矿工从0开始计算了2.74亿次才得到了一个有效Nonce,使得hash能够满足条件 运气好的话,也许一会就能找到Nonce,运气不好的话,可能算完了21.47亿次都没有发现Nonce,即当前区块体不可能算出满足条件的hash,这时协议<strong>允许矿工改变区块体</strong>,开始新的计算</p>
+<h3 id="难度系数的动态调节">6.难度系数的动态调节</h3>
+<p>如上面所说,采矿有随机性,没法保证正好10分钟产出一个区块,有时候一分钟就算出来,有时候几个小时也算不出来,不过总体来看,随着设备的提升以及矿机的增加,计算速度一定越来越快 为了将产出速度恒定,中本聪设计了难度系数的调节机制,规定每两周调节一次难度系数,如果两周里面区块的生成平均速度是9分钟,意味着比法定的快了10%,那么后面的难度系数就会调高10%,如果是11分钟就会降低 难度系数越高,采矿越难</p>
+<h3 id="区块链分叉">7.区块链分叉</h3>
+<p>这个问题发生在两个人同时向区块链写数据,也就是说有两个区块的加入,因为它们前面都连接着前一个区块,也就形成了分叉,这时候应该采用哪个呢? <img src="/images/2018/07/blockchain-3.png" alt="blacsheep" /> 目前的规则是新节点总采用最长的那条区块链,如果区块链有分叉,将看哪个分支在分叉点后面先达到6个新区块(称为"六次确认")。按照10分钟一个区块计算,一个小时就可以确认 <img src="/images/2018/07/blockchain4.png" alt="blacsheep" /> 新区快的生成速度决定计算能力,这个规则就是说,拥有大多数计算能力的那个分支就是正宗的区块链.</p>
+<h3 id="总结">8.总结</h3>
+<p>区块链作为无人管理的分布式数据库,从2009年到现在还正常运行说明可行,不过为了保证数据的可靠,区块链也付出了代价。一是效率,数据写入区块链最少需要10分钟,所有节点都需要同步,则需要更久,二是能源,区块的生成需要矿工进行大量无意义计算,这是非常耗费能源的 总结来看,区块链的适用场景其实非常有限</p>
+<blockquote>
+<p>1.不存在所有成员都相信的管理当局 2.写入数据不要求实时使用 3.挖矿的收益能够弥补自身成本</p>
+</blockquote>
+<p>如果不行的话,传统的数据库则是更好的选择.</p>
+<h2 id="bitcoin">bitcoin</h2>
+<p>大概了解了一下区块链相关的知识,下面我们来看一下bitcoin</p>
+<h3 id="非对称加密">1.非对称加密</h3>
+<p>首先要知道,bitcoin是基于非对称加密的,平时我们加密的明文是信息,那么如果这个信息是一笔钱呢? 支付方用你的公钥加密一笔钱,你手上有私钥,那么你就可以解开加密包,别人偷不走钱,因为他们没有你的私钥,这就是bitcoin的最基本的原理,由于支付的钱必须由私钥取出,所以不管你是谁,重要的是谁有私钥,只要拥有私钥就能取出钱(实际上真实流程是私钥保证你能把这些钱支付出去)</p>
+<h3 id="bitcoin钱包">2.bitcoin钱包</h3>
+<p>对于比特币来说,钱不是支付给个人的,而是支付给某个私钥的,这就是交易匿名性的根本原因,因为没有人知道,那些私钥背后的主人是谁 那么比特币交易的第一件事就是你必须有自己的公钥和私钥。 从协议来看,公钥的长度是512位,这个长度不太方便传播,所以协议又为公钥生成了一个160位的指纹。就是比较短的易于传播的hash,160bit是二进制,写成16进制的话就26-35个字符,比如1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2。这个就叫做钱包的地址,它是唯一的,每个钱包的地址肯定是不一样的。 交易的时候,你只要给别人你的钱包地址即可,对方向这个地址付款,由于你是这个地址的拥有者,所以你会收到这笔钱,那么如何证明你是这个地址的拥有者呢?这个是由私钥证明的(后面介绍),所以一定要保护好私钥,否则别人就可以用你的身份把钱包里的钱都转走了</p>
+<h3 id="交易过程">3.交易过程</h3>
+<p>具体来看就是<strong>把一个地址的bitcoin转到另外一个地址。</strong>由于比特币的交易全部都是公开的,哪个地址拥有多少比特币都是可以查得到的。因此,支付方是否有足够的比特币来进行支付也是可以验证的 问题在于如何去防止其他人冒用你的名义去申报交易,也就是说,地址A向B支付10个比特币,我怎么知道这个申报是真的,申报人就是A 比特币协议规定,申报交易的时候除了交易金额以外,转出一方还要提供以下数据</p>
+<blockquote>
+<p>1.上一笔交易的hash 2.本次交易双方的地址 3.支付方的公钥 4.支付方私钥生成的数字签名</p>
+</blockquote>
+<p>验证的时候</p>
+<blockquote>
+<p>1.找到上一笔交易,确认支付方的比特币来源 2.算出支付方公钥的指纹,确认和支付方一致,从而保证公钥属实 3.用公钥去解开数字签名,保证私钥属实</p>
+</blockquote>
+<h3 id="交易确认和区块链">4.交易确认和区块链</h3>
+<p>确认交易的真实性之后,交易还不算结束。交易的数据必须写入数据库才算成立,对方才能真正的收到钱。 首先所有的交易都会传送到矿工那里,矿工负责把这些交易写入区块链。 根据比特币协议,一个区块的大小最大是1MB,而一笔交易大概是500字节左右,因此一个区块最多可以包含2000多笔交易。矿工负责把2000多笔交易打包,组成一个区块然后计算区块的hash(采矿),这个过程是矿工之间的竞争,谁先算出hash就可以写入数据,从而享受这个区块的所有利益,其他矿工就将一无所获. 这里注意我们前面说到的,一笔交易一旦写入了区块链就无法反悔了,比特币不存放在钱包或者其他别的地方,而是只存在区块链上,由区块链记录你每一笔交易,你得到过多少,支出过多少,最终算出你拥有多少资金</p>
+<h3 id="矿工收益">5.矿工收益</h3>
+<p>交易离不开矿工,那么谁愿意做矿工呢? 比特币协议规定,挖到新的区块的矿工将获得奖励,一开始是50个比特币,然后每4年减半,目前是12.5个比特币,这也是比特币的供给增加机制,流通中的比特币都是这么产生的 虽然按这种计算,2140年就不会再产生比特币了,矿工就将无法获得奖励了,那么比特币的数量也就停止增加了,矿工也只能从手续费中获得比特币了 交易的时候矿工可以从每笔交易抽成,具体金额由支付方自愿决定,你可以选择支付高额,那么会被优先处理,也可以不给任何金额,那么你的交易也不会被矿工所处理.</p>
+<h3 id="区块扩容">区块扩容</h3>
+<p>比特币协议规定,每10分钟产生一个区块,区块的大小只有1MB,最多只能包含2000多笔交易,也就是说,比特币网络每10分钟,最多只能处理2000多笔交易,换算一下,就是处理速度是3~5笔/秒 全世界的交易那么多,处理的速度又这么慢,这已经成为了制约比特币发展的瓶颈了 后来有人呼吁说改革比特币协议,增加处理速度,在2017年8月时,区块链发生了一次分叉,诞生了一个新的协议,成为Bitcoin Cash,这个货币其他方面和比特币一致,但是就是区块的大小从1MB变成了8MB,处理速度变成了原来的8倍,手续费也低了很多,这个协议是对原有区块链的分叉,所以当时持有比特币的人等于一人获赠一份同样数量的BCH</p>
+<h3 id="最后">最后</h3>
+<p>那么到这里比特币到底是什么呢?它其实就是一个记录,凭空产生的记录,举个例子,矿工获得12.5个比特币的奖励,那么区块链就会有一个记录:"xxx地址获得12.5个比特币"。正是这些记录导致矿工获得了大笔金钱,如果区块链突然增加了一条记录,记载你获得了1000比特币,那么你就真的有1000比特币(虽然并不会,这只是举个例子) 参考链接: <a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html" title="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html">http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html</a> <a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html" title="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html">http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E9%93%BE"><span class="toc-number">1.</span> <span class="toc-text">区块链</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="toc-number">1.1.</span> <span class="toc-text">1.区块链的本质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97"><span class="toc-number">1.2.</span> <span class="toc-text">2.区块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hash%E7%9A%84%E4%B8%8D%E5%8F%AF%E4%BF%AE%E6%94%B9"><span class="toc-number">1.3.</span> <span class="toc-text">3.hash的不可修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%87%E7%9F%BF"><span class="toc-number">1.4.</span> <span class="toc-text">4.采矿</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%BE%E5%BA%A6%E7%B3%BB%E6%95%B0"><span class="toc-number">1.5.</span> <span class="toc-text">5.难度系数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%BE%E5%BA%A6%E7%B3%BB%E6%95%B0%E7%9A%84%E5%8A%A8%E6%80%81%E8%B0%83%E8%8A%82"><span class="toc-number">1.6.</span> <span class="toc-text">6.难度系数的动态调节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E9%93%BE%E5%88%86%E5%8F%89"><span class="toc-number">1.7.</span> <span class="toc-text">7.区块链分叉</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.8.</span> <span class="toc-text">8.总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bitcoin"><span class="toc-number">2.</span> <span class="toc-text">bitcoin</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86"><span class="toc-number">2.1.</span> <span class="toc-text">1.非对称加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bitcoin%E9%92%B1%E5%8C%85"><span class="toc-number">2.2.</span> <span class="toc-text">2.bitcoin钱包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%98%93%E8%BF%87%E7%A8%8B"><span class="toc-number">2.3.</span> <span class="toc-text">3.交易过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%98%93%E7%A1%AE%E8%AE%A4%E5%92%8C%E5%8C%BA%E5%9D%97%E9%93%BE"><span class="toc-number">2.4.</span> <span class="toc-text">4.交易确认和区块链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%BF%E5%B7%A5%E6%94%B6%E7%9B%8A"><span class="toc-number">2.5.</span> <span class="toc-text">5.矿工收益</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E6%89%A9%E5%AE%B9"><span class="toc-number">2.6.</span> <span class="toc-text">区块扩容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">2.7.</span> <span class="toc-text">最后</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&text=BlockChain&amp;Bitcoin学习"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&title=BlockChain&amp;Bitcoin学习"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&is_video=false&description=BlockChain&amp;Bitcoin学习"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=BlockChain&amp;Bitcoin学习&body=Check out this article: http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&title=BlockChain&amp;Bitcoin学习"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&title=BlockChain&amp;Bitcoin学习"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&title=BlockChain&amp;Bitcoin学习"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&title=BlockChain&amp;Bitcoin学习"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&name=BlockChain&amp;Bitcoin学习&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2018/07/18/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AD%A6%E4%B9%A0/&t=BlockChain&amp;Bitcoin学习"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

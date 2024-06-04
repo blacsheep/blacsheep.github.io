@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="最近llama3问世了, 之前了解了一下llama相关, 大概就是一个开源可商用gpt. huggingface模型. 然后自己也下载下来尝试了一下, 用ollama就可以直接在自己本机跑,不需要去学校机器了.  unsloth unsloth提供更低内存占用,更快训练的finetuning. 官方也给出了Llama-3 8b的notebook,可以自己调整. 简单的对比,没有做lora之前  做">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Llama学习以及对大模型的一些思考">
+<meta property="og:url" content="http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="最近llama3问世了, 之前了解了一下llama相关, 大概就是一个开源可商用gpt. huggingface模型. 然后自己也下载下来尝试了一下, 用ollama就可以直接在自己本机跑,不需要去学校机器了.  unsloth unsloth提供更低内存占用,更快训练的finetuning. 官方也给出了Llama-3 8b的notebook,可以自己调整. 简单的对比,没有做lora之前  做">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/chat_llama.png">
+<meta property="og:image" content="http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/untrained_ruozhiba.png">
+<meta property="og:image" content="http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/trained_ruozhiba.png">
+<meta property="og:image" content="http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/wrong_answer_moon.png">
+<meta property="og:image" content="http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/real_ans.png">
+<meta property="article:published_time" content="2024-04-25T19:21:48.000Z">
+<meta property="article:modified_time" content="2024-04-27T09:56:14.916Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/chat_llama.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Llama学习以及对大模型的一些思考</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/04/27/langchain%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/04/23/%E4%BB%8ERNN%E5%88%B0GPT-nlp%E8%83%8C%E6%99%AF%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&text=Llama学习以及对大模型的一些思考"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&title=Llama学习以及对大模型的一些思考"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&is_video=false&description=Llama学习以及对大模型的一些思考"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Llama学习以及对大模型的一些思考&body=Check out this article: http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&title=Llama学习以及对大模型的一些思考"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&title=Llama学习以及对大模型的一些思考"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&title=Llama学习以及对大模型的一些思考"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&title=Llama学习以及对大模型的一些思考"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&name=Llama学习以及对大模型的一些思考&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&t=Llama学习以及对大模型的一些思考"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#unsloth"><span class="toc-number">1.</span> <span class="toc-text">unsloth</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rag"><span class="toc-number">2.</span> <span class="toc-text">RAG</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E7%82%B9%E5%B0%8F%E6%80%9D%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">一点小思考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Llama学习以及对大模型的一些思考
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-04-25T19:21:48.000Z" class="dt-published" itemprop="datePublished">2024-04-26</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/ML-NLP/">ML NLP</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>最近llama3问世了, 之前了解了一下llama相关, 大概就是一个开源可商用gpt. <a target="_blank" rel="noopener" href="https://huggingface.co/meta-llama/Meta-Llama-3-8B">huggingface模型</a>. 然后自己也下载下来尝试了一下, 用ollama就可以直接在自己本机跑,不需要去学校机器了.</p>
+<p><img src="chat_llama.png" /></p>
+<h1 id="unsloth">unsloth</h1>
+<p>unsloth提供更低内存占用,更快训练的finetuning. 官方也给出了<a target="_blank" rel="noopener" href="https://colab.research.google.com/drive/135ced7oHytdxu3N2DNe1Z0kqjyYIkDXp?usp=sharing">Llama-3 8b的notebook</a>,可以自己调整.</p>
+<p>简单的对比,没有做lora之前</p>
+<p><img src="untrained_ruozhiba.png" /></p>
+<p>做了简单的finetuning之后</p>
+<p><img src="trained_ruozhiba.png" /></p>
+<h1 id="rag">RAG</h1>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=T-D1OfcDW1M">What is Retrieval-Augmented Generation (RAG)?</a></p>
+<p>至于实现,youtube上也有相应教学<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=O7RdEyRsatw">Llama 3 RAG: How to Create AI App using Ollama?</a>. 讲的非常好, 记录一下.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gradio <span class="keyword">as</span> gr</span><br><span class="line"><span class="keyword">import</span> bs4</span><br><span class="line"><span class="keyword">from</span> langchain.text_splitter <span class="keyword">import</span> RecursiveCharacterTextSplitter</span><br><span class="line"><span class="keyword">from</span> langchain_community.document_loaders <span class="keyword">import</span> WebBaseLoader</span><br><span class="line"><span class="keyword">from</span> langchain_community.vectorstores <span class="keyword">import</span> Chroma</span><br><span class="line"><span class="keyword">from</span> langchain_community.embeddings <span class="keyword">import</span> OllamaEmbeddings</span><br><span class="line"><span class="keyword">import</span> ollama</span><br><span class="line"></span><br><span class="line"><span class="comment"># Function to load, split, and retrieve documents</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_and_retrieve_docs</span>(<span class="params">url</span>):</span><br><span class="line">    loader = WebBaseLoader(</span><br><span class="line">        web_paths=(url,),</span><br><span class="line">        bs_kwargs=<span class="built_in">dict</span>() </span><br><span class="line">    )</span><br><span class="line">    docs = loader.load()</span><br><span class="line">    text_splitter = RecursiveCharacterTextSplitter(chunk_size=<span class="number">1000</span>, chunk_overlap=<span class="number">200</span>)</span><br><span class="line">    splits = text_splitter.split_documents(docs)</span><br><span class="line">    embeddings = OllamaEmbeddings(model=<span class="string">&quot;nomic-embed-text&quot;</span>)</span><br><span class="line">    vectorstore = Chroma.from_documents(documents=splits, embedding=embeddings)</span><br><span class="line">    <span class="keyword">return</span> vectorstore.as_retriever()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Function to format documents</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">format_docs</span>(<span class="params">docs</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;\n\n&quot;</span>.join(doc.page_content <span class="keyword">for</span> doc <span class="keyword">in</span> docs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Function that defines the RAG chain</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rag_chain</span>(<span class="params">url, question</span>):</span><br><span class="line">    retriever = load_and_retrieve_docs(url)</span><br><span class="line">    retrieved_docs = retriever.invoke(question)</span><br><span class="line">    formatted_context = format_docs(retrieved_docs)</span><br><span class="line">    formatted_prompt = <span class="string">f&quot;Question: <span class="subst">&#123;question&#125;</span>\n\nContext: <span class="subst">&#123;formatted_context&#125;</span>&quot;</span></span><br><span class="line">    response = ollama.chat(model=<span class="string">&#x27;llama3&#x27;</span>, messages=[&#123;<span class="string">&#x27;role&#x27;</span>: <span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;content&#x27;</span>: formatted_prompt&#125;])</span><br><span class="line">    <span class="keyword">return</span> response[<span class="string">&#x27;message&#x27;</span>][<span class="string">&#x27;content&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Gradio interface</span></span><br><span class="line">iface = gr.Interface(</span><br><span class="line">    fn=rag_chain,</span><br><span class="line">    inputs=[<span class="string">&quot;text&quot;</span>, <span class="string">&quot;text&quot;</span>],</span><br><span class="line">    outputs=<span class="string">&quot;text&quot;</span>,</span><br><span class="line">    title=<span class="string">&quot;RAG Chain Question Answering&quot;</span>,</span><br><span class="line">    description=<span class="string">&quot;Enter a URL and a query to get answers from the RAG chain.&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Launch the app</span></span><br><span class="line">iface.launch()</span><br></pre></td></tr></table></figure>
+<p>其中prompt可以从langchain hub里拉取</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain <span class="keyword">import</span> hub</span><br><span class="line"></span><br><span class="line">prompt = hub.pull(<span class="string">&quot;rlm/rag-prompt&quot;</span>)</span><br><span class="line">example_messages = prompt.invoke(</span><br><span class="line">    &#123;<span class="string">&quot;context&quot;</span>: <span class="string">&quot;filler context&quot;</span>, <span class="string">&quot;question&quot;</span>: <span class="string">&quot;filler question&quot;</span>&#125;</span><br><span class="line">).to_messages()</span><br><span class="line">example_messages</span><br><span class="line"><span class="comment"># [HumanMessage(content=&quot;You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don&#x27;t know the answer, just say that you don&#x27;t know. Use three sentences maximum and keep the answer concise.\nQuestion: filler question \nContext: filler context \nAnswer:&quot;)]</span></span><br></pre></td></tr></table></figure>
+<p>就用ibm那位女士讲的moon的例子,错误网站得到错误答案. <img src="wrong_answer_moon.png" /></p>
+<p>正确网站能够得出正确答案 <img src="real_ans.png" /></p>
+<p>不过具体工作过程还是会有一些出入, 这里前面可以看到query的信息存到了vector database里面, 不知道是不是同时存了几个信息导致回答总是不稳定(有时候Jupiter有时候Saturn). 包括如果一旦喂了bbc的文章之后,哪怕喂过时的文章模型还是返回正确答案Saturn, 不排除多答案返回逻辑存在问题, 也可能是语义识别到了时间差距? 不过总的来说是确实能够从给定源获取新信息, 这其实也就是Rag的目的之一了.</p>
+<h1 id="一点小思考">一点小思考</h1>
+<p>最后简单看了下, 发现其实llama也确实可以做text classification. 官方文档里面的: <a target="_blank" rel="noopener" href="https://colab.research.google.com/drive/1ggaa2oRFphdBmqIjSEbnb_HGkcIRC2ZB?usp=sharing#scrollTo=GlxX7p6Jdcmg">A notebook on how to fine-tune the Llama 2 model with QLoRa, TRL, and Korean text classification dataset.</a>.</p>
+<p>之前看了BERT, chatgpt相关, 了解到了它们都是pretrained model, 具备大量语库相关知识. 预训练的方式也都在前面学习过了, 但很容易就会产生一个疑问: BERT基于transformer的encoder部分, 加上全局attention, 再加上mlm, 似乎重点放在了语义理解上(完形填空+不可完全相信给出的context,模型必须具备自己的判断). 与之对比, gpt用的直接是decoder部分, 它的pretrain其实就是mask掉后面的句子对前面做attention然后做文本生成的尝试, 重点放在了文本生成层次.</p>
+<p>那么反过来可不可以呢? 用bert做文本生成,用gpt-like模型做文本分类这种文本理解问题是否可行呢?</p>
+<p>刚开始我的直觉是不太合适吧, 似乎训练方向就不太相同, 但再一想, 两者都基于大量语料学习, 模型参数都是千万/亿级别的, 对其他任务做微调之后应该也存在兼容性吧.</p>
+<p>于是尝试找了一些资料. 首先在huggingface文档里找到了一个<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/model_doc/bert-generation">bertGeneration模型</a>, 说明bert做NLG确实是可行的, 有人也做过类似的事情.</p>
+<p>与之相对, gpt-like模型是否可以做NLU相关任务呢? 其实也是有的<a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/model_doc/gpt2#transformers.GPT2ForSequenceClassification">GPT2ForSequenceClassification</a>.</p>
+<p>大概也就应证了前面学习到的:大模型已经学习到了足够的知识? 需要的只是一些特定监督学习让它们能够用到我们所需求的场景?</p>
+<p>后续还会继续学习一下langchain相关, finetuning也可以跟着看一看. 至于prompt engineering其实也是早有耳闻, 不过我觉得不了解之前还是先不说讨厌, 等真正了解工程所做的是什么之后再去讨论这项技术是不是真的有意思.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#unsloth"><span class="toc-number">1.</span> <span class="toc-text">unsloth</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rag"><span class="toc-number">2.</span> <span class="toc-text">RAG</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E7%82%B9%E5%B0%8F%E6%80%9D%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">一点小思考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&text=Llama学习以及对大模型的一些思考"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&title=Llama学习以及对大模型的一些思考"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&is_video=false&description=Llama学习以及对大模型的一些思考"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Llama学习以及对大模型的一些思考&body=Check out this article: http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&title=Llama学习以及对大模型的一些思考"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&title=Llama学习以及对大模型的一些思考"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&title=Llama学习以及对大模型的一些思考"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&title=Llama学习以及对大模型的一些思考"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&name=Llama学习以及对大模型的一些思考&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/04/26/Llama%E5%AD%A6%E4%B9%A0%E4%BB%A5%E5%8F%8A%E5%AF%B9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/&t=Llama学习以及对大模型的一些思考"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
