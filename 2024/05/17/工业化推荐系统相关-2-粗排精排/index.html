@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/SIM.png">
 <meta property="og:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/%E8%A7%86%E9%A2%91%E5%BB%BA%E6%A8%A1.png">
 <meta property="article:published_time" content="2024-05-17T06:41:35.000Z">
-<meta property="article:modified_time" content="2024-06-13T01:05:02.263Z">
+<meta property="article:modified_time" content="2024-06-24T08:40:51.799Z">
 <meta property="article:author" content="blacsheep">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2024/05/17/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-2-%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92/%E7%B2%97%E6%8E%92%E7%B2%BE%E6%8E%92.png">
@@ -484,8 +484,20 @@ det(V^TV) = vol(P(v_1, v_2,...v_k)) ^ 2
 <h3 id="推荐系统">推荐系统</h3>
 <p>Hulu的论文将dpp用在了推荐系统.</p>
 <p><span class="math display">\[
-\mathop{\arg\max}\limits_{S:\left|S \right|=k} \theta \cdot (\sum_{j \in S} reward_j) + (1-\theta) \cdot log det(V^T_SV_S)
+\mathop{\arg\max}\limits_{S:\left|S \right|=k} \theta \cdot (\sum_{j \in S} reward_j) + (1-\theta) \cdot log (det(V^T_SV_S))
 \]</span></p>
+<p>其中可以用 $ A_s $ 来表示 $ V^T_SV_S $</p>
+<p>而DPP是一个<strong>组合优化</strong>问题(从1-n中选出最优的k个元素), 且被认为是一个np hard问题, 只能近似求解.</p>
+<p>每次选物品的时候, 我们去保证</p>
+<p><span class="math display">\[
+\mathop{\arg\max}\limits_{i \in R} \theta \cdot reward_j + (1-\theta) \cdot log (det(A_{S \cup \{i\}}))
+\]</span></p>
+<p>每次纳入一个新物品, 矩阵多了一行和一列, 我们希望加入一行一列的同时, 保证行列式尽量大.</p>
+<p>暴力求解的情况, 计算行列式为O(S^3), 又因为物品有R个, 我们需要取出k个, 即O(S^3 * R * k) =&gt; O(nk^4), 而计算矩阵A还需要O(n^2 * d), 即最终复杂度为 $ O(n^2d + nk^4) $</p>
+<p>Hulu的优化是能够利用O(nk^2)计算行列式的值(Cholesky分解).</p>
+<p>Cholesky分解把矩阵A分成 $ A = LL^T $ , 其中L为下三角矩阵, 从而可以用对角线乘积表示行列式. 每次加入一行一列, 我们只需要算出相对原分解产生了哪些变化即可, 从而可以快速算出A_{S {i}}的分解.</p>
+<p>后续滑动窗口还是和MRR一样</p>
+<p>还有规则约束即改变取物品的集合R即可.</p>
 <h2 id="重排的规则">重排的规则</h2>
 <h3 id="最多连续出现k篇某种笔记">最多连续出现k篇某种笔记</h3>
 <p>比如小红书会推荐图文笔记和视频笔记, 假设我们规定最多连续出现5篇图文笔记, 那么如果i到i+4都是图文笔记, 那么i+5必须是视频笔记</p>

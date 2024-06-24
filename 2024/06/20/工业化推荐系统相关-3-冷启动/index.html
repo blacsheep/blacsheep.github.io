@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="UGC平台中用户可以自由发表内容, 如何对最新的内容做推荐就涉及到冷启动问题, UGC比PGC更难做冷启动, 因为内容量大且差异大. 出发的角度主要分为三部分: 用户侧(推荐), 作者侧(激励), 高热内容(发掘). 为什么需要做冷启动 三方面原因:  正常物品可以依赖用户点击信息作推荐, 而新发表内容缺少用户交互信息, 所以需要做特殊处理.  对新发表内容做扶持可以增强作者发布意愿.  为了发掘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工业化推荐系统相关(3)-冷启动">
+<meta property="og:url" content="http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="UGC平台中用户可以自由发表内容, 如何对最新的内容做推荐就涉及到冷启动问题, UGC比PGC更难做冷启动, 因为内容量大且差异大. 出发的角度主要分为三部分: 用户侧(推荐), 作者侧(激励), 高热内容(发掘). 为什么需要做冷启动 三方面原因:  正常物品可以依赖用户点击信息作推荐, 而新发表内容缺少用户交互信息, 所以需要做特殊处理.  对新发表内容做扶持可以增强作者发布意愿.  为了发掘">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/CNN+Bert.png">
+<meta property="article:published_time" content="2024-06-20T08:42:22.000Z">
+<meta property="article:modified_time" content="2024-06-24T19:09:26.406Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/CNN+Bert.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>工业化推荐系统相关(3)-冷启动</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/06/16/DSA-binary-search/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&text=工业化推荐系统相关(3)-冷启动"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&title=工业化推荐系统相关(3)-冷启动"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&is_video=false&description=工业化推荐系统相关(3)-冷启动"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=工业化推荐系统相关(3)-冷启动&body=Check out this article: http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&title=工业化推荐系统相关(3)-冷启动"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&title=工业化推荐系统相关(3)-冷启动"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&title=工业化推荐系统相关(3)-冷启动"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&title=工业化推荐系统相关(3)-冷启动"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&name=工业化推荐系统相关(3)-冷启动&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&t=工业化推荐系统相关(3)-冷启动"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%81%9A%E5%86%B7%E5%90%AF%E5%8A%A8"><span class="toc-number">1.</span> <span class="toc-text">为什么需要做冷启动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="toc-number">2.</span> <span class="toc-text">评价指标</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E8%80%85%E4%BE%A7%E6%8C%87%E6%A0%87"><span class="toc-number">2.1.</span> <span class="toc-text">作者侧指标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E4%BE%A7%E6%8C%87%E6%A0%87"><span class="toc-number">2.2.</span> <span class="toc-text">用户侧指标:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E4%BE%A7%E6%8C%87%E6%A0%87"><span class="toc-number">2.3.</span> <span class="toc-text">内容侧指标:</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%B7%E5%90%AF%E5%8A%A8%E6%B6%89%E5%8F%8A%E7%9A%84%E4%BC%98%E5%8C%96%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">冷启动涉及的优化点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AC%E5%9B%9E%E9%80%9A%E9%81%93%E5%86%B7%E5%90%AF%E5%8A%A8"><span class="toc-number">3.1.</span> <span class="toc-text">召回通道冷启动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#itemcf%E4%B8%8D%E5%86%8D%E9%80%82%E7%94%A8"><span class="toc-number">3.1.1.</span> <span class="toc-text">itemCF(不再适用)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%A1%94%E6%A8%A1%E5%9E%8B%E9%9C%80%E8%A6%81%E6%94%B9%E8%BF%9B"><span class="toc-number">3.1.2.</span> <span class="toc-text">双塔模型(需要改进)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E5%8F%AC%E5%9B%9E%E6%B1%A0"><span class="toc-number">3.1.2.1.</span> <span class="toc-text">多召回池</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E7%9B%AE%E5%8F%AC%E5%9B%9E%E4%BB%A5%E5%8F%8A%E5%85%B3%E9%94%AE%E8%AF%8D%E5%8F%AC%E5%9B%9E"><span class="toc-number">3.1.3.</span> <span class="toc-text">类目召回以及关键词召回</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E7%B1%BB%E5%8F%AC%E5%9B%9E"><span class="toc-number">3.1.4.</span> <span class="toc-text">聚类召回</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#look-alike%E5%8F%AC%E5%9B%9E"><span class="toc-number">3.1.5.</span> <span class="toc-text">Look-Alike召回</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E8%B0%83%E6%8E%A7"><span class="toc-number">3.2.</span> <span class="toc-text">流量调控</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        工业化推荐系统相关(3)-冷启动
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-20T08:42:22.000Z" class="dt-published" itemprop="datePublished">2024-06-20</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/ML-Recommender-System/">ML Recommender System</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>UGC平台中用户可以自由发表内容, 如何对最新的内容做推荐就涉及到冷启动问题, UGC比PGC更难做冷启动, 因为内容量大且差异大.</p>
+<p>出发的角度主要分为三部分: 用户侧(推荐), 作者侧(激励), 高热内容(发掘).</p>
+<h1 id="为什么需要做冷启动">为什么需要做冷启动</h1>
+<p>三方面原因:</p>
+<ol type="1">
+<li>正常物品可以依赖用户点击信息作推荐, 而新发表内容缺少用户交互信息, 所以需要做特殊处理.<br />
+</li>
+<li>对新发表内容做扶持可以增强作者发布意愿.<br />
+</li>
+<li>为了发掘有潜力的内容</li>
+</ol>
+<p>所以冷启动的目标就是:</p>
+<ol type="1">
+<li>精准推荐: 克服冷启动的困难, 把新内容推荐给用户的同时尽量保证不引起用户的反感.<br />
+</li>
+<li>激励发布: 向低曝光的新物品倾斜流量, 从而激励作者的发布意愿.<br />
+</li>
+<li>挖掘高潜: 小流量试探, 找到高质量的内容推荐给用户, 给予一部分流量倾斜.</li>
+</ol>
+<h1 id="评价指标">评价指标</h1>
+<h2 id="作者侧指标">作者侧指标</h2>
+<p>主要包括发布渗透率, 人均发布量</p>
+<p>发布渗透率 = 当日发布人数 / 日活人数. (发布一篇以上都算一个发布人数.)</p>
+<p>人均发布量 = 当日发布笔记数 / 日活人数</p>
+<p>这些指标反映了作者发布积极性, 冷启的目标是促进发布从而扩大内容池.</p>
+<p>新发布内容曝光越多, 交互越多, 作者积极性就更高.</p>
+<h2 id="用户侧指标">用户侧指标:</h2>
+<p>包括两个方面:</p>
+<ol type="1">
+<li>新笔记指标: 点击率, 交互率<br />
+</li>
+<li>大盘指标: 消费时长, 日活, 月活</li>
+</ol>
+<p>对于新笔记而言, 还是存在头部效应, 少量热门笔记会占据大多数曝光, 因此做推荐的时候最好进行分类考虑, 比如将高曝光笔记和低曝光笔记分开看, 高曝光笔记交互充足, 不需要冷启动也能推荐得好; 而低曝光笔记交互信息少, 推荐不够准, 因此需要特殊处理.</p>
+<p>而对于大盘指标, 我们要做的就是做好作者侧激励的同时保证大盘指标的稳定.(过于扶持新用户会导致大盘指标降低, 而只关注大盘指标又很难扶持新用户).</p>
+<h2 id="内容侧指标">内容侧指标:</h2>
+<p>主要是高热笔记占比. 高热笔记占比越高, 说明冷启动挖掘优质笔记的能力越强, 即内容侧推荐做得越好.</p>
+<h1 id="冷启动涉及的优化点">冷启动涉及的优化点</h1>
+<ol type="1">
+<li>优化全链路(召回, 排序)<br />
+</li>
+<li>流量调控(流量如何在新老物品之间分配)</li>
+</ol>
+<h2 id="召回通道冷启动">召回通道冷启动</h2>
+<p>冷启动召回和传统召回有相同点也有不同点.</p>
+<p><strong>相同点:</strong></p>
+<ol type="1">
+<li>自带图片, 文字, 地点等.<br />
+</li>
+<li>有算法或者人工标注的标签.</li>
+</ol>
+<p><strong>不同:</strong></p>
+<ol type="1">
+<li>没有点击信息.<br />
+</li>
+<li>缺少embedding信息(embedding一般是从用户和物品交互的过程中学习的, 而这里并没有学习到embedding信息).</li>
+</ol>
+<h3 id="itemcf不再适用">itemCF(不再适用)</h3>
+<p>因此, 从这里可以看出, 由于缺少点击信息, itemCF不能够使用(itemCF:用户对物品j的喜欢程度可以通过用户对i的喜爱程度和物品ij之间的相似度来表示, 其中相似度由共同喜欢两个物品的用户数参与计算, 而新物品并没有交互信息, 因此itemCF不适用).</p>
+<p><del>不过个人感觉似乎强行要用也不是不行, 相似度可以使用多模态模型获取图片文字信息, 然后不同笔记做内容相似度计算, 再通过用户喜欢过的笔记来寻找相似的新发布笔记做推荐. 可能工业界有自己的考量所以并不这么做.</del> 即聚类召回.</p>
+<h3 id="双塔模型需要改进">双塔模型(需要改进)</h3>
+<p>与此同时, 双塔模型我们又需要物品的embedding信息才能使用, 而这里我们看到其实是缺少embedding信息的, 所以我们需要对双塔模型进行修改, 具体的有两种方式.</p>
+<ol type="1">
+<li>新笔记使用default embedding.</li>
+</ol>
+<p>物品塔做推荐的时候让所有新笔记共享一个default embedding并用default embedding进行训练, 下一次训练再用训练好的embedding.</p>
+<ol start="2" type="1">
+<li>使用相似物品的embedding.</li>
+</ol>
+<p>多模态模型获取图文内容表征为一个向量, 查找topk内容最相似的高曝光笔记(高曝光笔记的embedding学的更好, 所以优先使用), 然后得到的k个向量取平均即为新笔记的embedding.</p>
+<h4 id="多召回池">多召回池</h4>
+<p>对于新物品我们可以设置多个召回池, 从而让笔记有<strong>更多曝光机会</strong>.</p>
+<p>比如我们分:</p>
+<ul>
+<li>1小时新笔记<br />
+</li>
+<li>6小时新笔记<br />
+</li>
+<li>24小时新笔记<br />
+</li>
+<li>30天老笔记</li>
+</ul>
+<p>召回池可以独立区分不同时长的笔记, 即1小时新笔记中我们必定会曝光其中一部分, 而不是说1小时新笔记和30天笔记混一起然后可能1小时新笔记一篇都没曝光.</p>
+<p>然后就是多召回池使用的是同一个双塔模型, 所以并不增加训练代价.</p>
+<h3 id="类目召回以及关键词召回">类目召回以及关键词召回</h3>
+<p>各个做推荐的公司都会记录用户的画像, 画像记录了用户感兴趣的类目和关键词.</p>
+<p>做类目召回: 即系统维护一份类目到笔记的索引, 然后按照发布时间倒排(鼓励新笔记), 最后按照相应的索引召回笔记.</p>
+<p>关键词召回和类目召回完全相似.</p>
+<p><strong>缺点</strong>:</p>
+<ol type="1">
+<li>只对新发布的笔记有效: 因为只取回类目/关键词下面的最新的笔记, 一旦过了几个小时就再也没有机会召回.<br />
+</li>
+<li>若个性化, 不够精准.</li>
+</ol>
+<p>缺点虽然明显, 但是还是很重要, 尤其对于促进作者发布的积极性.</p>
+<h3 id="聚类召回">聚类召回</h3>
+<p><strong>思路:</strong> 如果用户喜欢一篇笔记, 那么用户还可能喜欢与这篇笔记内容相似的笔记.</p>
+<p><strong>做法:</strong></p>
+<ol type="1">
+<li><p>事先训练一个神经网络, 基于笔记的图文内容将笔记映射到向量, 然后对笔记向量做聚类, 比如我们分出1000个cluster(K-Mean, 相似度可以用余弦相似度), 然后记录下每个cluster的中心.</p></li>
+<li><p>从1000个中心向量里面找出最相似的向量作为新笔记的cluster.</p></li>
+<li><p>把新笔记添加到cluster上, cluster到笔记列表是建立了索引的(按时间倒排).</p></li>
+<li><p><strong>召回:</strong> 给定用户id, 找到用户的lastN交互, 然后将这些作为种子, 找到用户对哪些cluster感兴趣, 然后再从cluster中取回最新的m篇笔记. 最多共有m*n篇被召回.</p></li>
+</ol>
+<p><strong>图文转向量的模型</strong>:</p>
+<p><img src="CNN+Bert.png" /></p>
+<p>非常直观的CNN + Bert + FC层. 其中CNN和Bert都可以是预训练模型加上Finetuning, fc随机化权重然后进行学习.</p>
+<p>学习过程中网络输出正样本笔记b+, 种子笔记a和负样本笔记b-, 然后我们鼓励 cosine(a, b+) &gt; cosine(a, b-). 比如我们可以用triplet hinge loss, 或者triplet logistic loss.</p>
+<p><strong>正负样本选择</strong>:</p>
+<p>正样本:</p>
+<ol type="1">
+<li>使用人工标注的二元组的相似度.(代价大)<br />
+</li>
+<li>算法自动选择正样本.</li>
+</ol>
+<p>筛选条件:</p>
+<ul>
+<li>只用高曝光笔记作为二元组(充足的用户交互信息, 算法选的会比较准).<br />
+</li>
+<li>相同二级类目进行筛选, 从而避免完全不相关类目.<br />
+</li>
+<li>最后用itemCF来进行筛选.</li>
+</ul>
+<p>负样本:</p>
+<p>全体笔记里面选, 只要字数相对多, 笔记质量高, 避免图文无关即可.</p>
+<h3 id="look-alike召回">Look-Alike召回</h3>
+<p>Look-Alike起源于互联网广告, 即物品i的目标用户构成集合U, 那么所有和集合U内部用户相似的用户也可以被推荐.(个人理解类似userCF).</p>
+<p>如果用户u对新发布的笔记有点击点赞收藏转发的行为, 则表示用户u对新笔记感兴趣, 那么我们就可以把用户u记为种子用户, 从而我们可以将新笔记推荐给所有与用户u相似的用户.</p>
+<p>具体我们可以将种子用户的特征向量(可以复用双塔模型的用户向量)取均值得到一个向量, 将其作为新笔记的特征向量. (本质为使用相似用户的向量作为物品的特征, 方便后续做最近邻查找来召回)</p>
+<p>这个向量需要做近线更新, 即不需要实时更新, 但是还是需要做分钟级更新. 每当有新的交互用户, 就需要将新用户的向量加入平均来更新向量.</p>
+<p>然后实际场合我们需要将新笔记向量加入向量数据库, 然后每当用户刷新一下软件, 我们就对用户向量(复用双塔)做最近邻查找, 然后最近邻查找的返回就是Look-Alike的召回结果.</p>
+<h2 id="流量调控">流量调控</h2>
+<p>TODO</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%81%9A%E5%86%B7%E5%90%AF%E5%8A%A8"><span class="toc-number">1.</span> <span class="toc-text">为什么需要做冷启动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="toc-number">2.</span> <span class="toc-text">评价指标</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E8%80%85%E4%BE%A7%E6%8C%87%E6%A0%87"><span class="toc-number">2.1.</span> <span class="toc-text">作者侧指标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E4%BE%A7%E6%8C%87%E6%A0%87"><span class="toc-number">2.2.</span> <span class="toc-text">用户侧指标:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E4%BE%A7%E6%8C%87%E6%A0%87"><span class="toc-number">2.3.</span> <span class="toc-text">内容侧指标:</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%B7%E5%90%AF%E5%8A%A8%E6%B6%89%E5%8F%8A%E7%9A%84%E4%BC%98%E5%8C%96%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">冷启动涉及的优化点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AC%E5%9B%9E%E9%80%9A%E9%81%93%E5%86%B7%E5%90%AF%E5%8A%A8"><span class="toc-number">3.1.</span> <span class="toc-text">召回通道冷启动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#itemcf%E4%B8%8D%E5%86%8D%E9%80%82%E7%94%A8"><span class="toc-number">3.1.1.</span> <span class="toc-text">itemCF(不再适用)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%A1%94%E6%A8%A1%E5%9E%8B%E9%9C%80%E8%A6%81%E6%94%B9%E8%BF%9B"><span class="toc-number">3.1.2.</span> <span class="toc-text">双塔模型(需要改进)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E5%8F%AC%E5%9B%9E%E6%B1%A0"><span class="toc-number">3.1.2.1.</span> <span class="toc-text">多召回池</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E7%9B%AE%E5%8F%AC%E5%9B%9E%E4%BB%A5%E5%8F%8A%E5%85%B3%E9%94%AE%E8%AF%8D%E5%8F%AC%E5%9B%9E"><span class="toc-number">3.1.3.</span> <span class="toc-text">类目召回以及关键词召回</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E7%B1%BB%E5%8F%AC%E5%9B%9E"><span class="toc-number">3.1.4.</span> <span class="toc-text">聚类召回</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#look-alike%E5%8F%AC%E5%9B%9E"><span class="toc-number">3.1.5.</span> <span class="toc-text">Look-Alike召回</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E8%B0%83%E6%8E%A7"><span class="toc-number">3.2.</span> <span class="toc-text">流量调控</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&text=工业化推荐系统相关(3)-冷启动"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&title=工业化推荐系统相关(3)-冷启动"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&is_video=false&description=工业化推荐系统相关(3)-冷启动"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=工业化推荐系统相关(3)-冷启动&body=Check out this article: http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&title=工业化推荐系统相关(3)-冷启动"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&title=工业化推荐系统相关(3)-冷启动"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&title=工业化推荐系统相关(3)-冷启动"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&title=工业化推荐系统相关(3)-冷启动"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&name=工业化推荐系统相关(3)-冷启动&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/20/%E5%B7%A5%E4%B8%9A%E5%8C%96%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/&t=工业化推荐系统相关(3)-冷启动"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
