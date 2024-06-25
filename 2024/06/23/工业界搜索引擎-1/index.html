@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="搜索引擎更像是NLP和推荐系统的结合, 在这之前我在两边都有一些基础, 所以这里再来学习一下搜推里面的搜索相关. Background data  文档点击: 文档曝光之后用户有点击.  文档点击率: 文档点击总次数&#x2F;文档曝光总次数. (10%左右) 查询词点击: 用户对搜索引擎返回的文档有点击.  查询词点击率(有点比): 查询次点击总次数&#x2F;搜索总次数. (70%左右) 查询词首屏点击: 用户点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工业界搜索引擎-1">
+<meta property="og:url" content="http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="搜索引擎更像是NLP和推荐系统的结合, 在这之前我在两边都有一些基础, 所以这里再来学习一下搜推里面的搜索相关. Background data  文档点击: 文档曝光之后用户有点击.  文档点击率: 文档点击总次数&#x2F;文档曝光总次数. (10%左右) 查询词点击: 用户对搜索引擎返回的文档有点击.  查询词点击率(有点比): 查询次点击总次数&#x2F;搜索总次数. (70%左右) 查询词首屏点击: 用户点">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/content_quality.png">
+<meta property="article:published_time" content="2024-06-23T05:42:22.000Z">
+<meta property="article:modified_time" content="2024-06-25T14:46:19.913Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/content_quality.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>工业界搜索引擎-1</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/06/20/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3-3-%E5%86%B7%E5%90%AF%E5%8A%A8/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&text=工业界搜索引擎-1"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&title=工业界搜索引擎-1"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&is_video=false&description=工业界搜索引擎-1"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=工业界搜索引擎-1&body=Check out this article: http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&title=工业界搜索引擎-1"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&title=工业界搜索引擎-1"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&title=工业界搜索引擎-1"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&title=工业界搜索引擎-1"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&name=工业界搜索引擎-1&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&t=工业界搜索引擎-1"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#background"><span class="toc-number">1.</span> <span class="toc-text">Background</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#data"><span class="toc-number">1.1.</span> <span class="toc-text">data</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%82%E6%90%9C%E5%92%8C%E9%80%9A%E6%90%9C"><span class="toc-number">1.2.</span> <span class="toc-text">垂搜和通搜</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9E%82%E6%90%9C"><span class="toc-number">1.2.1.</span> <span class="toc-text">垂搜</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E6%90%9C"><span class="toc-number">1.2.2.</span> <span class="toc-text">通搜</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%BB%A1%E6%84%8F%E5%BA%A6"><span class="toc-number">1.3.</span> <span class="toc-text">用户满意度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7"><span class="toc-number">1.3.1.</span> <span class="toc-text">相关性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E8%B4%A8%E9%87%8F"><span class="toc-number">1.3.2.</span> <span class="toc-text">内容质量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E7%AB%99%E5%92%8C%E4%BD%9C%E8%80%85%E7%9A%84%E8%B4%A8%E9%87%8F"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">网站和作者的质量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E8%B4%A8%E9%87%8F"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">文本质量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-number">1.3.3.</span> <span class="toc-text">时效性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AA%81%E5%8F%91%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">突发时效性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">一般时效性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%A8%E6%9C%9F%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">周期时效性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AA%E6%80%A7%E5%8C%96"><span class="toc-number">1.3.4.</span> <span class="toc-text">个性化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#todo"><span class="toc-number">2.</span> <span class="toc-text">TODO</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        工业界搜索引擎-1
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-23T05:42:22.000Z" class="dt-published" itemprop="datePublished">2024-06-23</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/ML-Search-Engine/">ML Search Engine</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>搜索引擎更像是NLP和推荐系统的结合, 在这之前我在两边都有一些基础, 所以这里再来学习一下搜推里面的搜索相关.</p>
+<h1 id="background">Background</h1>
+<h2 id="data">data</h2>
+<ul>
+<li><p>文档点击: 文档曝光之后用户有点击.<br />
+</p></li>
+<li><p>文档点击率: 文档点击总次数/文档曝光总次数. (10%左右)</p></li>
+<li><p>查询词点击: 用户对搜索引擎返回的文档有点击.<br />
+</p></li>
+<li><p>查询词点击率(有点比): 查询次点击总次数/搜索总次数. (70%左右)</p></li>
+<li><p>查询词首屏点击: 用户点击搜索结果页首屏的任意文档就算"查询词首屏点击".<br />
+</p></li>
+<li><p>查询词首屏点击率(首屏有点比): 查询词首屏点击率/搜索总次数. (60%左右)</p></li>
+</ul>
+<p>在对搜索引擎的评价指标里面, 有点比会比文档点击率更重要.</p>
+<h2 id="垂搜和通搜">垂搜和通搜</h2>
+<h3 id="垂搜">垂搜</h3>
+<p>垂搜即针对某个行业的搜索引擎, 比如:</p>
+<ul>
+<li>电商: 淘宝, 京东, amazon等<br />
+</li>
+<li>学术: Google Scholar, 知网等<br />
+</li>
+<li>本地生活: 美团, 饿了吗, 大众点评等<br />
+</li>
+<li>酒店机票: Booking, 美团, 携程, 东航等<br />
+</li>
+<li>招聘: LinkedIn, Boss直聘等</li>
+</ul>
+<p>垂搜的文档相对结构化:</p>
+<p>比如电商可以限定品牌, 卖家, 价格, 颜色等; 学术可以指定关键词, 作者, 期刊, 年份等.</p>
+<p>同时垂搜一般用户目的明确:</p>
+<p>比如饿了吗搜火锅肯定是找火锅店, 如果Boss直聘搜火锅则是找餐饮行业的工作相关.</p>
+<h3 id="通搜">通搜</h3>
+<ul>
+<li><p>覆盖面广, 并不限单个领域, 比如: Google, Baidu, 必应, 抖音等</p></li>
+<li><p>在这些搜索引擎中, 文档来源广, 覆盖面大(比如google就会提供链接, 图片, 视频, 新闻等相关信息作为返回).</p></li>
+<li><p>没有结构化信息, 检索难度很大.</p></li>
+<li><p>用户使用通搜的目的不同, 很难判断用户的目的.</p></li>
+</ul>
+<h2 id="用户满意度">用户满意度</h2>
+<p>对于搜索引擎至关重要, 只有了解了用户对搜索引擎的评判标准我们才能更好地设计和改进搜索引擎.</p>
+<p>业界的共识: 相关性, 内容质量, 时效性是影响用户满意度的三大因素.</p>
+<p>对某些搜素引擎而言: 个性化, 地域性也会影响用户满意度.</p>
+<p>通用搜索引擎迭代优化的目标是让用户更满意.</p>
+<h3 id="相关性">相关性</h3>
+<ul>
+<li>相关性是查询词q和文档d两者的关系.<br />
+</li>
+<li>相关性是<strong>客观标准</strong>, 不取决于用户.(大多数有背景知识的人认为相关则判定为相关)<br />
+</li>
+<li>相关性是语义上的而不是字面上的.(相关即d能够满足q的需求或提问, 而不一定必须包含q)<br />
+</li>
+<li>q可能有多重含义, 而d只需要命中其中一种主要意图, 则可以算作(q, d)相关.</li>
+</ul>
+<p>搜索引擎和推荐系统链路类似, 也有召回,粗排,精排.</p>
+<p>召回完成之后, 候选文档量级为数万, 召回海选阶段用文本匹配分数或者双塔bert等模型粗略计算相关性.</p>
+<p>粗排阶段候选文档数量为数千, 可以用双塔bert模型或者浅层交叉bert模型计算相关性.</p>
+<p>精排阶段候选文档量级为百, 可以用交叉bert计算相关性.</p>
+<h3 id="内容质量">内容质量</h3>
+<h4 id="网站和作者的质量">网站和作者的质量</h4>
+<p>主要评判标准为Google提出的EAT.</p>
+<ul>
+<li>专业性(Expertise): 作者是否有专业资格, 比如搜治病相关, 搜索引擎给的回答是否是来自医生的回答.<br />
+</li>
+<li>权威性(Authoritativeness): 作者或者网站机构是否具有权威性, 不会被用户质疑, 比如你搜某个学校, 搜索引擎给你的应该是学校的官网,学校的Twitter或者wiki, 而不应该是留学中介.<br />
+</li>
+<li>可信赖(Trustworthiness): 作者或者网站的名声, 比如找某个诊所, 那么google地图,或者大众点评这种平台上面的评价都是可以信任的评价.</li>
+</ul>
+<p>EAT在排序阶段也可以作为重要因子, 比如对于your money or your life这类query.</p>
+<p><strong>Your Money</strong>:<br />
+- 金融理财(保险, 投资, 保税, 贷款, 转账).<br />
+- 电商, 购物.</p>
+<p><strong>Your Life</strong>:<br />
+- 医疗健康(诊断建议, 用药建议, 医院介绍等)<br />
+- 法律等严肃主题(诉讼, 移民, 选举, 离婚, 收养)<br />
+- 对人生有重大影响的主题(高考, 择校, 出国, 就业)</p>
+<p>对于这类问题, 搜索引擎应该给EAT很高的权重, 否则的话搜索引擎不仅仅在影响用户的体验和主观感受, 甚至会危害社会.</p>
+<p>传统网络挖掘里面的PageRank的打分策略其实是基于网站之间的链接关系, 网站链接得越多分数就越高, 这其实也是一种权威性打分的例子.</p>
+<h4 id="文本质量">文本质量</h4>
+<p><strong>文字的质量</strong>: 文章写得好不好</p>
+<ul>
+<li>文章的价值: 文章是否清晰, 全面, 事实是否准确, 信息是否有用.<br />
+</li>
+<li>作者的态度和水平: 写作是否认真, 写作的专业程度, 写作的技巧等.</li>
+</ul>
+<p>然后针对用户不同的目的, 文本质量判定都有所不同:</p>
+<p>比如我要找宠物饲养, 那么注意事项是否讲解清楚, 是否事实正确, 对作者是否有价值就是判定点; 我要找笑话, 那么笑话是否新颖好笑就是判定点; 我要找影评, 那么影评是否清晰全面有深度就是判定点.</p>
+<p><strong>文章的意图</strong>: 文章的目的是有利的还是有害的</p>
+<p>比如一篇文章目的是诈骗, 那么哪怕它写得再好它也是有害的.</p>
+<ul>
+<li>有利的: 分享有用的知识, 攻略, 亲身经历等.<br />
+</li>
+<li>有害的: 虚假信息, 广告, 散播仇恨, 男女对立等.</li>
+</ul>
+<p>标题党, 图文不一致, 虚假引流标签, 堆叠关键词等. 这些按一般常理来说是应该被判定为低质量并被搜索引擎打压的.</p>
+<p><img src="content_quality.png" /></p>
+<p><strong>需要注意文本质量不是一个分数, 而是很多个分数</strong>, 它们一起在搜索引擎里起作用.</p>
+<p>对于其中每一个文本质量分数, 都有一个专门训练的模型, 比如BERT等NLP模型, CLIP等多模态模型.</p>
+<p>然后文本分数都是静态的, 算一次即可, 在文章发布的时候或者检索的时候打分然后分数存入文档画像, 在之后搜索排序的时候直接从画像中读取分数即可.</p>
+<h3 id="时效性">时效性</h3>
+<p>文档的年龄在排序中有多大作用? 这个很大程度取决于查询词. 时效性一般被分类为: 突发时效性, 一般时效性(强/中/弱/无), 周期时效性.</p>
+<ul>
+<li>query = "最新房贷政策", "美元汇率" 这种就需要很强的时效性<br />
+</li>
+<li>query = "泰国旅游"这种类似的旅游餐饮行业就不需要很强的时效性, 但最好也是1年内的.<br />
+</li>
+<li>query = "搞笑萌宠"这种宠物相关, 又或者是疾病相关这种知识性的信息就完全不需要时效性</li>
+</ul>
+<p>搜索引擎主要用数据挖掘和语义模型来识别时效性意图.</p>
+<h4 id="突发时效性">突发时效性</h4>
+<p>查询词涉及突发的新闻和热点事件. 如果查询词带有突发时效性, 那么用户大概率想看到最新的文档.</p>
+<p>比如德国足球一般时间被搜索可能是用户想要了解德国足球的现状, 如果欧洲杯期间被搜索肯定是大家想要了解最新的资讯. 又比如用户一般情况搜索明星大概率是想要了解这个梦想是谁做了什么事, 如果明星被爆出新闻用户再去搜那大概率是想看新闻相关.</p>
+<p>识别的方法: 数据挖掘为主.</p>
+<ul>
+<li>挖掘站内搜索量激增的查询词(明星被爆出新闻, 肯定很多人去搜, 就会被数据挖掘系统检测到).<br />
+</li>
+<li>挖掘站内发布量激增的关键词(出了某个大新闻, 肯定很多人会发布相关资讯赚流量, 就会导致发布内容大量包含关键词, 从而可以被检测到).<br />
+</li>
+<li>爬取其他网站的热词(比如获取微博热搜, 搜索引擎就能知道最近什么东西收到用户的关注).</li>
+</ul>
+<p>人不可以预知未来, 所以这种信息人也无从判断, 因此深度学习模型不管用(比如bert), 数据挖掘的方式为首选.</p>
+<h4 id="一般时效性">一般时效性</h4>
+<p>只看查询词字面就可以判断时效性强弱, 一般被分为(强/中/弱/无)四档.</p>
+<p>例: 某品牌薅羊毛, 黄金价格(强), 楼市新闻(中), 在美国更新中国护照, 相机测评(弱), 苏联笑话, 82版射雕(无).</p>
+<p>这种信息人自身也能通过语义和常识判断, 所以我们也可以用语义模型进行判断. 即可以使用bert</p>
+<h4 id="周期时效性">周期时效性</h4>
+<p>在某个周期里面的特定时间表现出突发时效性, 其他时间无时效性.</p>
+<p>比如高考, 春晚等.</p>
+<p>可以不做处理, 一旦表现出了突发时效性会被数据挖掘检索到. 不过不做周期时效性特殊处理会导致系统慢半拍.</p>
+<p>优化点可以是数据挖掘出周期时效性然后做相应处理.</p>
+<h3 id="个性化">个性化</h3>
+<p>不同用户可能有不同的偏好, 搜索引擎可以根据用户的特征做排序.</p>
+<p>可以用<strong>预估点击率和交互率</strong>来衡量用户对文档的偏好, 即个性化.</p>
+<p>最终模型会结合相关性, 内容质量, 时效性以及个性化等信息对候选文档进行排序.</p>
+<p>个性化这个信息会在<strong>宽泛信息查询</strong>的时候很有用.</p>
+<ul>
+<li><p>查询词越宽泛, 就越需要个性化(查询宽泛, 返回的量就大, 比如搜索"头像", 其中只有小部分是用户感兴趣的; 如果查找精确, 那么信息大概率是用户感兴趣的, 比如"权力的游戏龙妈头像", 这种就可以不需要个性化).</p></li>
+<li><p>预估点击率和交互率(即个性化)也有利于相关性和内容质量的提升.</p>
+<ul>
+<li>相关且高质量的文档更容易被点击.<br />
+</li>
+<li>与bert等语义模型互补, 可以解决bad case的问题(如果搜索引擎返回bad case, 模型会判断返回具有低点击率可能, 从而pass掉).<br />
+</li>
+<li>即使非个性化排序, 点击率和交互率也有助于提升排序效果.</li>
+</ul></li>
+</ul>
+<h1 id="todo">TODO</h1>
+<p>参考<a target="_blank" rel="noopener" href="https://space.bilibili.com/1369507485">ShusenWang</a>的视频</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#background"><span class="toc-number">1.</span> <span class="toc-text">Background</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#data"><span class="toc-number">1.1.</span> <span class="toc-text">data</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%82%E6%90%9C%E5%92%8C%E9%80%9A%E6%90%9C"><span class="toc-number">1.2.</span> <span class="toc-text">垂搜和通搜</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9E%82%E6%90%9C"><span class="toc-number">1.2.1.</span> <span class="toc-text">垂搜</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E6%90%9C"><span class="toc-number">1.2.2.</span> <span class="toc-text">通搜</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%BB%A1%E6%84%8F%E5%BA%A6"><span class="toc-number">1.3.</span> <span class="toc-text">用户满意度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7"><span class="toc-number">1.3.1.</span> <span class="toc-text">相关性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E8%B4%A8%E9%87%8F"><span class="toc-number">1.3.2.</span> <span class="toc-text">内容质量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E7%AB%99%E5%92%8C%E4%BD%9C%E8%80%85%E7%9A%84%E8%B4%A8%E9%87%8F"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">网站和作者的质量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E8%B4%A8%E9%87%8F"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">文本质量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-number">1.3.3.</span> <span class="toc-text">时效性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AA%81%E5%8F%91%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">突发时效性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">一般时效性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%A8%E6%9C%9F%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">周期时效性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AA%E6%80%A7%E5%8C%96"><span class="toc-number">1.3.4.</span> <span class="toc-text">个性化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#todo"><span class="toc-number">2.</span> <span class="toc-text">TODO</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&text=工业界搜索引擎-1"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&title=工业界搜索引擎-1"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&is_video=false&description=工业界搜索引擎-1"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=工业界搜索引擎-1&body=Check out this article: http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&title=工业界搜索引擎-1"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&title=工业界搜索引擎-1"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&title=工业界搜索引擎-1"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&title=工业界搜索引擎-1"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&name=工业界搜索引擎-1&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/06/23/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-1/&t=工业界搜索引擎-1"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
