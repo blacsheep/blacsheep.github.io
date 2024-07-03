@@ -14,8 +14,9 @@
 <meta property="og:description" content="定义与分档 工业界做搜索相关性的流程一般为:  指定相关性标注规则 -&gt; 人工标注数据 -&gt; 做监督学习训练模型 -&gt; 部署到线上做推理  数据很关键, 很多算法层面的优化对比与更多的数据支持, 数据支持会非常容易地使指标涨很多. 数据 指定标注规则  一般是搜索产品和搜索算法团队来制定相关性标注的规则.  人为将(q, d) 之间的相关性划分为4个或5个档位.  相关性分档规则">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2024/07/01/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-2-%E7%9B%B8%E5%85%B3%E6%80%A7/relevance.png">
+<meta property="og:image" content="http://example.com/2024/07/01/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-2-%E7%9B%B8%E5%85%B3%E6%80%A7/pnr.png">
 <meta property="article:published_time" content="2024-07-01T00:39:50.000Z">
-<meta property="article:modified_time" content="2024-07-01T07:10:30.235Z">
+<meta property="article:modified_time" content="2024-07-03T09:39:32.545Z">
 <meta property="article:author" content="blacsheep">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2024/07/01/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-2-%E7%9B%B8%E5%85%B3%E6%80%A7/relevance.png">
@@ -130,7 +131,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%8E%E5%88%86%E6%A1%A3"><span class="toc-number">1.</span> <span class="toc-text">定义与分档</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.</span> <span class="toc-text">数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E6%A0%87%E6%B3%A8%E8%A7%84%E5%88%99"><span class="toc-number">1.1.1.</span> <span class="toc-text">指定标注规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E6%B3%A8%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.2.</span> <span class="toc-text">标注数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">相关性相关问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E5%8C%B9%E9%85%8D"><span class="toc-number">1.2.1.</span> <span class="toc-text">需求匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%84%8F%E5%9B%BE"><span class="toc-number">1.2.2.</span> <span class="toc-text">多意图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E4%BD%8D%E8%AF%8D%E5%92%8C%E4%B8%8B%E4%BD%8D%E8%AF%8D"><span class="toc-number">1.2.3.</span> <span class="toc-text">上位词和下位词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A2%E8%AF%8D%E5%88%A4%E5%AE%9A"><span class="toc-number">1.2.4.</span> <span class="toc-text">丢词判定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E6%A0%87%E6%B3%A8%E5%BA%94%E8%AF%A5%E4%BB%85%E8%80%83%E8%99%91%E7%9B%B8%E5%85%B3%E6%80%A7"><span class="toc-number">1.2.5.</span> <span class="toc-text">相关性标注应该仅考虑相关性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="toc-number">2.</span> <span class="toc-text">评价指标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E5%8C%B9%E9%85%8D"><span class="toc-number">3.</span> <span class="toc-text">文本匹配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bert%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">BERT模型</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%8E%E5%88%86%E6%A1%A3"><span class="toc-number">1.</span> <span class="toc-text">定义与分档</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.</span> <span class="toc-text">数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E6%A0%87%E6%B3%A8%E8%A7%84%E5%88%99"><span class="toc-number">1.1.1.</span> <span class="toc-text">指定标注规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E6%B3%A8%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.2.</span> <span class="toc-text">标注数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">相关性相关问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E5%8C%B9%E9%85%8D"><span class="toc-number">1.2.1.</span> <span class="toc-text">需求匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%84%8F%E5%9B%BE"><span class="toc-number">1.2.2.</span> <span class="toc-text">多意图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E4%BD%8D%E8%AF%8D%E5%92%8C%E4%B8%8B%E4%BD%8D%E8%AF%8D"><span class="toc-number">1.2.3.</span> <span class="toc-text">上位词和下位词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A2%E8%AF%8D%E5%88%A4%E5%AE%9A"><span class="toc-number">1.2.4.</span> <span class="toc-text">丢词判定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E6%A0%87%E6%B3%A8%E5%BA%94%E8%AF%A5%E4%BB%85%E8%80%83%E8%99%91%E7%9B%B8%E5%85%B3%E6%80%A7"><span class="toc-number">1.2.5.</span> <span class="toc-text">相关性标注应该仅考虑相关性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="toc-number">2.</span> <span class="toc-text">评价指标</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#pointwiseauc"><span class="toc-number">2.1.</span> <span class="toc-text">pointwise(AUC)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pairwisepnr"><span class="toc-number">2.2.</span> <span class="toc-text">pairwise(PNR)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#listwisedcg"><span class="toc-number">2.3.</span> <span class="toc-text">listwise(DCG)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cgcumulative-gain"><span class="toc-number">2.3.1.</span> <span class="toc-text">CG(Cumulative Gain)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dcgdiscounted-cumulative-gain"><span class="toc-number">2.3.2.</span> <span class="toc-text">DCG(Discounted Cumulative Gain)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ndcg"><span class="toc-number">2.3.3.</span> <span class="toc-text">NDCG</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E5%8C%B9%E9%85%8D"><span class="toc-number">3.</span> <span class="toc-text">文本匹配</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E4%BB%A5%E5%8F%8A%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E9%93%BE%E8%B7%AF"><span class="toc-number">3.1.</span> <span class="toc-text">背景以及搜索引擎链路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E5%8C%B9%E9%85%8D%E5%88%86%E6%95%B0%E8%AF%8D%E9%A2%91%E5%8C%B9%E9%85%8D"><span class="toc-number">3.2.</span> <span class="toc-text">词匹配分数(词频匹配)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tf-idf"><span class="toc-number">3.2.1.</span> <span class="toc-text">tf-idf</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bm25okapi-best-match-25"><span class="toc-number">3.2.2.</span> <span class="toc-text">BM25(Okapi Best Match 25)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-number">3.2.3.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E8%B7%9D%E5%88%86%E6%95%B0term-proximity"><span class="toc-number">3.3.</span> <span class="toc-text">词距分数(term proximity)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#okatp"><span class="toc-number">3.3.1.</span> <span class="toc-text">OkaTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.3.2.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bert%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">BERT模型</span></a></li></ol>
       </div>
     
   </span>
@@ -247,9 +248,196 @@
 对于2这种算是时效性低, 但是相关性上也没有问题, 因此q和d算相关.</p>
 <p>总而言之, 相关性训练的数据应该只关注相关性, 一旦考虑了其他因素, 模型就得去学习其他繁杂的因素, 关注点就不再是纯相关性了, 效果可能就不好了.</p>
 <h1 id="评价指标">评价指标</h1>
-<p>TODO</p>
+<ul>
+<li>pointwise: 单独评价每一个(q,d)二元组, 判断预测的相关性分数和真实标签的相似度.<br />
+</li>
+<li>pairwise: 对比(q, d1)和(q, d2), 判断两者的顺序是否正确.<br />
+</li>
+<li>listwise: 对比(q, d1), (q, d2)...(q, dk), 判断前k的整体关系正确程度.</li>
+</ul>
+<p>流程:</p>
+<p><strong>离线</strong></p>
+<ol type="1">
+<li>实现标注数据, 划分训练集和测试集.<br />
+</li>
+<li>离线部分: 完成训练之后, 计算测试集的AUC和PNR.</li>
+</ol>
+<p><strong>线上评测</strong></p>
+<ul>
+<li>一个搜索session中, 对于用户搜索q, 搜索页面会出现文档d1, d2...dk.<br />
+</li>
+<li>我们首先从搜索记录中抽一批session, 其中覆盖高中低频的查询词.<br />
+</li>
+<li>对每个session, 我们取排序最高的k篇文档(k的取值依据用户平均浏览深度, 比如20).
+<ul>
+<li>由于高频查询词靠前文档指标过高, 我们就需要扩大k值(比如取k=40).<br />
+</li>
+<li>与之对比, 低频查询词就可以设置较小k, 比如k=20.<br />
+</li>
+</ul></li>
+<li>人工标注相关性分数, y1,y2...yk.(因为结果是线上实时结果, 所以只能等评估的时候人工标注; 每次评估都要标注, 所以一般作为月度评估.)<br />
+</li>
+<li>对于每一个session我们都会有一个DCG分数, 作为此session的评价指标.<br />
+</li>
+<li>对所有session的DCG取平均, 就可以来评价线上相关性模型.</li>
+</ul>
+<h2 id="pointwiseauc">pointwise(AUC)</h2>
+<ol type="1">
+<li>测试集相关性转化为二分类问题. 高,中两档合并记为标签1;低,无两档合并记为标签0.<br />
+</li>
+<li>相关性模型输出预测值 <code>$ p \in [0, 1] $</code>.<br />
+</li>
+<li>用AUC对模型进行评价.</li>
+</ol>
+<p>传统机器学习内容, 不多看了</p>
+<h2 id="pairwisepnr">pairwise(PNR)</h2>
+<ol type="1">
+<li>依据<strong>模型估计的相关性分数</strong>p对文档排序, 由于估计会出错, 所以真实相关性不一定降序.<br />
+</li>
+<li>假设我们有n个打分, 那么就存在 <code>$ C_n^2 $</code>个pair.<br />
+</li>
+<li>记算其中正序对数量和逆序对数量, <code>$ PNR = \frac&#123;正序对数量&#125;&#123;逆序对数量&#125; $</code>.</li>
+</ol>
+<p>存在问题: 即使PNR相同, 其内部排序其实还是可能存在问题. 比如下图中, 虽然PNR相同, 但是右边的预测结果就比左边要好, 这是因为右边结果中, 高相关文档排在了前面. 使用Listwise的判定指标也可以达到相似目的.</p>
+<p><img src="pnr.png" /></p>
+<h2 id="listwisedcg">listwise(DCG)</h2>
+<ol type="1">
+<li>依据模型估计的相关性分数p对文档降序排序, 把文档记作<code>$ d_1, d_2, ...d_n $</code>.<br />
+</li>
+<li>假设按这个排序之后, 真实相关性分数为<code>$ y_1, y_2, ...y_n $</code>.<br />
+</li>
+<li>理想情况: y1&gt;=y2&gt;=y3...&gt;=yn, 即预估顺序和真实顺序相同, 此时listwise指标最大化.(pairwise指标也是最大化)<br />
+</li>
+<li>假如出现逆序对, pairwise和listwise的指标都会下降; 假如已经存在逆序对, 逆序对出现前后对pairwise无影响, 但是对listwise有影响.</li>
+</ol>
+<h3 id="cgcumulative-gain">CG(Cumulative Gain)</h3>
+<p><span class="math display">\[
+CG@k = \sum_{i=1}^k y_i
+\]</span></p>
+<p>CG最大化的情况即相关性最高的k篇文档排在前面即可, 需注意交换前k篇文档的顺序不会改变CG, 这也是CG的缺点.</p>
+<p>缺点: CG没能关注前k篇文档的内部顺序.</p>
+<h3 id="dcgdiscounted-cumulative-gain">DCG(Discounted Cumulative Gain)</h3>
+<p>DCG相对CG的优化: 前面的文档更容易被用户看到, 所以它们理应更重要, 所以它们权重应该更大.</p>
+<p><span class="math display">\[
+DCG@k = \sum_{i=1}^k \frac{y_i}{log_2(i+1)}
+\]</span></p>
+<p>DCG的最优解必须保证前k篇文档在前面的同时, 前k篇文档内部顺序也得正确, 一旦前k出现逆序对, DCG指标都会下降.</p>
+<h3 id="ndcg">NDCG</h3>
+<p><span class="math display">\[
+NDCG@k = \frac{DCG@k}{IDCG@k}
+\]</span></p>
+<p>其中IDCG为最优DCG的取值, 因此NDCG永远在0和1之间.</p>
+<p>看起来做了归一化还不错, 但是却存在问题:</p>
+<p>比如:</p>
+<ul>
+<li>召回返回一批相关性极低的文档, 但是此时排序做的好, 因此NDCG可以很高, 比如0.95.<br />
+</li>
+<li>可是即使NDCG很好, 文档的相关性却很差, 即使说这其实是召回导致的结果, 并不是排序的问题.<br />
+</li>
+<li>与之对比, DCG的指标就可以反映出这个问题, 一旦全局相关性差, 通过DCG指标就可以看出, 而NDCG就看不到这种信息.</li>
+</ul>
+<p>因此: DCG可以看到最终结果的文档相关性; 而NDCG只能看到排序部分的结果有多趋近于最优排序, 即仅关注排序效果.</p>
 <h1 id="文本匹配">文本匹配</h1>
+<h2 id="背景以及搜索引擎链路">背景以及搜索引擎链路</h2>
+<p>在深度学习技术成熟以前, 当时搜索引擎只能用文本匹配来做相关性.</p>
+<p>无论召回还是排序, 都需要计算查询词和文档的相关性.</p>
+<ol type="1">
+<li>召回
+<ul>
+<li>打分量: 数万<br />
+</li>
+<li>模型: 文本匹配分 + 线性模型 或者 双塔bert(推理代价不大)<br />
+</li>
+</ul></li>
+<li>粗排
+<ul>
+<li>打分量: 数千<br />
+</li>
+<li>模型: 双塔bert或者单塔交叉bert<br />
+</li>
+</ul></li>
+<li>精排
+<ul>
+<li>打分量: 数百</li>
+<li>模型: 单塔交叉bert</li>
+</ul></li>
+</ol>
+<p>传统搜索引擎有几十种人工设计的文本匹配分数, 作为线性模型或者树的特征, 然后使用模型预测相关性.</p>
+<h2 id="词匹配分数词频匹配">词匹配分数(词频匹配)</h2>
+<h3 id="tf-idf">tf-idf</h3>
+<ol type="1">
+<li>tf-&gt;term frequency(词频): 即词t在文档d中出现的次数.</li>
+</ol>
+<ul>
+<li><p>存在问题1: 文档越长, tf越大, 这并不合理.<br />
+</p></li>
+<li><p>问题1解决方案: 取文档长度加权即可.</p></li>
+<li><p>存在问题2: 词频加权一视同仁, 比如一个文档中出现"the cat", "the"和"cat"会被同等对待. 然而"the"出现的频率非常高, 几乎所有文档里面都会出现, 与之对比, "cat"包含的信息量远大于"the". 所以理应给"cat"更高的权重.<br />
+</p></li>
+<li><p>问题2解决方案: 同时考虑idf</p></li>
+</ul>
+<ol start="2" type="1">
+<li>idf-&gt;inverse document frequency</li>
+</ol>
+<p>idf只取决于文档数据集</p>
+<p><span class="math display">\[
+idf_t = log\frac{N}{df_t}
+\]</span></p>
+<p>其中df_t为词t在多少文档里面出现过.</p>
+<p>对于人工智能论文, "深度学习"的idf就很小, 因为人工智能论文会高强度出现"深度学习";<br />
+与之对比, 维基百科里"深度学习"的idf就很大.</p>
+<p>idf衡量term重要性, idf越大就代表term越重要.</p>
+<ol start="3" type="1">
+<li>tf-idf</li>
+</ol>
+<p>两者结合就是tf-idf, 其形式有很多种, 比如</p>
+<p><span class="math display">\[
+TFIDF(q,d) = \sum_{t \in Q} \frac{tf_{t,d}}{l_d} \cdot idf_t
+\]</span></p>
+<p>又或者</p>
+<p><span class="math display">\[
+TFIDF(q,d) = \sum_{t \in Q} log(1+tf_{t,d}) \cdot idf_t
+\]</span></p>
+<h3 id="bm25okapi-best-match-25">BM25(Okapi Best Match 25)</h3>
+<p>tf-idf的一个变体.</p>
+<p><span class="math display">\[
+BM25 = \sum_{t \in Q} \frac{tf_{t,d} \cdot (k+1)}{tf_{t,d} + k \cdot (1 - b + b \cdot \frac{l_d}{mean(l_d)})} \cdot ln(1 + \frac{N-df_t+0.5}{df_t+0.5})
+\]</span></p>
+<p>其中l_d为文档长度, k,b为参数, 通常 <code>$ k \in [1.2, 2] $</code>, b=0.75.</p>
+<h3 id="缺点">缺点</h3>
+<p>tf-idf和BM25都隐含了词袋模型的假设, 即只考虑词频而不考虑上下文和词顺序.</p>
+<p>比如"黑/衬衫/白/裤子"和"白/裤子/黑/衬衫"就是完全一样的分数.</p>
+<p>LSA和LDA也类似.</p>
+<p>而最新的深度学习模型, 从久远的RNN到目前的BERT,GPT, 效果都远优于词袋模型.</p>
+<h2 id="词距分数term-proximity">词距分数(term proximity)</h2>
+<p>举例: Q = 亚马逊/雨林</p>
+<p>d = 我在亚马逊买了一本书, 介绍了东南亚热带雨林的...</p>
+<p>虽然Q和d文本匹配, 但是两者并不相关(q的需求没有得到满足)</p>
+<p>同样, 如果使用tf-idf或者BM25, 这些都会导致错误的结论.</p>
+<p><strong>解决方案</strong></p>
+<p>要避免这类错误, 就需要用到词距.</p>
+<p>词距: q中两个词在文档d中出现的位置间隔了多少个词; 词距越小, 则q和d越相关, 否则越不相关.</p>
+<h3 id="okatp">OkaTP</h3>
+<ol type="1">
+<li>记词t在文档d中出现的位置集合为O(t,d).<br />
+</li>
+<li>假设t出现在文档d的27,84,98几个位置, 则O(t,d) = {27,84,98}. 可以发现|O(t,d)| = tf(t,d)</li>
+</ol>
+<p>词距计算如下:</p>
+<p><span class="math display">\[
+tp(t,t&#39;,d) = \sum_{o \in O(t,d)}\sum_{o&#39; \in O(t&#39;, d)} \frac{1}{(o-o&#39;)^2}  
+\]</span></p>
+<p>查询词在文档中出现次数越多, 相距越近, 词句分tp(t,t',d)就越高</p>
+<p>OkaTP:</p>
+<p><span class="math display">\[
+OkaTP = \sum_{t,t&#39; \in Q, t \neq t&#39;} \frac{tp_{t,t&#39;,d} \cdot (k+1)}{tp_{t,t&#39;,d} + k \cdot (1 - b + b \cdot \frac{l_d}{mean(l_d)})} \cdot min(idf_t, idf_{t&#39;})
+\]</span></p>
+<p>OkaTP同时考虑了词频和词距, 是一个很好的匹配分数.</p>
+<h3 id="总结">总结</h3>
+<p>tf-idf, BM25等分数依据词频, tp等分数除了词频还考虑了词距, 是一步一步演变过来的, 但是依然远远比不上能够解决语义问题的深度学习模型.</p>
+<p>不过在召回的海选阶段, 文本匹配因为计算快, 可能还是可以有一定的使用.</p>
 <h1 id="bert模型">BERT模型</h1>
+<p>TODO</p>
 
   </div>
 </article>
@@ -279,7 +467,7 @@
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%8E%E5%88%86%E6%A1%A3"><span class="toc-number">1.</span> <span class="toc-text">定义与分档</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.</span> <span class="toc-text">数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E6%A0%87%E6%B3%A8%E8%A7%84%E5%88%99"><span class="toc-number">1.1.1.</span> <span class="toc-text">指定标注规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E6%B3%A8%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.2.</span> <span class="toc-text">标注数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">相关性相关问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E5%8C%B9%E9%85%8D"><span class="toc-number">1.2.1.</span> <span class="toc-text">需求匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%84%8F%E5%9B%BE"><span class="toc-number">1.2.2.</span> <span class="toc-text">多意图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E4%BD%8D%E8%AF%8D%E5%92%8C%E4%B8%8B%E4%BD%8D%E8%AF%8D"><span class="toc-number">1.2.3.</span> <span class="toc-text">上位词和下位词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A2%E8%AF%8D%E5%88%A4%E5%AE%9A"><span class="toc-number">1.2.4.</span> <span class="toc-text">丢词判定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E6%A0%87%E6%B3%A8%E5%BA%94%E8%AF%A5%E4%BB%85%E8%80%83%E8%99%91%E7%9B%B8%E5%85%B3%E6%80%A7"><span class="toc-number">1.2.5.</span> <span class="toc-text">相关性标注应该仅考虑相关性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="toc-number">2.</span> <span class="toc-text">评价指标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E5%8C%B9%E9%85%8D"><span class="toc-number">3.</span> <span class="toc-text">文本匹配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bert%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">BERT模型</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%8E%E5%88%86%E6%A1%A3"><span class="toc-number">1.</span> <span class="toc-text">定义与分档</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.</span> <span class="toc-text">数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E6%A0%87%E6%B3%A8%E8%A7%84%E5%88%99"><span class="toc-number">1.1.1.</span> <span class="toc-text">指定标注规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E6%B3%A8%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.2.</span> <span class="toc-text">标注数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">相关性相关问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E5%8C%B9%E9%85%8D"><span class="toc-number">1.2.1.</span> <span class="toc-text">需求匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%84%8F%E5%9B%BE"><span class="toc-number">1.2.2.</span> <span class="toc-text">多意图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E4%BD%8D%E8%AF%8D%E5%92%8C%E4%B8%8B%E4%BD%8D%E8%AF%8D"><span class="toc-number">1.2.3.</span> <span class="toc-text">上位词和下位词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A2%E8%AF%8D%E5%88%A4%E5%AE%9A"><span class="toc-number">1.2.4.</span> <span class="toc-text">丢词判定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E6%A0%87%E6%B3%A8%E5%BA%94%E8%AF%A5%E4%BB%85%E8%80%83%E8%99%91%E7%9B%B8%E5%85%B3%E6%80%A7"><span class="toc-number">1.2.5.</span> <span class="toc-text">相关性标注应该仅考虑相关性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="toc-number">2.</span> <span class="toc-text">评价指标</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#pointwiseauc"><span class="toc-number">2.1.</span> <span class="toc-text">pointwise(AUC)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pairwisepnr"><span class="toc-number">2.2.</span> <span class="toc-text">pairwise(PNR)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#listwisedcg"><span class="toc-number">2.3.</span> <span class="toc-text">listwise(DCG)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cgcumulative-gain"><span class="toc-number">2.3.1.</span> <span class="toc-text">CG(Cumulative Gain)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dcgdiscounted-cumulative-gain"><span class="toc-number">2.3.2.</span> <span class="toc-text">DCG(Discounted Cumulative Gain)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ndcg"><span class="toc-number">2.3.3.</span> <span class="toc-text">NDCG</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E5%8C%B9%E9%85%8D"><span class="toc-number">3.</span> <span class="toc-text">文本匹配</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E4%BB%A5%E5%8F%8A%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E9%93%BE%E8%B7%AF"><span class="toc-number">3.1.</span> <span class="toc-text">背景以及搜索引擎链路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E5%8C%B9%E9%85%8D%E5%88%86%E6%95%B0%E8%AF%8D%E9%A2%91%E5%8C%B9%E9%85%8D"><span class="toc-number">3.2.</span> <span class="toc-text">词匹配分数(词频匹配)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tf-idf"><span class="toc-number">3.2.1.</span> <span class="toc-text">tf-idf</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bm25okapi-best-match-25"><span class="toc-number">3.2.2.</span> <span class="toc-text">BM25(Okapi Best Match 25)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-number">3.2.3.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E8%B7%9D%E5%88%86%E6%95%B0term-proximity"><span class="toc-number">3.3.</span> <span class="toc-text">词距分数(term proximity)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#okatp"><span class="toc-number">3.3.1.</span> <span class="toc-text">OkaTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.3.2.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bert%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">BERT模型</span></a></li></ol>
       </div>
     
 
