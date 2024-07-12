@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="近几天签到题碰到蛮多流程优化的题, 简单记录下. 首先是不太清楚算法里面有没有流程优化这个概念, 不过有些题目硬撕就会TLE, 把中间的模拟过程优化出来的话可以少执行很多代码. 最简单的例子: 对一个字符串相邻位置的字符交换位置, 任务为将这个操作从字符串首执行到尾, 比如&#39;abcd&#39;-&gt;&#39;bacd&#39;-&gt;&#39;bcad&#39;-&gt;&#39;bcda&#39;. 手动模拟全过程,复杂度为O(n), 然而一旦">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DSA流程优化">
+<meta property="og:url" content="http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="近几天签到题碰到蛮多流程优化的题, 简单记录下. 首先是不太清楚算法里面有没有流程优化这个概念, 不过有些题目硬撕就会TLE, 把中间的模拟过程优化出来的话可以少执行很多代码. 最简单的例子: 对一个字符串相邻位置的字符交换位置, 任务为将这个操作从字符串首执行到尾, 比如&#39;abcd&#39;-&gt;&#39;bacd&#39;-&gt;&#39;bcad&#39;-&gt;&#39;bcda&#39;. 手动模拟全过程,复杂度为O(n), 然而一旦">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-12T07:06:18.000Z">
+<meta property="article:modified_time" content="2024-07-12T08:19:26.440Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>DSA流程优化</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/07/01/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-2-%E7%9B%B8%E5%85%B3%E6%80%A7/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&text=DSA流程优化"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&title=DSA流程优化"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&is_video=false&description=DSA流程优化"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=DSA流程优化&body=Check out this article: http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&title=DSA流程优化"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&title=DSA流程优化"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&title=DSA流程优化"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&title=DSA流程优化"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&name=DSA流程优化&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&t=DSA流程优化"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#maximum-score-from-removing-substrings"><span class="toc-number">1.</span> <span class="toc-text">1717. Maximum Score From Removing Substrings</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#bruteforce"><span class="toc-number">1.1.</span> <span class="toc-text">bruteforce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#count%E4%BB%A3%E6%9B%BF%E8%BF%87%E7%A8%8B%E6%A8%A1%E6%8B%9F"><span class="toc-number">1.2.</span> <span class="toc-text">count代替过程模拟</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reverse-substrings-between-each-pair-of-parentheses"><span class="toc-number">2.</span> <span class="toc-text">1190. Reverse Substrings Between Each Pair of Parentheses</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#stackbruteforce"><span class="toc-number">2.1.</span> <span class="toc-text">stack(bruteforce)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wormhole-teleportation"><span class="toc-number">2.2.</span> <span class="toc-text">Wormhole Teleportation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#find-the-winner-of-the-circular-game"><span class="toc-number">3.</span> <span class="toc-text">1823. Find the Winner of the Circular Game</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#simulation"><span class="toc-number">3.1.</span> <span class="toc-text">simulation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#josephus-problem"><span class="toc-number">3.2.</span> <span class="toc-text">Josephus problem</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#student-attendance-record-ii"><span class="toc-number">4.</span> <span class="toc-text">552. Student Attendance Record II</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#dp"><span class="toc-number">4.1.</span> <span class="toc-text">dp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="toc-number">4.2.</span> <span class="toc-text">状态机</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E8%A7%A3%E5%86%B3%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">一行代码解决的智力题</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        DSA流程优化
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-07-12T07:06:18.000Z" class="dt-published" itemprop="datePublished">2024-07-12</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>近几天签到题碰到蛮多流程优化的题, 简单记录下.</p>
+<p>首先是不太清楚算法里面有没有流程优化这个概念, 不过有些题目硬撕就会TLE, 把中间的模拟过程优化出来的话可以少执行很多代码.</p>
+<p>最简单的例子: 对一个字符串相邻位置的字符交换位置, 任务为将这个操作从字符串首执行到尾, 比如'abcd'-&gt;'bacd'-&gt;'bcad'-&gt;'bcda'. 手动模拟全过程,复杂度为O(n), 然而一旦我们注意到这个操作本质为将首字母移到末尾, 就可以<code>s=s[1:]+s[0]</code>.</p>
+<p>贪心算法那边会有很多这样的题, 所以我个人一直感觉贪心很吃脑子. 类似还有一些题, 这里简单记录.</p>
+<h1 id="maximum-score-from-removing-substrings">1717. Maximum Score From Removing Substrings</h1>
+<p>今天的签到题.</p>
+<p>You are given a string <code>s</code> and two integers <code>x</code> and <code>y</code>. You can perform two types of operations any number of times.</p>
+<ul>
+<li>Remove substring <code>"ab"</code> and gain <code>x</code> points.
+<ul>
+<li>For example, when removing <code>"ab"</code> from <code>"cabxbae"</code> it becomes <code>"cxbae"</code>.</li>
+</ul></li>
+<li>Remove substring <code>"ba"</code> and gain <code>y</code> points.
+<ul>
+<li>For example, when removing <code>"ba"</code> from <code>"cabxbae"</code> it becomes <code>"cabxe"</code>.</li>
+</ul></li>
+</ul>
+<p>Return the maximum points you can gain after applying the above operations on <code>s</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Example 1:</span><br><span class="line">    Input: s = &quot;cdbcbbaaabab&quot;, x = 4, y = 5</span><br><span class="line">    Output: 19</span><br><span class="line">    Explanation:</span><br><span class="line">    - Remove the &quot;ba&quot; underlined in &quot;cdbcbbaaabab&quot;. Now, s = &quot;cdbcbbaaab&quot; and 5 points are added to the score.</span><br><span class="line">    - Remove the &quot;ab&quot; underlined in &quot;cdbcbbaaab&quot;. Now, s = &quot;cdbcbbaa&quot; and 4 points are added to the score.</span><br><span class="line">    - Remove the &quot;ba&quot; underlined in &quot;cdbcbbaa&quot;. Now, s = &quot;cdbcba&quot; and 5 points are added to the score.</span><br><span class="line">    - Remove the &quot;ba&quot; underlined in &quot;cdbcba&quot;. Now, s = &quot;cdbc&quot; and 5 points are added to the score.</span><br><span class="line">    Total score = 5 + 4 + 5 + 5 = 19.</span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line">    Input: s = &quot;aabbaaxybbaabb&quot;, x = 5, y = 4</span><br><span class="line">    Output: 20</span><br></pre></td></tr></table></figure>
+<p>首先分析这题是个贪心, 永远先匹配高分字符串, 再匹配低分字符串; 可以用stack来循环删除; 可以写个helper处理不同字符串情况.</p>
+<h2 id="bruteforce">bruteforce</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maximumGain</span>(<span class="params">self, s: <span class="built_in">str</span>, x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">helper</span>(<span class="params">high_match, low_match, high_score, low_score</span>):</span><br><span class="line">            stack = []</span><br><span class="line">            ans = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">                stack.append(i)</span><br><span class="line">                <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>]:</span><br><span class="line">                    new_stack = []</span><br><span class="line">                    <span class="keyword">for</span> i <span class="keyword">in</span> stack:</span><br><span class="line">                        new_stack.append(i)</span><br><span class="line">                        <span class="keyword">if</span> new_stack[-<span class="number">2</span>:] == low_match:</span><br><span class="line">                            ans += low_score</span><br><span class="line">                            new_stack.pop()</span><br><span class="line">                            new_stack.pop()</span><br><span class="line">                    stack = []</span><br><span class="line">                <span class="keyword">if</span> stack[-<span class="number">2</span>:] == high_match:</span><br><span class="line">                    ans += high_score</span><br><span class="line">                    stack.pop()</span><br><span class="line">                    stack.pop()</span><br><span class="line">            <span class="keyword">if</span> stack:</span><br><span class="line">                new_stack = []</span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> stack:</span><br><span class="line">                    new_stack.append(i)</span><br><span class="line">                    <span class="keyword">if</span> new_stack[-<span class="number">2</span>:] == low_match:</span><br><span class="line">                        ans += low_score</span><br><span class="line">                        new_stack.pop()</span><br><span class="line">                        new_stack.pop()</span><br><span class="line">            <span class="keyword">return</span> ans</span><br><span class="line">        <span class="keyword">if</span> x &gt; y:</span><br><span class="line">            <span class="keyword">return</span> helper([<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>], [<span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;a&#x27;</span>], x, y)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> helper([<span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;a&#x27;</span>], [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>], y, x)</span><br></pre></td></tr></table></figure>
+<p>这是我一开始的思路, stack存串, 检测到高分直接替换出去, 然后new_stack检测低分, 全程模拟一遍, leetcode全部case跑完400+ms.</p>
+<p>时间空间都是O(n), 看起来还行, 但其实中间包含大量尾串匹配操作, 即使是O(n), 操作时间也是不同的.</p>
+<p>另一个做法, 直接简化中间流程, 计算统计的字符:</p>
+<ol type="1">
+<li>因为不管哪种串, 匹配到最后一定只剩下数量多的字符, 数量少的一定被匹配完了<br />
+</li>
+<li>为了同时记录相对顺序, 还得判断这些匹配里面有多少次是高分串.</li>
+</ol>
+<h2 id="count代替过程模拟">count代替过程模拟</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maximumGain</span>(<span class="params">self, s: <span class="built_in">str</span>, x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        high_prefix = <span class="string">&#x27;a&#x27;</span></span><br><span class="line">        <span class="comment"># make x &gt; y</span></span><br><span class="line">        <span class="keyword">if</span> y &gt; x:</span><br><span class="line">            high_prefix = <span class="string">&#x27;b&#x27;</span></span><br><span class="line">            x, y = y, x</span><br><span class="line">        count_high = <span class="number">0</span></span><br><span class="line">        count_low = <span class="number">0</span></span><br><span class="line">        count_high_low = <span class="number">0</span></span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">            <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> <span class="string">&#x27;ab&#x27;</span>:</span><br><span class="line">                ans += count_high_low * x + <span class="built_in">max</span>(<span class="built_in">min</span>(count_high-count_high_low, count_low - count_high_low), <span class="number">0</span>) * y</span><br><span class="line">                count_high = <span class="number">0</span></span><br><span class="line">                count_low = <span class="number">0</span></span><br><span class="line">                count_high_low = <span class="number">0</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> i == high_prefix:</span><br><span class="line">                    count_high += <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    count_low += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> count_high &gt; count_high_low:</span><br><span class="line">                        count_high_low += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        ans += count_high_low * x + <span class="built_in">max</span>(<span class="built_in">min</span>(count_high-count_high_low, count_low - count_high_low), <span class="number">0</span>) * y</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<p>可以看到这里根本就没用到具体子过程, 全程count, 直接算出子结果加到ans, 返回即可. 执行时间从400+ms变成200+ms.</p>
+<h1 id="reverse-substrings-between-each-pair-of-parentheses">1190. Reverse Substrings Between Each Pair of Parentheses</h1>
+<p>You are given a string s that consists of lower case English letters and brackets.</p>
+<p>Reverse the strings in each pair of matching parentheses, starting from the innermost one.</p>
+<p>Your result should not contain any brackets.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Example 1:</span><br><span class="line">    Input: s = &quot;(abcd)&quot;</span><br><span class="line">    Output: &quot;dcba&quot;</span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line">    Input: s = &quot;(u(love)i)&quot;</span><br><span class="line">    Output: &quot;iloveu&quot;</span><br><span class="line">    Explanation: The substring &quot;love&quot; is reversed first, then the whole string is reversed.</span><br><span class="line"></span><br><span class="line">Example 3:</span><br><span class="line">    Input: s = &quot;(ed(et(oc))el)&quot;</span><br><span class="line">    Output: &quot;leetcode&quot;</span><br><span class="line">    Explanation: First, we reverse the substring &quot;oc&quot;, then &quot;etco&quot;, and finally, the whole string.</span><br></pre></td></tr></table></figure>
+<h2 id="stackbruteforce">stack(bruteforce)</h2>
+<p>最简单的思路, stack记录index, 检测到括号就翻转<code>stack[-1]</code>到<code>i</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reverseParentheses</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        lst = <span class="built_in">list</span>(s)</span><br><span class="line">        stack = []</span><br><span class="line">        n = <span class="built_in">len</span>(s)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">if</span> s[i] == <span class="string">&#x27;(&#x27;</span>:</span><br><span class="line">                stack.append(i)</span><br><span class="line">            <span class="keyword">elif</span> s[i] == <span class="string">&#x27;)&#x27;</span>:</span><br><span class="line">                start = stack.pop()</span><br><span class="line">                lst[start:i] = lst[start:i][::-<span class="number">1</span>]</span><br><span class="line">        ans = <span class="string">&#x27;&#x27;</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> lst:</span><br><span class="line">            ans += i <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> [<span class="string">&#x27;)&#x27;</span>,<span class="string">&#x27;(&#x27;</span>] <span class="keyword">else</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<h2 id="wormhole-teleportation">Wormhole Teleportation</h2>
+<p>天才做法, 用list记录某个idx跳转到哪, 使用curr_idx遍历, 碰到括号就去list里面找跳转点并且切换方向, 直到读到末尾.</p>
+<p>全程不需要翻转字符串, 只有一个读字符的操作.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reverseParentheses</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        n = <span class="built_in">len</span>(s)</span><br><span class="line">        idx_lst = [<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        stack = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">if</span> s[i] == <span class="string">&#x27;(&#x27;</span>:</span><br><span class="line">                stack.append(i)</span><br><span class="line">            <span class="keyword">elif</span> s[i] == <span class="string">&#x27;)&#x27;</span>:</span><br><span class="line">                target = stack.pop()</span><br><span class="line">                idx_lst[target] = i</span><br><span class="line">                idx_lst[i] = target</span><br><span class="line">        direction = <span class="number">1</span></span><br><span class="line">        curr_idx = <span class="number">0</span></span><br><span class="line">        ans = <span class="string">&#x27;&#x27;</span></span><br><span class="line">        <span class="keyword">while</span> curr_idx &lt; n:</span><br><span class="line">            <span class="keyword">if</span> s[curr_idx] == <span class="string">&#x27;(&#x27;</span> <span class="keyword">or</span> s[curr_idx] == <span class="string">&#x27;)&#x27;</span>:</span><br><span class="line">                direction = -direction</span><br><span class="line">                curr_idx = idx_lst[curr_idx]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                ans += s[curr_idx]</span><br><span class="line">            curr_idx += direction</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<h1 id="find-the-winner-of-the-circular-game">1823. Find the Winner of the Circular Game</h1>
+<p>There are n friends that are playing a game. The friends are sitting in a circle and are numbered from 1 to n in clockwise order. More formally, moving clockwise from the ith friend brings you to the (i+1)th friend for 1 &lt;= i &lt; n, and moving clockwise from the nth friend brings you to the 1st friend.</p>
+<p>The rules of the game are as follows:</p>
+<ol type="1">
+<li>Start at the 1st friend.<br />
+</li>
+<li>Count the next k friends in the clockwise direction including the friend you started at. The counting wraps around the circle and may count some friends more than once.<br />
+</li>
+<li>The last friend you counted leaves the circle and loses the game.<br />
+</li>
+<li>If there is still more than one friend in the circle, go back to step 2 starting from the friend immediately clockwise of the friend who just lost and repeat.<br />
+</li>
+<li>Else, the last friend in the circle wins the game.</li>
+</ol>
+<p>Given the number of friends, n, and an integer k, return the winner of the game.</p>
+<p>这题还有个说法是处刑犯人, 每隔k个人处死一个, 最后一个豁免, 问谁能活下去.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Example 1:</span><br><span class="line">    Input: n = 5, k = 2</span><br><span class="line">    Output: 3</span><br><span class="line">    Explanation: Here are the steps of the game:</span><br><span class="line">    (1) Start at friend 1.</span><br><span class="line">    (2) Count 2 friends clockwise, which are friends 1 and 2.</span><br><span class="line">    (3) Friend 2 leaves the circle. Next start is friend 3.</span><br><span class="line">    (4) Count 2 friends clockwise, which are friends 3 and 4.</span><br><span class="line">    (5) Friend 4 leaves the circle. Next start is friend 5.</span><br><span class="line">    (6) Count 2 friends clockwise, which are friends 5 and 1.</span><br><span class="line">    (7) Friend 1 leaves the circle. Next start is friend 3.</span><br><span class="line">    (8) Count 2 friends clockwise, which are friends 3 and 5.</span><br><span class="line">    (9) Friend 5 leaves the circle. Only friend 3 is left, so they are the winner.</span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line">    Input: n = 6, k = 5</span><br><span class="line">    Output: 1</span><br><span class="line">    Explanation: The friends leave in this order: 5, 4, 6, 2, 3. The winner is friend 1.</span><br></pre></td></tr></table></figure>
+<h2 id="simulation">simulation</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findTheWinner</span>(<span class="params">self, n: <span class="built_in">int</span>, k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        arr = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,n+<span class="number">1</span>)]</span><br><span class="line">        idx = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(arr) != <span class="number">1</span>:</span><br><span class="line">            idx = (idx + k - <span class="number">1</span>) % <span class="built_in">len</span>(arr)</span><br><span class="line">            arr.pop(idx)</span><br><span class="line">        <span class="keyword">return</span> arr[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p>这还算改过的, 最初的应该是全程模拟, 遍历k, 然后<code>arr.append(arr.pop(0))</code></p>
+<h2 id="josephus-problem">Josephus problem</h2>
+<p>存在公式</p>
+<p><span class="math display">\[
+g(n,k) = (g(n-1,k)+k) mod n
+\]</span></p>
+<p>其中g(1,k) = 0</p>
+<p>因此我们代码可以这么写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findTheWinner</span>(<span class="params">self, n: <span class="built_in">int</span>, k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        winner = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">            winner = (winner + k) % i</span><br><span class="line">        <span class="keyword">return</span> winner + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h1 id="student-attendance-record-ii">552. Student Attendance Record II</h1>
+<p>An attendance record for a student can be represented as a string where each character signifies whether the student was absent, late, or present on that day. The record only contains the following three characters:</p>
+<ul>
+<li>'A': Absent.<br />
+</li>
+<li>'L': Late.<br />
+</li>
+<li>'P': Present.</li>
+</ul>
+<p>Any student is eligible for an attendance award if they meet both of the following criteria:</p>
+<ul>
+<li>The student was absent ('A') for strictly fewer than 2 days total.<br />
+</li>
+<li>The student was never late ('L') for 3 or more consecutive days.</li>
+</ul>
+<p>Given an integer n, return the number of possible attendance records of length n that make a student eligible for an attendance award. The answer may be very large, so return it modulo 10^9 + 7.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Example 1:</span><br><span class="line">    Input: n = 2</span><br><span class="line">    Output: 8</span><br><span class="line">    Explanation: There are 8 records with length 2 that are eligible for an award:</span><br><span class="line">    &quot;PP&quot;, &quot;AP&quot;, &quot;PA&quot;, &quot;LP&quot;, &quot;PL&quot;, &quot;AL&quot;, &quot;LA&quot;, &quot;LL&quot;</span><br><span class="line">    Only &quot;AA&quot; is not eligible because there are 2 absences (there need to be fewer than 2).</span><br><span class="line"></span><br><span class="line">Example 2:</span><br><span class="line">    Input: n = 1</span><br><span class="line">    Output: 3</span><br><span class="line"></span><br><span class="line">Example 3:</span><br><span class="line">    Input: n = 10101</span><br><span class="line">    Output: 183236316</span><br></pre></td></tr></table></figure>
+<h2 id="dp">dp</h2>
+<p>这题的dp我就没读, 写的都挺复杂的.</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/student-attendance-record-ii/editorial">官方解</a></p>
+<h2 id="状态机">状态机</h2>
+<p>维护一个有限状态自动机即可, 状态切换都记录上去即可. 转换过程可以自己画图, 贴一个别人的记录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// https://leetcode.com/problems/student-attendance-record-ii/solutions/5210986/0-skill-100-hard-work-faster-than-95-memory-less-than-99-38</span><br><span class="line"></span><br><span class="line">//NOW STATE-|-------  NEXT STATE ---------|</span><br><span class="line">//0: 0A 0L =&gt; P: 0A0L    A: 1A0L   L: 0A1L</span><br><span class="line">//1: 0A 1L =&gt; P: 0A0L    A: 1A0L   L: 0A2L</span><br><span class="line">//2: 0A 2L =&gt; P: 0A0L    A: 1A0L   L: X</span><br><span class="line">//3: 1A 0L =&gt; P: 1A0L    A: X      L: 1A1L</span><br><span class="line">//4: 1A 1L =&gt; P: 1A0L    A: X      L: 1A2L</span><br><span class="line">//5: 1A 2L =&gt; P: 1A0L    A: X      L: X</span><br><span class="line">//    every turn</span><br><span class="line">//0A0L =0+1+2</span><br><span class="line">//0A1L =0</span><br><span class="line">//0A2L =1</span><br><span class="line">//1A0L =0+1+2+3+4+5</span><br><span class="line">//1A1L =3</span><br><span class="line">//1A2L =4</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">checkRecord</span>(<span class="params">self, n: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        state = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line">        mod = <span class="number">10</span>**<span class="number">9</span> + <span class="number">7</span></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">1</span>):</span><br><span class="line">            state = [<span class="built_in">sum</span>(state[:<span class="number">3</span>]) % mod, state[<span class="number">0</span>], state[<span class="number">1</span>], <span class="built_in">sum</span>(state) % mod, state[<span class="number">3</span>], state[<span class="number">4</span>]]</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">sum</span>(state) % mod</span><br></pre></td></tr></table></figure>
+<h1 id="一行代码解决的智力题">一行代码解决的智力题</h1>
+<p>这里只放一个我看过的repo, 之前搜并查集的时候看到的.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/jiajunhua/labuladong-fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E8%A7%A3%E5%86%B3%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98.md">一行代码就能解决的算法题</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#maximum-score-from-removing-substrings"><span class="toc-number">1.</span> <span class="toc-text">1717. Maximum Score From Removing Substrings</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#bruteforce"><span class="toc-number">1.1.</span> <span class="toc-text">bruteforce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#count%E4%BB%A3%E6%9B%BF%E8%BF%87%E7%A8%8B%E6%A8%A1%E6%8B%9F"><span class="toc-number">1.2.</span> <span class="toc-text">count代替过程模拟</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reverse-substrings-between-each-pair-of-parentheses"><span class="toc-number">2.</span> <span class="toc-text">1190. Reverse Substrings Between Each Pair of Parentheses</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#stackbruteforce"><span class="toc-number">2.1.</span> <span class="toc-text">stack(bruteforce)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wormhole-teleportation"><span class="toc-number">2.2.</span> <span class="toc-text">Wormhole Teleportation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#find-the-winner-of-the-circular-game"><span class="toc-number">3.</span> <span class="toc-text">1823. Find the Winner of the Circular Game</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#simulation"><span class="toc-number">3.1.</span> <span class="toc-text">simulation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#josephus-problem"><span class="toc-number">3.2.</span> <span class="toc-text">Josephus problem</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#student-attendance-record-ii"><span class="toc-number">4.</span> <span class="toc-text">552. Student Attendance Record II</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#dp"><span class="toc-number">4.1.</span> <span class="toc-text">dp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="toc-number">4.2.</span> <span class="toc-text">状态机</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E8%A7%A3%E5%86%B3%E7%9A%84%E6%99%BA%E5%8A%9B%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">一行代码解决的智力题</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&text=DSA流程优化"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&title=DSA流程优化"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&is_video=false&description=DSA流程优化"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=DSA流程优化&body=Check out this article: http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&title=DSA流程优化"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&title=DSA流程优化"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&title=DSA流程优化"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&title=DSA流程优化"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&name=DSA流程优化&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/07/12/DSA%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96/&t=DSA流程优化"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
