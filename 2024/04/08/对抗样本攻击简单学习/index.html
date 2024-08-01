@@ -9,17 +9,17 @@
     <meta name="description" content="很久以前就听说过对抗样本攻击,最近看Diffusion Model的时候也注意到了GAN相关,所以这里对对抗样本攻击做一个简单记录. 先简短写一份FGSM,写完之后才发现有一个叫AISafety的平台,后续准备再在这个平台上面研究一下. FGSM 首先torch官方也给出了对抗样本相关poc,可以直接进行参考. FGSM. 关于FGSM,首先肯定是最有名的熊猫图了  从torch官网给出的例子来看">
 <meta property="og:type" content="article">
 <meta property="og:title" content="对抗样本攻击简单学习">
-<meta property="og:url" content="http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:url" content="http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="blacsheep&#39;s blog">
 <meta property="og:description" content="很久以前就听说过对抗样本攻击,最近看Diffusion Model的时候也注意到了GAN相关,所以这里对对抗样本攻击做一个简单记录. 先简短写一份FGSM,写完之后才发现有一个叫AISafety的平台,后续准备再在这个平台上面研究一下. FGSM 首先torch官方也给出了对抗样本相关poc,可以直接进行参考. FGSM. 关于FGSM,首先肯定是最有名的熊猫图了  从torch官网给出的例子来看">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/panda.png">
-<meta property="og:image" content="http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/epsilon_img.png">
+<meta property="og:image" content="http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/panda.png">
+<meta property="og:image" content="http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/epsilon_img.png">
 <meta property="article:published_time" content="2024-04-07T16:14:48.000Z">
 <meta property="article:modified_time" content="2024-04-08T00:21:02.723Z">
 <meta property="article:author" content="blacsheep">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/panda.png">
+<meta name="twitter:image" content="http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/panda.png">
     
     
       
@@ -116,17 +116,17 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&text=对抗样本攻击简单学习"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&is_video=false&description=对抗样本攻击简单学习"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=对抗样本攻击简单学习&body=Check out this article: http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&name=对抗样本攻击简单学习&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&t=对抗样本攻击简单学习"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&text=对抗样本攻击简单学习"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&is_video=false&description=对抗样本攻击简单学习"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=对抗样本攻击简单学习&body=Check out this article: http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&name=对抗样本攻击简单学习&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&t=对抗样本攻击简单学习"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -158,7 +158,7 @@
       
     <div class="postdate">
       
-        <time datetime="2024-04-07T16:14:48.000Z" class="dt-published" itemprop="datePublished">2024-04-07</time>
+        <time datetime="2024-04-07T16:14:48.000Z" class="dt-published" itemprop="datePublished">2024-04-08</time>
         
       
     </div>
@@ -224,17 +224,17 @@
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&text=对抗样本攻击简单学习"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&is_video=false&description=对抗样本攻击简单学习"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=对抗样本攻击简单学习&body=Check out this article: http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&name=对抗样本攻击简单学习&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/04/07/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&t=对抗样本攻击简单学习"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&text=对抗样本攻击简单学习"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&is_video=false&description=对抗样本攻击简单学习"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=对抗样本攻击简单学习&body=Check out this article: http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&title=对抗样本攻击简单学习"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&name=对抗样本攻击简单学习&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2024/04/08/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%94%BB%E5%87%BB%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/&t=对抗样本攻击简单学习"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
