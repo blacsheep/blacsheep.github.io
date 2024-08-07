@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://example.com/2024/07/01/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-2-%E7%9B%B8%E5%85%B3%E6%80%A7/post_pretrain.png">
 <meta property="og:image" content="http://example.com/2024/07/01/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-2-%E7%9B%B8%E5%85%B3%E6%80%A7/all.png">
 <meta property="article:published_time" content="2024-07-01T00:39:50.000Z">
-<meta property="article:modified_time" content="2024-07-04T10:18:34.593Z">
+<meta property="article:modified_time" content="2024-08-07T02:32:16.149Z">
 <meta property="article:author" content="blacsheep">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2024/07/01/%E5%B7%A5%E4%B8%9A%E7%95%8C%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E-2-%E7%9B%B8%E5%85%B3%E6%80%A7/relevance.png">
@@ -461,7 +461,7 @@ OkaTP = \sum_{t,t&#39; \in Q, t \neq t&#39;} \frac{tp_{t,t&#39;,d} \cdot (k+1)}{
 </ul></li>
 </ol>
 <blockquote>
-<p>bert的计算量是token数量的超线性函数(线性和平方之间, fc线性, attention平方), 为了控制推理成本一般会对token数量限制. 如果文档超出token数量限制, 则会被阶段或者做摘要.</p>
+<p>bert的计算量是token数量的超线性函数(线性和平方之间, fc线性, attention平方), 为了控制推理成本一般会对token数量限制. 如果文档超出token数量限制, 则会被截断或者做摘要.</p>
 </blockquote>
 <ol start="2" type="1">
 <li><p>切分出来的token做embedding, token_embedding和position_embedding就还是老样子, segment embedding这里会区分不同类别信息, 比如查询词和文档内容就依赖segment embedding区分.</p></li>
@@ -525,7 +525,7 @@ OkaTP = \sum_{t,t&#39; \in Q, t \neq t&#39;} \frac{tp_{t,t&#39;,d} \cdot (k+1)}{
 </li>
 <li>对搜索日志做统计, 得出(q,d)的点击率和各种交互率, 记作x.<br />
 </li>
-<li>由于y和x之间是存在某种关系的(比如用户点击多说吗文档和查询词相关).<br />
+<li>由于y和x之间是存在某种关系的(比如用户点击多说明文档和查询词相关).<br />
 </li>
 <li>因此我们可以人工标注几万条数据来训练一个模型t,使得y_hat = t(x).
 <ul>
