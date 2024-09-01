@@ -69,7 +69,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -175,15 +175,23 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <p>首先学习的链接<a target="_blank" rel="noopener" href="http://www.pythondoc.com/flask-mega-tutorial/index.html">http://www.pythondoc.com/flask-mega-tutorial/index.html</a> 在教程的开头学习到了一个新姿势,在做项目的时候我们可以创建一个<strong>虚拟环境</strong> 创建虚拟环境的好处: 1、<strong>不会影响主环境</strong> 2、<strong>不需要拥有主机的root权限</strong></p>
+    <p>首先学习的链接<a
+target="_blank" rel="noopener" href="http://www.pythondoc.com/flask-mega-tutorial/index.html">http://www.pythondoc.com/flask-mega-tutorial/index.html</a>
+在教程的开头学习到了一个新姿势,在做项目的时候我们可以创建一个<strong>虚拟环境</strong>
+创建虚拟环境的好处: 1、<strong>不会影响主环境</strong>
+2、<strong>不需要拥有主机的root权限</strong></p>
 <h5 id="一.怎么创建虚拟环境">一.怎么创建虚拟环境:</h5>
-<p>比如我们在桌面创建一个文件夹叫microblog,然后进入目录打开命令窗口,输入 virtualenv  flask,如果没有virtualenv的话就用pip去装一个 然后去Scripts下面</p>
+<p>比如我们在桌面创建一个文件夹叫microblog,然后进入目录打开命令窗口,输入
+virtualenv  flask,如果没有virtualenv的话就用pip去装一个
+然后去Scripts下面</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ flask\Scripts\pip install flask</span><br><span class="line">$ flask\Scripts\pip install flask-login</span><br><span class="line">$ flask\Scripts\pip install flask-openid</span><br><span class="line">$ flask\Scripts\pip install flask-mail</span><br><span class="line">$ flask\Scripts\pip install flask-sqlalchemy</span><br><span class="line">$ flask\Scripts\pip install sqlalchemy-migrate</span><br><span class="line">$ flask\Scripts\pip install flask-whooshalchemy</span><br><span class="line">$ flask\Scripts\pip install flask-wtf</span><br><span class="line">$ flask\Scripts\pip install flask-babel</span><br><span class="line">$ flask\Scripts\pip install guess_language</span><br><span class="line">$ flask\Scripts\pip install flipflop</span><br><span class="line">$ flask\Scripts\pip install coverage</span><br></pre></td></tr></table></figure>
 <p>然后cd到microblog里面去创建文件结构</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir app</span><br><span class="line">mkdir app/static</span><br><span class="line">mkdir app/templates</span><br><span class="line">mkdir tmp</span><br></pre></td></tr></table></figure>
-<p>和上次的django一样,app装应用,static装css和js,templates里面装模版文件 然后给app写一个初始化脚本(app/<strong>init</strong>.py)</p>
+<p>和上次的django一样,app装应用,static装css和js,templates里面装模版文件
+然后给app写一个初始化脚本(app/<strong>init</strong>.py)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"><span class="keyword">from</span> app <span class="keyword">import</span> views</span><br></pre></td></tr></table></figure>
-<p>这个脚本先创建应用,然后导入views,views和之前django里面作用应该是一样的(初学者...) 然后开始写视图函数(app/views.py)</p>
+<p>这个脚本先创建应用,然后导入views,views和之前django里面作用应该是一样的(初学者...)
+然后开始写视图函数(app/views.py)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> app <span class="keyword">import</span> app</span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/index&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">     <span class="keyword">return</span> <span class="string">&#x27;Hello,world!&#x27;</span></span><br></pre></td></tr></table></figure>
 <p>最后还需要一个启动脚本run.py</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!flask/bin/python</span></span><br><span class="line"><span class="keyword">from</span> app <span class="keyword">import</span> app</span><br><span class="line">app.run(debug = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>

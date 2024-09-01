@@ -69,7 +69,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -176,7 +176,8 @@
 
   <div class="content e-content" itemprop="articleBody">
     <h3 id="同源策略">同源策略</h3>
-<p>所有浏览器都实行同源策略,含义大概就是,A网页设置的cookie,B网页打不开,除非这两个网页"同源" 所谓的同源就是</p>
+<p>所有浏览器都实行同源策略,含义大概就是,A网页设置的cookie,B网页打不开,除非这两个网页"同源"
+所谓的同源就是</p>
 <blockquote>
 <ul>
 <li>协议相同</li>
@@ -184,7 +185,8 @@
 <li>端口相同</li>
 </ul>
 </blockquote>
-<p>举例来说:http://www.example.com的协议是http,域名是www.example.com,端口80 他的同源情况如下:</p>
+<p>举例来说:http://www.example.com的协议是http,域名是www.example.com,端口80
+他的同源情况如下:</p>
 <blockquote>
 <ul>
 <li>http://www.example.com/page.html(同源)</li>
@@ -204,19 +206,32 @@
 <li>ajax请求无法发送</li>
 </ol>
 </blockquote>
-<p>虽然这些限制很有必要,但是有时很不方便。例如我同一个网站的不同域名之间不能共享cookie,再例如我前端页面项目的域名与我后端服务的域名不同,就不能发送ajax请求来访问 后端的服务etc... 如果要避免的话可以使用jsonp和cors两种方法(后续补上...顺便学习)</p>
+<p>虽然这些限制很有必要,但是有时很不方便。例如我同一个网站的不同域名之间不能共享cookie,再例如我前端页面项目的域名与我后端服务的域名不同,就不能发送ajax请求来访问
+后端的服务etc...
+如果要避免的话可以使用jsonp和cors两种方法(后续补上...顺便学习)</p>
 <h3 id="cookie作用域">cookie作用域</h3>
-<p>这就要看cookie的两个属性了,一个是domain,一个是path,用来指示cookie的作用域 domain告诉浏览器cookie的域名归属,未指定的时候就是当前域名 path告诉浏览器cookie的路径归属,未指定就是当前路径,比如通过访问www.vinceruan.info/java/hotspot.html添加的Cookie的默认路径就是/java/,通过blog.vinceruan.info/java/hotspot.html生成的Cookie的路径也是/java/. cookie的提交需要满足两点: 1.cookie为当前域名或者父域名下的cookie 2.cookie为当前路径或者父路径下的cookie 举个例子:要访问blog.example.com的时候</p>
+<p>这就要看cookie的两个属性了,一个是domain,一个是path,用来指示cookie的作用域
+domain告诉浏览器cookie的域名归属,未指定的时候就是当前域名
+path告诉浏览器cookie的路径归属,未指定就是当前路径,比如通过访问www.vinceruan.info/java/hotspot.html添加的Cookie的默认路径就是/java/,通过blog.vinceruan.info/java/hotspot.html生成的Cookie的路径也是/java/.
+cookie的提交需要满足两点: 1.cookie为当前域名或者父域名下的cookie
+2.cookie为当前路径或者父路径下的cookie
+举个例子:要访问blog.example.com的时候</p>
 <blockquote>
 <ul>
-<li>cookie1:[name=value,domain=.example.com,path=/] (可以提交.example.com是blog.example.com的父域名,path也一致)</li>
-<li>cookie2:[name=value,domain=blog.example.com,path=/] (不能提交,域名一致,但是路径不一致)</li>
-<li>cookie3:[name=value,domain=www.example.com,path=/] (不能提交,虽然路径一致但域名不一致)</li>
-<li>cookie4:[name=value,domain=blog.example.com,path=/] (可以提交,域名路径严格一致)</li>
+<li>cookie1:[name=value,domain=.example.com,path=/]
+(可以提交.example.com是blog.example.com的父域名,path也一致)</li>
+<li>cookie2:[name=value,domain=blog.example.com,path=/]
+(不能提交,域名一致,但是路径不一致)</li>
+<li>cookie3:[name=value,domain=www.example.com,path=/]
+(不能提交,虽然路径一致但域名不一致)</li>
+<li>cookie4:[name=value,domain=blog.example.com,path=/]
+(可以提交,域名路径严格一致)</li>
 </ul>
 </blockquote>
 <h4 id="关于httponly">关于httponly</h4>
-<p>httponly这个点之前一直没看,近期补了一下 大概就是说被设置为httponly的cookie不能通过document.cookie来被获取 因此就不会被黑客用xss轻易获取了.</p>
+<p>httponly这个点之前一直没看,近期补了一下
+大概就是说被设置为httponly的cookie不能通过document.cookie来被获取
+因此就不会被黑客用xss轻易获取了.</p>
 
   </div>
 </article>

@@ -69,7 +69,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -179,7 +179,8 @@
 <h3 id="网络端口映射">网络端口映射</h3>
 <p>创建一个python应用的容器,还是和以前一样</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker run -d -P training/webapp python app.py</span><br><span class="line">0a4a54a161ad6226681a03d708a40003cdac29217c8d181a5d7c868dcfcc4a87</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                     NAMES</span><br><span class="line">0a4a54a161ad        training/webapp     &quot;python app.py&quot;     6 seconds ago       Up 4 seconds        0.0.0.0:32768-&gt;5000/tcp   objective_curie</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>
-<p>-P指的是使用docker指定的端口 当然我们也可以自定义端口,使用-p 主机端口:容器端口</p>
+<p>-P指的是使用docker指定的端口 当然我们也可以自定义端口,使用-p
+主机端口:容器端口</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker run -d -p 5000:5000 training/webapp python app.py</span><br><span class="line">e25b18467f580af41abd52eae2710f999b7f3b901d9be932af09c96aede5a706</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                    NAMES</span><br><span class="line">e25b18467f58        training/webapp     &quot;python app.py&quot;     4 seconds ago       Up 3 seconds        0.0.0.0:5000-&gt;5000/tcp   suspicious_hermann</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>
 <p>如果使用udp的话,可以在端口后面加上/udp</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker run -d -p 5000:5000/udp training/webapp python app.py</span><br><span class="line">a2c1428b1ebb5559396ba4ee6c859d881a3f5c1da3b77d00f01b0ad1ed43cee9</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                              NAMES</span><br><span class="line">a2c1428b1ebb        training/webapp     &quot;python app.py&quot;     6 seconds ago       Up 4 seconds        5000/tcp, 0.0.0.0:5000-&gt;5000/udp   tender_shaw</span><br><span class="line">root@blacsheep-myubuntu:/home/blacsheep# </span><br></pre></td></tr></table></figure>

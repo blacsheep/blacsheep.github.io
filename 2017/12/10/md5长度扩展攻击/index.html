@@ -18,7 +18,6 @@
 <meta property="og:image" content="http://example.com/images/2017/12/3.png">
 <meta property="og:image" content="http://example.com/images/2017/12/2.png">
 <meta property="og:image" content="http://example.com/images/2017/12/5.png">
-<meta property="og:image" content="http://example.com/images/2017/12/6.png">
 <meta property="og:image" content="http://example.com/images/2017/12/7.png">
 <meta property="article:published_time" content="2017-12-10T05:26:08.000Z">
 <meta property="article:modified_time" content="2023-07-10T02:13:29.456Z">
@@ -77,7 +76,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -183,25 +182,83 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <p>上学期本来看过一些长度扩展攻击的东西的,但是时间过了太久了都忘得差不多了.近期刷题恰好又刷到一道md5长度扩展的题,正好总结一下. 我们先了解一下md5加密流程: 参考链接:<a target="_blank" rel="noopener" href="http://blog.csdn.net/syh_486_007/article/details/51228628">传送门</a></p>
+    <p>上学期本来看过一些长度扩展攻击的东西的,但是时间过了太久了都忘得差不多了.近期刷题恰好又刷到一道md5长度扩展的题,正好总结一下.
+我们先了解一下md5加密流程: 参考链接:<a
+target="_blank" rel="noopener" href="http://blog.csdn.net/syh_486_007/article/details/51228628">传送门</a></p>
 <h3 id="首先对长度进行填充和分组">首先对长度进行填充和分组</h3>
-<p>填充是把数据变成512*N+448位的形式,比如如果长度小于448,那么直接补成448位;如果长度大于448位小于512位,就补充成512+448位这种。 <strong>填充方法</strong>:在消息后面加个1然后无限补0,16进制就是补个80然后无限补0直到448位。 填充完之后前面每组512位,最后一组448位,即56个字节。第57个字节是补位之前的消息长度,后面继续补0直到64字节.就比如下图 <img src="/images/2017/12/1.png" /> abc三个字母,即3字节,24位,十六进制是0x18,所以填个18,后面补0x00.</p>
+<p>填充是把数据变成512*N+448位的形式,比如如果长度小于448,那么直接补成448位;如果长度大于448位小于512位,就补充成512+448位这种。
+<strong>填充方法</strong>:在消息后面加个1然后无限补0,16进制就是补个80然后无限补0直到448位。
+填充完之后前面每组512位,最后一组448位,即56个字节。第57个字节是补位之前的消息长度,后面继续补0直到64字节.就比如下图
+<img src="/images/2017/12/1.png" />
+abc三个字母,即3字节,24位,十六进制是0x18,所以填个18,后面补0x00.</p>
 <h3 id="然后">然后</h3>
-<p>完成上述过程之后就是获取一个链变量,然后和这个链变量一起进行一波复杂运算(这里不管) 这个链变量一开始是定值,后面的链变量都是上一个块运算得到的结果.</p>
+<p>完成上述过程之后就是获取一个链变量,然后和这个链变量一起进行一波复杂运算(这里不管)
+这个链变量一开始是定值,后面的链变量都是上一个块运算得到的结果.</p>
 <h3 id="最后">最后</h3>
 <p>获得最后一次消息的摘要之后进行一个高低位互换即可获得md5。</p>
 <h2 id="md5长度扩展攻击">md5长度扩展攻击</h2>
-<p>md5长度扩展攻击是什么呢?它的实质就是构造明文控制加盐哈希,比如我前面构造和已经补位了的块完全相同的块,那么我第一部分获得的链变量就是相同的,如果我用这个链变量来后续处理我自己添加的字符串,那我是不是就可以在你的hash后面加东西了. <strong>举个例子</strong>: 本来一个字符串<span class="math inline">\(a=&quot;test&quot;,0x74657374 我构造一个字符串\)</span>str1: 0x746573748000000000000000000000000000000000000000000000000000000000000000 00000000000000000000000000000000000000002000000000000000 如果我们知道"test"的hash值,那么这个部分计算出来的值我们是知道的,因为"test"运算的时候也要补位 补位的操作和我们手动的操作是一致的,所以结果是一样的,但是不同的是,我们对字符串后面加了我们自己要添加的东西,比如 0x746573748000000000000000000000000000000000000000000000000000000000000000 00000000000000000000000000000000000000002000000000000000746573748 这个时候字符串大于512位,所以计算的时候会先补位位1024位,如下 <span class="math inline">\(str=0x7465737480000000000000000000000000000000000000000000000000000000000 00000000000000000000000000000000000000000000020000000000000007465737480000 00000000000000000000000000000000000000000000000000000000000000000000000000 00000000000000000000000002002000000000000 计算的时候先算 0x746573748000000000000000000000000000000000000000000000000000000000000000 00000000000000000000000000000000000000002000000000000000 前面这个部分的链变量为: A=0xcd6b8f09 B=0x73d32146 C=0x834edeca D=0xf6b42726 那么后面的运算用这个部分的链变量来计算即可 0x746573748000000000000000000000000000000000000000000000000000000000000000 00000000000000000000000000000000000000002002000000000000 通过这种方式,假如我们知道md5(\)</span>salt.<span class="math inline">\(msg1)的值,知道\)</span>salt长度,那么我们就可以获得md5(<span class="math inline">\(salt.\)</span>msg1.<span class="math inline">\(padding.\)</span>hack_content)的值。 在使用长度扩展攻击的时候可以使用hashpump工具,或者是python的hashpumpy库(自行pip安装) 然后我们本地实验一下(自行去掉换行,这里为了美观)</p>
+<p>md5长度扩展攻击是什么呢?它的实质就是构造明文控制加盐哈希,比如我前面构造和已经补位了的块完全相同的块,那么我第一部分获得的链变量就是相同的,如果我用这个链变量来后续处理我自己添加的字符串,那我是不是就可以在你的hash后面加东西了.
+<strong>举个例子</strong>: 本来一个字符串<span
+class="math inline">\(a=&quot;test&quot;,0x74657374
+我构造一个字符串\)</span>str1:
+0x746573748000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000002000000000000000
+如果我们知道"test"的hash值,那么这个部分计算出来的值我们是知道的,因为"test"运算的时候也要补位
+补位的操作和我们手动的操作是一致的,所以结果是一样的,但是不同的是,我们对字符串后面加了我们自己要添加的东西,比如
+0x746573748000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000002000000000000000746573748
+这个时候字符串大于512位,所以计算的时候会先补位位1024位,如下 <span
+class="math inline">\(str=0x7465737480000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000020000000000000007465737480000
+00000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000002002000000000000 计算的时候先算
+0x746573748000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000002000000000000000
+前面这个部分的链变量为: A=0xcd6b8f09 B=0x73d32146 C=0x834edeca
+D=0xf6b42726 那么后面的运算用这个部分的链变量来计算即可
+0x746573748000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000002002000000000000
+通过这种方式,假如我们知道md5(\)</span>salt.<span
+class="math inline">\(msg1)的值,知道\)</span>salt长度,那么我们就可以获得md5(<span
+class="math inline">\(salt.\)</span>msg1.<span
+class="math inline">\(padding.\)</span>hack_content)的值。
+在使用长度扩展攻击的时候可以使用hashpump工具,或者是python的hashpumpy库(自行pip安装)
+然后我们本地实验一下(自行去掉换行,这里为了美观)</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$secret</span>=<span class="string">&quot;12345&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$secret</span>.<span class="string">&quot;admin&quot;</span>));</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">md5</span>(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$secret</span>.<span class="string">&#x27;admin%80%00%00%00%00</span></span><br><span class="line"><span class="string">%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00</span></span><br><span class="line"><span class="string">%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00</span></span><br><span class="line"><span class="string">%00%00%00%00%00%00%00P%00%00%00%00%00%00%00newadmin&#x27;</span>)));</span><br></pre></td></tr></table></figure>
-<p>得到结果为 <img src="/images/2017/12/4.png" /> 然后使用hashpump工具得到的结果如图 <img src="/images/2017/12/3.png" /> 所以工具是可以信赖的(hhhh,测试一下嘛...) 具体可以看下面两道题</p>
+<p>得到结果为 <img src="/images/2017/12/4.png" />
+然后使用hashpump工具得到的结果如图 <img src="/images/2017/12/3.png" />
+所以工具是可以信赖的(hhhh,测试一下嘛...) 具体可以看下面两道题</p>
 <h4 id="第一题">第一题</h4>
-<p>实验吧的一道题-让我进去 <a target="_blank" rel="noopener" href="http://ctf5.shiyanbar.com/web/kzhan.php">传送门</a> 首先cookie的source改成1看源码,然后发现要让cookie的getmein的值为md5(salt+username+password) 然而salt值我们不知道,然后题目给出了salt长度为15,并且给出了md5(salt+"admin"+"admin"),但是要求getmein不能为这个已经给出的hash,所以这是一道非常经典的长度扩展攻击的题目,通过给出的hash和salt长度,构造出md5(salt+已知值+padding+控制值). 具体工具使用 <img src="/images/2017/12/2.png" /> 其中签名是已知hash,然后inputdata是后面密码那个admin,长度是前面的salt+username的admin共计20 然后假设加上padding,然后自己控制数据为blacsheep,那么我们就可以获得flag了. 我们的username填admin,然后密码填admin%80%00%00%00%00%00%00%00%00%00%00%00 %00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%c8%00%00%00%00 %00%00%00blacsheep cookie的getmein填fd9b223a9c562017f65eaf824f3ca8dd 如图<img src="/images/2017/12/5.png" /></p>
+<p>实验吧的一道题-让我进去 <a
+target="_blank" rel="noopener" href="http://ctf5.shiyanbar.com/web/kzhan.php">传送门</a>
+首先cookie的source改成1看源码,然后发现要让cookie的getmein的值为md5(salt+username+password)
+然而salt值我们不知道,然后题目给出了salt长度为15,并且给出了md5(salt+"admin"+"admin"),但是要求getmein不能为这个已经给出的hash,所以这是一道非常经典的长度扩展攻击的题目,通过给出的hash和salt长度,构造出md5(salt+已知值+padding+控制值).
+具体工具使用 <img src="/images/2017/12/2.png" />
+其中签名是已知hash,然后inputdata是后面密码那个admin,长度是前面的salt+username的admin共计20
+然后假设加上padding,然后自己控制数据为blacsheep,那么我们就可以获得flag了.
+我们的username填admin,然后密码填admin%80%00%00%00%00%00%00%00%00%00%00%00
+%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%c8%00%00%00%00
+%00%00%00blacsheep cookie的getmein填fd9b223a9c562017f65eaf824f3ca8dd
+如图<img src="/images/2017/12/5.png" /></p>
 <h4 id="第二题">第二题</h4>
-<p>Jarvis的一道题-flag在管理员手里 首先index.php~源码泄漏,vim -r恢复一下 得到源码:</p>
+<p>Jarvis的一道题-flag在管理员手里 首先index.php~源码泄漏,vim -r恢复一下
+得到源码:</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Web <span class="number">350</span>&lt;/title&gt;</span><br><span class="line">&lt;style type=<span class="string">&quot;text/css&quot;</span>&gt;</span><br><span class="line">    body &#123;</span><br><span class="line">        background:gray;</span><br><span class="line">        text-align:center;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">    <span class="meta">&lt;?php</span> </span><br><span class="line">        <span class="variable">$auth</span> = <span class="literal">false</span>;</span><br><span class="line">        <span class="variable">$role</span> = <span class="string">&quot;guest&quot;</span>;</span><br><span class="line">        <span class="variable">$salt</span> = </span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_COOKIE</span>[<span class="string">&quot;role&quot;</span>])) &#123;</span><br><span class="line">            <span class="variable">$role</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$_COOKIE</span>[<span class="string">&quot;role&quot;</span>]);</span><br><span class="line">            <span class="variable">$hsh</span> = <span class="variable">$_COOKIE</span>[<span class="string">&quot;hsh&quot;</span>];</span><br><span class="line">            <span class="keyword">if</span> (<span class="variable">$role</span>===<span class="string">&quot;admin&quot;</span> </span><br><span class="line">                &amp;&amp; <span class="variable">$hsh</span> === <span class="title function_ invoke__">md5</span>(<span class="variable">$salt</span>.<span class="title function_ invoke__">strrev</span>(<span class="variable">$_COOKIE</span>[<span class="string">&quot;role&quot;</span>]))) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="variable">$auth</span> = <span class="literal">true</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="variable">$auth</span> = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable">$s</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$role</span>);</span><br><span class="line">            <span class="title function_ invoke__">setcookie</span>(<span class="string">&#x27;role&#x27;</span>,<span class="variable">$s</span>);</span><br><span class="line">            <span class="variable">$hsh</span> = <span class="title function_ invoke__">md5</span>(<span class="variable">$salt</span>.<span class="title function_ invoke__">strrev</span>(<span class="variable">$s</span>));</span><br><span class="line">            <span class="title function_ invoke__">setcookie</span>(<span class="string">&#x27;hsh&#x27;</span>,<span class="variable">$hsh</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$auth</span>) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;h3&gt;Welcome Admin. Your flag is </span></span><br><span class="line"><span class="string">        &#125; else &#123;</span></span><br><span class="line"><span class="string">            echo &quot;</span>&lt;h3&gt;Only Admin can see the flag!!&lt;/h3&gt;<span class="string">&quot;;</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    ?&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
-<p>分析一下源码:首先cookie里面的role要为"admin"的序列化值 而cookie里面的hsh要为md5(salt+"admin"的序列化值的倒序) 而目前我们已经有了md5(salt+"guest"的序列化的倒序) 不过我们并不知道salt的长度 这里需要暴力跑一下. 整理一下条件 我们已知条件 md5(salt+<strong>;"tseug":5:s</strong>)为3a4727d57463f122833d9e732f94e4e0 要求md5(salt+<strong>;"nimda":5:s</strong>) 但实际上,反序列化是存在一个小漏洞的,比如 <img src="/images/2017/12/6.png" /> 反序列化到分号就停止了 所以这里我们只用把自定义数据改成<strong>;"nimda":5:s</strong> 所以我们实际上是求md5(salt+<strong>;"tseug":5:s</strong>+padding+<strong>;"nimda":5:s</strong>) 本来长度扩展攻击放在最后的一段数据因为反向到前面,又因为反序列化的小漏洞,直接返回了admin 由这些就可以拿到flag了 所以我们写个脚本实验一下</p>
+<p>分析一下源码:首先cookie里面的role要为"admin"的序列化值
+而cookie里面的hsh要为md5(salt+"admin"的序列化值的倒序)
+而目前我们已经有了md5(salt+"guest"的序列化的倒序)
+不过我们并不知道salt的长度 这里需要暴力跑一下. 整理一下条件 我们已知条件
+md5(salt+<strong>;"tseug":5:s</strong>)为3a4727d57463f122833d9e732f94e4e0
+要求md5(salt+<strong>;"nimda":5:s</strong>)
+但实际上,反序列化是存在一个小漏洞的,比如 <img
+src="/images/2017/12/6.png" /> 反序列化到分号就停止了
+所以这里我们只用把自定义数据改成<strong>;"nimda":5:s</strong>
+所以我们实际上是求md5(salt+<strong>;"tseug":5:s</strong>+padding+<strong>;"nimda":5:s</strong>)
+本来长度扩展攻击放在最后的一段数据因为反向到前面,又因为反序列化的小漏洞,直接返回了admin
+由这些就可以拿到flag了 所以我们写个脚本实验一下</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> hashpumpy</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">100</span>):</span><br><span class="line">    role = &#123;<span class="string">&#x27;role&#x27;</span>:<span class="string">&#x27;s%3a5%3a&quot;admin&quot;%3b%00%00%00%00%00%00%00%c0%00%00</span></span><br><span class="line"><span class="string">%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00</span></span><br><span class="line"><span class="string">%00%00%00%00%00%00%00%80s%3a5%3a&quot;guest&quot;%3b&#x27;</span>,</span><br><span class="line"><span class="string">&#x27;hsh&#x27;</span>:hashpumpy.hashpump(<span class="string">&#x27;3a4727d57463f122833d9e732f94e4e0&#x27;</span>,<span class="string">&#x27;;&quot;tseug&quot;:5:s&#x27;</span>,<span class="string">&#x27;;&quot;nimda&quot;:5:s&#x27;</span>,i)[<span class="number">0</span>]&#125;</span><br><span class="line">    <span class="built_in">print</span>(role)</span><br><span class="line">    r=requests.get(<span class="string">&#x27;http://web.jarvisoj.com:32778/&#x27;</span>,cookies=role)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;Wel&#x27;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">        <span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
-<p>然后运行结果 <img src="/images/2017/12/7.png" /> 这就拿到flag了 <strong>避免md5长度扩展攻击的方法就是md5(salt+md5(input))</strong></p>
+<p>然后运行结果 <img src="/images/2017/12/7.png" /> 这就拿到flag了
+<strong>避免md5长度扩展攻击的方法就是md5(salt+md5(input))</strong></p>
 
   </div>
 </article>

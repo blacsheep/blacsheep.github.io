@@ -71,7 +71,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -177,11 +177,21 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <p>续上一篇mongodb注入的博客,其实大体差不多,新增了一些js的注入问题和driver的mongodb shell的命令执行问题,学习的参考链接 <a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/97211" title="https://www.anquanke.com/post/id/97211">https://www.anquanke.com/post/id/97211</a></p>
+    <p>续上一篇mongodb注入的博客,其实大体差不多,新增了一些js的注入问题和driver的mongodb
+shell的命令执行问题,学习的参考链接 <a
+target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/97211"
+title="https://www.anquanke.com/post/id/97211">https://www.anquanke.com/post/id/97211</a></p>
 <h3 id="概述">概述</h3>
-<p>首先说下NOSQL的注入,NoSQL泛指非关系型数据库,相比传统的SQL数据库有更宽松的一致性限制,它通过减少关系约束和一致性检查来提供更好的性能和扩展性,但即使没有使用sql的语法,它们依然可以被攻击,而且由于NoSQL注入可以在程序语言中执行,而不是在声明式SQL语言中执行,所以潜在的影响要更大. NoSQL的调用是通过应用程序的语言来编写的,所以过滤掉常见的HTML特殊字符并不能阻止Nosql攻击 分类我们直接按传统sql分类来看吧</p>
+<p>首先说下NOSQL的注入,NoSQL泛指非关系型数据库,相比传统的SQL数据库有更宽松的一致性限制,它通过减少关系约束和一致性检查来提供更好的性能和扩展性,但即使没有使用sql的语法,它们依然可以被攻击,而且由于NoSQL注入可以在程序语言中执行,而不是在声明式SQL语言中执行,所以潜在的影响要更大.
+NoSQL的调用是通过应用程序的语言来编写的,所以过滤掉常见的HTML特殊字符并不能阻止Nosql攻击
+分类我们直接按传统sql分类来看吧</p>
 <h3 id="nosql注入分类">NoSQL注入分类</h3>
-<p>(1)永真式 也就是通过注入代码,让生成的表达式结果永远为真,从而绕过认证,可以脑补'or'1'='1 (2)联合查询 通过参数来改变查询的数据集来绕认证,脑补' and false union select 1,md5(1)%23 (3)javascript注入 新的漏洞,由允许执行数据中的js的NoSQL数据库引入. js使得在数据引擎进行复杂事务和查询成为可能。传递不干净的用户输入可以注入js代码,导致非法数据获取</p>
+<p>(1)永真式
+也就是通过注入代码,让生成的表达式结果永远为真,从而绕过认证,可以脑补'or'1'='1
+(2)联合查询 通过参数来改变查询的数据集来绕认证,脑补' and false union
+select 1,md5(1)%23 (3)javascript注入
+新的漏洞,由允许执行数据中的js的NoSQL数据库引入.
+js使得在数据引擎进行复杂事务和查询成为可能。传递不干净的用户输入可以注入js代码,导致非法数据获取</p>
 <h3 id="php中的nosql注入">php中的NoSQL注入</h3>
 <h4 id="重言注入">重言注入</h4>
 <p>拿文中代码为例</p>
@@ -193,11 +203,15 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">string query =&quot;&#123; username: &#x27;&quot; + post_username + &quot;&#x27;, password: &#x27;&quot; + post_password + &quot;&#x27; &#125;&quot;</span><br><span class="line">payload:</span><br><span class="line"></span><br><span class="line">username=tolkien&#x27;, $or: [ &#123;&#125;, &#123; &#x27;a&#x27;:&#x27;a&amp;password=&#x27; &#125; ]</span><br></pre></td></tr></table></figure>
 <h4 id="javascript注入">JavaScript注入</h4>
 <h5 id="where操作符">where操作符</h5>
-<p>在mongodb中,where操作符是可以执行js语句的,Mongodb2.4之前的$where可以使用map-reduce,group来访问mongo shell中的全局变量和属性 给出示例代码</p>
+<p>在mongodb中,where操作符是可以执行js语句的,Mongodb2.4之前的$where可以使用map-reduce,group来访问mongo
+shell中的全局变量和属性 给出示例代码</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$manager</span> = <span class="keyword">new</span> MongoDB\Driver\<span class="title function_ invoke__">Manager</span>(<span class="string">&quot;mongodb://mongo:27017&quot;</span>);</span><br><span class="line"><span class="variable">$query_body</span> =<span class="keyword">array</span>(</span><br><span class="line"><span class="string">&#x27;$where&#x27;</span>=&gt;<span class="string">&quot;</span></span><br><span class="line"><span class="string">function q() </span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    var username = &quot;</span>.<span class="variable">$_REQUEST</span>[<span class="string">&quot;username&quot;</span>].<span class="string">&quot;;</span></span><br><span class="line"><span class="string">    var password = &quot;</span>.<span class="variable">$_REQUEST</span>[<span class="string">&quot;password&quot;</span>].<span class="string">&quot;;</span></span><br><span class="line"><span class="string">    if(username == &#x27;admin&#x27;&amp;&amp;password == &#x27;123456&#x27;) </span></span><br><span class="line"><span class="string">        return true; </span></span><br><span class="line"><span class="string">    else</span></span><br><span class="line"><span class="string">        &#123; </span></span><br><span class="line"><span class="string">            return false;</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">&quot;</span>); </span><br><span class="line"><span class="variable">$query</span> = <span class="keyword">new</span> MongoDB\Driver\<span class="title function_ invoke__">Query</span>(<span class="variable">$query_body</span>);</span><br><span class="line"><span class="variable">$cursor</span> = <span class="variable">$manager</span>-&gt;<span class="title function_ invoke__">executeQuery</span>(<span class="string">&#x27;test.users&#x27;</span>, <span class="variable">$query</span>)-&gt;<span class="title function_ invoke__">toArray</span>();</span><br><span class="line"><span class="variable">$doc_failed</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line"><span class="variable">$doc_failed</span>-&gt;<span class="title function_ invoke__">loadHTMLFile</span>(<span class="string">&quot;failed.html&quot;</span>);</span><br><span class="line"><span class="variable">$doc_succeed</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line"><span class="variable">$doc_succeed</span>-&gt;<span class="title function_ invoke__">loadHTMLFile</span>(<span class="string">&quot;succeed.html&quot;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">count</span>(<span class="variable">$cursor</span>)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$doc_succeed</span>-&gt;<span class="title function_ invoke__">saveHTML</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$doc_failed</span>-&gt;<span class="title function_ invoke__">saveHTML</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我们在这里注入</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload：username=1&amp;password=1;return true;</span><br></pre></td></tr></table></figure>
-<p>查看数据流 <img src="/images/2018/06/jsinjection.png" alt="blacsheep" /> php先将参数加到js里面,然后形成了一个奇奇怪怪的js,这个js返到mongodb里,然后在查询的时候,服务器执行了我们想要执行的js,从而绕过验证 然后文中一个让mongodb服务器cpu飙升的payload</p>
+<p>查看数据流 <img src="/images/2018/06/jsinjection.png"
+alt="blacsheep" />
+php先将参数加到js里面,然后形成了一个奇奇怪怪的js,这个js返到mongodb里,然后在查询的时候,服务器执行了我们想要执行的js,从而绕过验证
+然后文中一个让mongodb服务器cpu飙升的payload</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=1&amp;password=1;(function()&#123;var%20date%20=%20new%20Date();%20do&#123;curDate%20=%20new%20Date();&#125;while(curDate-date%3C5000);%20return%20Math.max();&#125;)();</span><br></pre></td></tr></table></figure>
 <h5 id="command方法注入">Command方法注入</h5>
 <p>php官方已经友情提示不要使用了,但还是难免有人为了实现奇怪的功能去使用,给出示例代码</p>

