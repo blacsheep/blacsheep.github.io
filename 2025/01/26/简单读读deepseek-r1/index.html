@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="最近deepseek的r1非常爆火, 趁坐车的几个小时读了下论文, 简单写一写. 报告也就20多页, DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning 主要就是几点内容吧: 主要思路  模型的推理能力可以通过纯粹的强化学习完成增强. 解决了推理问题, 那输出不可读、用户不友好、思维链">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单读读deepseek-r1">
+<meta property="og:url" content="http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="最近deepseek的r1非常爆火, 趁坐车的几个小时读了下论文, 简单写一写. 报告也就20多页, DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning 主要就是几点内容吧: 主要思路  模型的推理能力可以通过纯粹的强化学习完成增强. 解决了推理问题, 那输出不可读、用户不友好、思维链">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-01-26T10:11:17.000Z">
+<meta property="article:modified_time" content="2025-01-26T11:46:24.814Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>简单读读deepseek-r1</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/09/01/LC%E5%91%A8%E8%B5%9B-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&text=简单读读deepseek-r1"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&title=简单读读deepseek-r1"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&is_video=false&description=简单读读deepseek-r1"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=简单读读deepseek-r1&body=Check out this article: http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&title=简单读读deepseek-r1"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&title=简单读读deepseek-r1"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&title=简单读读deepseek-r1"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&title=简单读读deepseek-r1"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&name=简单读读deepseek-r1&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&t=简单读读deepseek-r1"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E6%80%9D%E8%B7%AF"><span class="toc-number">1.</span> <span class="toc-text">主要思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%83%A8%E5%88%86deepseek-r1-zero"><span class="toc-number">2.</span> <span class="toc-text">强化学习部分(deepseek-r1-zero)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B7%E5%90%AF%E5%8A%A8sftrl%E9%80%9A%E7%94%A8sft%E9%80%9A%E7%94%A8rldeepseek-r1"><span class="toc-number">3.</span> <span class="toc-text">冷启动SFT+RL+通用SFT+通用RL(deepseek-r1)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E8%92%B8%E9%A6%8F"><span class="toc-number">4.</span> <span class="toc-text">关于蒸馏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E7%9A%84%E5%AE%9E%E8%B7%B5"><span class="toc-number">5.</span> <span class="toc-text">错误的实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%A5%96%E5%8A%B1%E6%A8%A1%E5%9E%8B-%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="toc-number">5.1.</span> <span class="toc-text">程奖励模型: 存在问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%92%99%E7%89%B9%E5%8D%A1%E7%BD%97%E6%A0%91%E6%90%9C%E7%B4%A2%E4%B8%8D%E5%A4%AA%E7%90%86%E8%A7%A3"><span class="toc-number">5.2.</span> <span class="toc-text">蒙特卡罗树搜索(不太理解)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E5%A4%96%E8%AF%9D"><span class="toc-number">6.</span> <span class="toc-text">题外话</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#simpleqa"><span class="toc-number">6.1.</span> <span class="toc-text">simpleQA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#prompt"><span class="toc-number">6.2.</span> <span class="toc-text">prompt</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        简单读读deepseek-r1
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-26T10:11:17.000Z" class="dt-published" itemprop="datePublished">2025-01-26</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/ML-LLM/">ML LLM</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>最近deepseek的r1非常爆火, 趁坐车的几个小时读了下论文, 简单写一写.</p>
+<p>报告也就20多页, <a
+target="_blank" rel="noopener" href="https://github.com/deepseek-ai/DeepSeek-R1/blob/main/DeepSeek_R1.pdf">DeepSeek-R1:
+Incentivizing Reasoning Capability in LLMs via Reinforcement
+Learning</a></p>
+<p>主要就是几点内容吧:</p>
+<h2 id="主要思路">主要思路</h2>
+<ol type="1">
+<li>模型的推理能力可以通过纯粹的强化学习完成增强.</li>
+<li>解决了推理问题,
+那输出不可读、用户不友好、思维链不清晰、通用能力弱这些应该如何解决?</li>
+</ol>
+<h2
+id="强化学习部分deepseek-r1-zero">强化学习部分(deepseek-r1-zero)</h2>
+<p>第一个问题是通过RL的奖励来做到的.</p>
+<p>deepseek的奖励建模基于两个部分:</p>
+<ol type="1">
+<li>准确性奖励: 我们不关注过程, 只针对推理的最终结果做准确性奖励</li>
+<li>格式奖励: 模型的输出应该遵守规则,
+即思考部分应该放在think的tag里面.</li>
+</ol>
+<p>以deepseek-v3作为base, 以GRPO为框架, 搭配上面的奖励规则,
+大规模使用强化学习, 我们就可以得到deepseek-r1-zero.</p>
+<p>有趣的是, 研究发现, 模型在训练过程中自发性地开始反思自己,
+"这个地方可能不对","让我重新思考",在报告里面称这类现象为aha-moment.</p>
+<p>这类启发式的思考估计也是为啥Sam天天画饼说AGI要来了.
+从oai的o1到gemini的thinking模型再到deepseek,
+思考模型的思路在数学和推理这方面确实是有用的,
+区别就在于o1和gemini没开源, deepseek开源了,
+国外大模型偷偷摸摸不公开研究,
+deepseek一步步摸着石头过河摸到路了然后告诉大家思路的可行性,
+一眼看出格局.</p>
+<h2
+id="冷启动sftrl通用sft通用rldeepseek-r1">冷启动SFT+RL+通用SFT+通用RL(deepseek-r1)</h2>
+<p>deepseek-r1-zero出现之后还是存在问题, 比如可读性差, 用户不友好,
+思维链不清晰, 通用能力不够好等等. 对此,
+r1在zero的基础之上做了sft来弥补这些方面的不足.</p>
+<p>整个r1的训练分为几个步骤:</p>
+<ol type="1">
+<li><p>构建少量长CoT数据做冷启SFT.</p>
+<ul>
+<li>RL启动阶段的稳定性更好.<br />
+</li>
+<li>做冷启之后, 模型的输出数据更加可读,
+并且官方设计了结尾的摘要部分用于总结推理结果.<br />
+</li>
+<li>研究发现通过添加精心设计的相关先验知识,
+新的模型性能优于过去的模型.</li>
+</ul></li>
+<li><p>大规模RL, 需要注意的是, 区别于zero,
+这里官方发现推理过程中会存在语言不一致的问题,
+所以官方这里添加了语言一致性的奖励. 这样虽然模型性能会下降,
+但是输出更加有可读性.</p></li>
+<li><p>拒绝采样和监督微调, 这阶段的sft的数据主要分为两个部分:</p>
+<ul>
+<li>推理数据: 通过RL训练之后模型的checkpoint做拒绝采样,
+筛选推理prompt并生成推理轨迹, 而不是只用前面的规则进行奖励(个人理解:
+这部分开始考虑过程而不是只考虑结果准确性). 样本大概60w</li>
+<li>非推理数据: 主要是写作, 问答, 自我认知和翻译等任务,
+这部分复用了deepseek-v3的sft的数据. 对非推理任务,
+这里依旧要求模型输出潜在思维链(除了极其简单的对话,比如"hi"),
+这里收集了20w数据</li>
+</ul></li>
+<li><p>面向所有场景的RL</p>
+<ul>
+<li>针对推理任务: 和之前一样,
+类似于deepseek-r1-zero的做法,规则奖励来指导数学和代码.<br />
+</li>
+<li>针对通用任务:
+"对于通用数据，我们采用奖励模型来捕捉人类在复杂和微妙场景中的偏好。我们基于
+DeepSeek-V3 的流程，并采用了类似的偏好对和训练提示分布。"<br />
+</li>
+<li>有用性评估: 专注于最终摘要, 确保最终响应对用户是有用的,
+同时要最小化对底层推理的干扰.<br />
+</li>
+<li>无害性评估: 评估整个生成过程,
+减轻可能出现的潜在风险,有害内容以及偏见.<br />
+</li>
+<li>最终通过奖励信号和多样化的数据, 就可以训练出一个推理优秀,
+且各方面有用, 且无害的大模型了.</li>
+</ul></li>
+</ol>
+<h2 id="关于蒸馏">关于蒸馏</h2>
+<p>这部分反而没啥好说的,
+过去bert层面工业届实践已经知道大模型蒸小模型普遍会比小模型走一遍训练过程要好.</p>
+<p>这里deepseek也尝试了纯RL和蒸馏deepseek-r1到qwen或者llama上,
+结果表示蒸馏模型效果大幅提升, 纯RL模型表现一般.</p>
+<h2 id="错误的实践">错误的实践</h2>
+<h3 id="程奖励模型-存在问题">程奖励模型: 存在问题</h3>
+<ol type="1">
+<li>奖励粒度划分<br />
+</li>
+<li>中间步骤是否正确难以判断<br />
+</li>
+<li>奖励欺骗问题</li>
+</ol>
+<h3 id="蒙特卡罗树搜索不太理解">蒙特卡罗树搜索(不太理解)</h3>
+<p>灵感来源于alphago, 将推理步骤分成一个个tag,
+通过预训练的价值模型引导MCTS找到答案.</p>
+<p>但是和国际象棋不同, token生成的搜索空间过大,
+只能设置最大expand限制来解决, 但是会导致模型陷入局部最优.</p>
+<p>结论: 不好做, 难做</p>
+<h2 id="题外话">题外话</h2>
+<h3 id="simpleqa">simpleQA</h3>
+<p>报告里面还提到了几点, 比如deepseek-r1的中文SimpleQA打不过deepseek-v3,
+这是因为设置了安全限制, 触发安全限制会导致模型拒绝回答, 如果关闭限制,
+模型QA可以涨到70%.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">然而，在中文 SimpleQA 基准测试中，DeepSeek-R1 的表现不如 DeepSeek-V3，这主要是由于其在安</span><br><span class="line">全强化学习（safety RL）后倾向于拒绝回答某些查询。如果没有安全强化学习，DeepSeek-R1 的准确</span><br><span class="line">率可以超过 70%</span><br></pre></td></tr></table></figure>
+<h3 id="prompt">prompt</h3>
+<p>报告里面还提到了, deepseek-r1对提示词非常敏感,
+few-shot会持续降低其性能,
+所以官方建议直接采用zero-shot准确描述进行提问.</p>
+<p>很有意思的是之前openai的o1也被诟病这方面的问题, 越问模型越蠢,
+最后气坏国外某工程师, 直接喷o1是垃圾.
+后面被大家指正o1的正确使用方式是精准描述需求和使用场景,
+然后提供必要信息来让模型进行思考(即o1的调用和4o不太一样,
+一个注重chat一来一回, 一个要求信息完整一次回复).
+只能说这方面openai也和deepseek遇到的问题不谋而合了.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E6%80%9D%E8%B7%AF"><span class="toc-number">1.</span> <span class="toc-text">主要思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%83%A8%E5%88%86deepseek-r1-zero"><span class="toc-number">2.</span> <span class="toc-text">强化学习部分(deepseek-r1-zero)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B7%E5%90%AF%E5%8A%A8sftrl%E9%80%9A%E7%94%A8sft%E9%80%9A%E7%94%A8rldeepseek-r1"><span class="toc-number">3.</span> <span class="toc-text">冷启动SFT+RL+通用SFT+通用RL(deepseek-r1)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E8%92%B8%E9%A6%8F"><span class="toc-number">4.</span> <span class="toc-text">关于蒸馏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E7%9A%84%E5%AE%9E%E8%B7%B5"><span class="toc-number">5.</span> <span class="toc-text">错误的实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%A5%96%E5%8A%B1%E6%A8%A1%E5%9E%8B-%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="toc-number">5.1.</span> <span class="toc-text">程奖励模型: 存在问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%92%99%E7%89%B9%E5%8D%A1%E7%BD%97%E6%A0%91%E6%90%9C%E7%B4%A2%E4%B8%8D%E5%A4%AA%E7%90%86%E8%A7%A3"><span class="toc-number">5.2.</span> <span class="toc-text">蒙特卡罗树搜索(不太理解)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E5%A4%96%E8%AF%9D"><span class="toc-number">6.</span> <span class="toc-text">题外话</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#simpleqa"><span class="toc-number">6.1.</span> <span class="toc-text">simpleQA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#prompt"><span class="toc-number">6.2.</span> <span class="toc-text">prompt</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&text=简单读读deepseek-r1"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&title=简单读读deepseek-r1"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&is_video=false&description=简单读读deepseek-r1"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=简单读读deepseek-r1&body=Check out this article: http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&title=简单读读deepseek-r1"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&title=简单读读deepseek-r1"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&title=简单读读deepseek-r1"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&title=简单读读deepseek-r1"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&name=简单读读deepseek-r1&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/&t=简单读读deepseek-r1"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
