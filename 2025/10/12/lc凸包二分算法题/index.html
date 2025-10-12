@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="原题挺烂的, 卡常. 不过看到一种凸包二分的算法挺有意思的, 记录一下. 3494. 酿造药水需要的最少总时间 给你两个长度分别为 n 和 m 的整数数组 skill 和 mana 。 在一个实验室里，有 n 个巫师，他们必须按顺序酿造 m 个药水。每个药水的法力值为 mana[j]，并且每个药水 必须 依次通过 所有 巫师处理，才能完成酿造。第 i 个巫师在第 j 个药水上处理需要的时间为 ti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lc凸包二分算法题">
+<meta property="og:url" content="http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="原题挺烂的, 卡常. 不过看到一种凸包二分的算法挺有意思的, 记录一下. 3494. 酿造药水需要的最少总时间 给你两个长度分别为 n 和 m 的整数数组 skill 和 mana 。 在一个实验室里，有 n 个巫师，他们必须按顺序酿造 m 个药水。每个药水的法力值为 mana[j]，并且每个药水 必须 依次通过 所有 巫师处理，才能完成酿造。第 i 个巫师在第 j 个药水上处理需要的时间为 ti">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/table1.png">
+<meta property="og:image" content="http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/eq1.png">
+<meta property="og:image" content="http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/eq2.png">
+<meta property="og:image" content="http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/eq3.png">
+<meta property="og:image" content="http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/eq4.png">
+<meta property="article:published_time" content="2025-10-12T10:11:03.000Z">
+<meta property="article:modified_time" content="2025-10-12T11:04:54.491Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/table1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>lc凸包二分算法题</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/26/%E7%AE%80%E5%8D%95%E8%AF%BB%E8%AF%BBdeepseek-r1/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&text=lc凸包二分算法题"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&title=lc凸包二分算法题"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&is_video=false&description=lc凸包二分算法题"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=lc凸包二分算法题&body=Check out this article: http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&title=lc凸包二分算法题"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&title=lc凸包二分算法题"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&title=lc凸包二分算法题"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&title=lc凸包二分算法题"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&name=lc凸包二分算法题&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&t=lc凸包二分算法题"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%BF%E9%80%A0%E8%8D%AF%E6%B0%B4%E9%9C%80%E8%A6%81%E7%9A%84%E6%9C%80%E5%B0%91%E6%80%BB%E6%97%B6%E9%97%B4"><span class="toc-number">1.</span> <span class="toc-text">3494. 酿造药水需要的最少总时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%A7%A3%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">基础解法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E6%8E%A8%E8%A7%A3%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">递推解法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%86%E5%BA%8F%E4%BC%98%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">逆序优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86"><span class="toc-number">5.</span> <span class="toc-text">凸包+二分</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        lc凸包二分算法题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-10-12T10:11:03.000Z" class="dt-published" itemprop="datePublished">2025-10-12</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>原题挺烂的, 卡常. 不过看到一种凸包二分的算法挺有意思的, 记录一下.</p>
+<h2 id="酿造药水需要的最少总时间">3494. 酿造药水需要的最少总时间</h2>
+<p>给你两个长度分别为 <code>n</code> 和
+<code>m</code> 的整数数组 <code>skill</code> 和 <code>mana</code> 。</p>
+<p>在一个实验室里，有 <code>n</code> 个巫师，他们必须按顺序酿造
+<code>m</code>
+个药水。每个药水的法力值为 <code>mana[j]</code>，并且每个药水
+<strong>必须</strong> 依次通过 <strong>所有</strong>
+巫师处理，才能完成酿造。第 <code>i</code> 个巫师在第 <code>j</code>
+个药水上处理需要的时间为 <code>timeij = skill[i] * mana[j]</code>。</p>
+<p>由于酿造过程非常精细，药水在当前巫师完成工作后 <strong>必须</strong> 立即传递给下一个巫师并开始处理。这意味着时间必须保持
+<strong>同步</strong>，确保每个巫师在药水到达时
+<strong>马上</strong> 开始工作。</p>
+<p>返回酿造所有药水所需的 <strong>最短</strong> 总时间。</p>
+<p><strong>示例 1：</strong></p>
+<p><strong>输入：</strong> skill = [1,5,2,4], mana = [5,1,4,2]</p>
+<p><strong>输出：</strong> 110</p>
+<p><img src="table1.png" /></p>
+<p>举个例子，为什么巫师 0 不能在时间 <code>t = 52</code> 前开始处理第 1
+个药水，假设巫师们在时间 <code>t = 50</code> 开始准备第 1 个药水。时间
+<code>t = 58</code> 时，巫师 2 已经完成了第 1 个药水的处理，但巫师 3
+直到时间 <code>t = 60</code> 仍在处理第 0 个药水，无法马上开始处理第
+1个药水。</p>
+<p><strong>示例 2：</strong></p>
+<p><strong>输入：</strong> skill = [1,1,1], mana = [1,1,1]</p>
+<p><strong>输出：</strong> 5</p>
+<p><strong>解释：</strong></p>
+<ol type="1">
+<li>第 0 个药水的准备从时间 <code>t = 0</code> 开始，并在时间
+<code>t = 3</code> 完成。</li>
+<li>第 1 个药水的准备从时间 <code>t = 1</code> 开始，并在时间
+<code>t = 4</code> 完成。</li>
+<li>第 2 个药水的准备从时间 <code>t = 2</code> 开始，并在时间
+<code>t = 5</code> 完成。</li>
+</ol>
+<p><strong>示例 3：</strong></p>
+<p><strong>输入：</strong> skill = [1,2,3,4], mana = [1,2]</p>
+<p><strong>输出：</strong> 21</p>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>n == skill.length</code></li>
+<li><code>m == mana.length</code></li>
+<li><code>1 &lt;= n, m &lt;= 5000</code></li>
+<li><code>1 &lt;= mana[i], skill[i] &lt;= 5000</code></li>
+</ul>
+<p><a
+target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-the-minimum-amount-of-time-to-brew-potions/solutions/">https://leetcode.cn/problems/find-the-minimum-amount-of-time-to-brew-potions/solutions/</a></p>
+<h2 id="基础解法">基础解法</h2>
+<p>这题稍微观察下就可以发现, 每一行都和上一行有关,
+所以一个O(mn)就可以解决. 我写的第一版</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">minTime</span>(<span class="params">self, skill: <span class="type">List</span>[<span class="built_in">int</span>], mana: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        prev = [<span class="number">0</span>] * <span class="built_in">len</span>(skill)</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">max</span>(<span class="params">x, y</span>):</span><br><span class="line">            <span class="keyword">return</span> x <span class="keyword">if</span> x &gt;= y <span class="keyword">else</span> y</span><br><span class="line">        <span class="keyword">for</span> idx, m <span class="keyword">in</span> <span class="built_in">enumerate</span>(mana):</span><br><span class="line">            f = [<span class="number">0</span>] * <span class="built_in">len</span>(skill)</span><br><span class="line">            mx = prev[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">for</span> i, s <span class="keyword">in</span> <span class="built_in">enumerate</span>(skill):</span><br><span class="line">                f[i] = f[i - <span class="number">1</span>] + s * m</span><br><span class="line">                <span class="keyword">if</span> i &lt; <span class="built_in">len</span>(skill) - <span class="number">1</span>:</span><br><span class="line">                    mx = <span class="built_in">max</span>(mx, prev[i + <span class="number">1</span>] - f[i])</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(skill)):</span><br><span class="line">                f[i] = f[i] + mx</span><br><span class="line">            prev = f</span><br><span class="line">        <span class="keyword">return</span> f[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<p>国服被卡常了, 美服AC了.</p>
+<p>后续看灵神的解答发现还有几种有意思的方案.</p>
+<h2 id="递推解法">递推解法</h2>
+<p>药水每次必须连续制作, 所以知道开始时间我们就可以算出结束时间.</p>
+<p>第i个巫师完成第j瓶药水的公式如下:</p>
+<p><img src="eq1.png" /></p>
+<p>如果我们可以从 <code>$ start_&#123;i-1&#125; $</code> 推出
+<code>$ start_&#123;i-1&#125; $</code> 就好了</p>
+<p>从上一次到下一次, 我们其实总是卡在了最慢的那个巫师.
+所以对于最慢的巫师我们有:</p>
+<p><img src="eq2.png" /></p>
+<p>此时把lastfinish全部代入即有:</p>
+<p><img src="eq3.png" /></p>
+<p>由此我们有代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">minTime</span>(<span class="params">self, skill: <span class="type">List</span>[<span class="built_in">int</span>], mana: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        n = <span class="built_in">len</span>(skill)</span><br><span class="line">        s = <span class="built_in">list</span>(accumulate(skill, initial=<span class="number">0</span>))  <span class="comment"># skill 的前缀和</span></span><br><span class="line">        start = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> pre, cur <span class="keyword">in</span> pairwise(mana):</span><br><span class="line">            start += <span class="built_in">max</span>(pre * s[i + <span class="number">1</span>] - cur * s[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n))</span><br><span class="line">        <span class="keyword">return</span> start + mana[-<span class="number">1</span>] * s[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="逆序优化">逆序优化</h2>
+<p>上面的公式还能拆开</p>
+<p><img src="eq4.png" /></p>
+<p>我们可以以d = mana[j-1] - mana[j] 做分类讨论</p>
+<p>d&gt;0时, 带i的项s[i]递增, d也递增; 如果skill也递增,
+那么最大值只能是递增skill的最后一项. 对此我们可以倒序遍历,
+一旦倒序找到更大的数, 我们就记录下来, 然后我们遍历这个列表就行了.</p>
+<p>d&lt;0时, 类似的, 我们顺序遍历, 找到更大的数就记录下来.</p>
+<p>最后依据d来做判断即可.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">minTime</span>(<span class="params">self, skill: <span class="type">List</span>[<span class="built_in">int</span>], mana: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        n = <span class="built_in">len</span>(skill)</span><br><span class="line">        s = <span class="built_in">list</span>(accumulate(skill, initial=<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">        suf_record = [n - <span class="number">1</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n - <span class="number">2</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> skill[i] &gt; skill[suf_record[-<span class="number">1</span>]]:</span><br><span class="line">                suf_record.append(i)</span><br><span class="line"></span><br><span class="line">        pre_record = [<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">            <span class="keyword">if</span> skill[i] &gt; skill[pre_record[-<span class="number">1</span>]]:</span><br><span class="line">                pre_record.append(i)</span><br><span class="line"></span><br><span class="line">        start = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> pre, cur <span class="keyword">in</span> pairwise(mana):</span><br><span class="line">            record = pre_record <span class="keyword">if</span> pre &lt; cur <span class="keyword">else</span> suf_record</span><br><span class="line">            start += <span class="built_in">max</span>(pre * s[i + <span class="number">1</span>] - cur * s[i] <span class="keyword">for</span> i <span class="keyword">in</span> record)</span><br><span class="line">        <span class="keyword">return</span> start + mana[-<span class="number">1</span>] * s[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="凸包二分">凸包+二分</h2>
+<p>前面我们已经提取出了公式:</p>
+<p>(mana[j−1]−mana[j])⋅s[i]+mana[j−1]⋅skill[i]</p>
+<p>我们完全可以改写成点积的形式</p>
+<p>v[i] = (s[i], skill[i]) p = (mana[j−1]−mana[j],mana[j−1])</p>
+<p>我们要求的即为 <code>$ max_&#123;0&#125;^&#123;n-1&#125;(p \cdot v[i]) $</code></p>
+<p>这里p是一个定值, 而他们的点积则取决于v[i]在p上的投影.</p>
+<p>考虑v构成的凸包, 凸包内的点比凸包顶点的投影短,
+所以我们把问题转化成了求v的凸包顶点.</p>
+<p>此时我们发现, 如果我们顺序或者逆序遍历凸包上的点,
+我们的点积构成了一个单峰函数, 由此我们可以二分来解决.</p>
+<p>凸包这里使用andrew算法即可, 其最大复杂度在于排序,
+但是我们这里前缀和一定是递增的, 所以相当于已经排序完了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Vec</span>:</span><br><span class="line">    __slots__ = <span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.x = x</span><br><span class="line">        <span class="variable language_">self</span>.y = y</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__sub__</span>(<span class="params">self, b: <span class="string">&quot;Vec&quot;</span></span>) -&gt; <span class="string">&quot;Vec&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> Vec(<span class="variable language_">self</span>.x - b.x, <span class="variable language_">self</span>.y - b.y)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">det</span>(<span class="params">self, b: <span class="string">&quot;Vec&quot;</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.x * b.y - <span class="variable language_">self</span>.y * b.x</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">dot</span>(<span class="params">self, b: <span class="string">&quot;Vec&quot;</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.x * b.x + <span class="variable language_">self</span>.y * b.y</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="comment"># Andrew 算法，计算 points 的上凸包</span></span><br><span class="line">    <span class="comment"># 由于横坐标（前缀和）是严格递增的，所以无需排序</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">convex_hull</span>(<span class="params">self, points: <span class="type">List</span>[Vec]</span>) -&gt; <span class="type">List</span>[Vec]:</span><br><span class="line">        q = []</span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> points:</span><br><span class="line">            <span class="keyword">while</span> <span class="built_in">len</span>(q) &gt; <span class="number">1</span> <span class="keyword">and</span> (q[-<span class="number">1</span>] - q[-<span class="number">2</span>]).det(p - q[-<span class="number">1</span>]) &gt;= <span class="number">0</span>:</span><br><span class="line">                q.pop()</span><br><span class="line">            q.append(p)</span><br><span class="line">        <span class="keyword">return</span> q</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">minTime</span>(<span class="params">self, skill: <span class="type">List</span>[<span class="built_in">int</span>], mana: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        s = <span class="built_in">list</span>(accumulate(skill, initial=<span class="number">0</span>))</span><br><span class="line">        vs = [Vec(pre_sum, x) <span class="keyword">for</span> pre_sum, x <span class="keyword">in</span> <span class="built_in">zip</span>(s, skill)]</span><br><span class="line">        vs = <span class="variable language_">self</span>.convex_hull(vs)  <span class="comment"># 去掉无用数据</span></span><br><span class="line"></span><br><span class="line">        start = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> pre, cur <span class="keyword">in</span> pairwise(mana):</span><br><span class="line">            p = Vec(pre - cur, pre)</span><br><span class="line">            <span class="comment"># p.dot(vs[i]) 是个单峰函数，二分找最大值</span></span><br><span class="line">            check = <span class="keyword">lambda</span> i: p.dot(vs[i]) &gt; p.dot(vs[i + <span class="number">1</span>])</span><br><span class="line">            i = bisect_left(<span class="built_in">range</span>(<span class="built_in">len</span>(vs) - <span class="number">1</span>), <span class="literal">True</span>, key=check)</span><br><span class="line">            start += p.dot(vs[i])</span><br><span class="line">        <span class="keyword">return</span> start + mana[-<span class="number">1</span>] * s[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<p>最后算法复杂度O(n+mlogn)</p>
+<p>以前没见过这种做法, 记录一下.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%BF%E9%80%A0%E8%8D%AF%E6%B0%B4%E9%9C%80%E8%A6%81%E7%9A%84%E6%9C%80%E5%B0%91%E6%80%BB%E6%97%B6%E9%97%B4"><span class="toc-number">1.</span> <span class="toc-text">3494. 酿造药水需要的最少总时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%A7%A3%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">基础解法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E6%8E%A8%E8%A7%A3%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">递推解法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%86%E5%BA%8F%E4%BC%98%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">逆序优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86"><span class="toc-number">5.</span> <span class="toc-text">凸包+二分</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&text=lc凸包二分算法题"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&title=lc凸包二分算法题"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&is_video=false&description=lc凸包二分算法题"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=lc凸包二分算法题&body=Check out this article: http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&title=lc凸包二分算法题"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&title=lc凸包二分算法题"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&title=lc凸包二分算法题"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&title=lc凸包二分算法题"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&name=lc凸包二分算法题&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/10/12/lc%E5%87%B8%E5%8C%85%E4%BA%8C%E5%88%86%E7%AE%97%E6%B3%95%E9%A2%98/&t=lc凸包二分算法题"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
