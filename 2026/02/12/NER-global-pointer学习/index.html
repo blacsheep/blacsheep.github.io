@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="年初的时候做了几个市场的切分模型, 年末终于有时间来回顾一下了. 当时考虑实现一个双指针的写法, 但是进度比较着急, 没来得及改好, 只做了一个分层的实现. 年末比较有时间, 复盘一下项目. 首先, global pointer这个做法是苏剑林大佬提出的. GlobalPointer：用统一的方式处理嵌套和非嵌套NER 基本思想是这样的: 我们假设一个序列长度为n, 那么我们最多可以获取到n*(n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NER - global pointer学习">
+<meta property="og:url" content="http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="blacsheep&#39;s blog">
+<meta property="og:description" content="年初的时候做了几个市场的切分模型, 年末终于有时间来回顾一下了. 当时考虑实现一个双指针的写法, 但是进度比较着急, 没来得及改好, 只做了一个分层的实现. 年末比较有时间, 复盘一下项目. 首先, global pointer这个做法是苏剑林大佬提出的. GlobalPointer：用统一的方式处理嵌套和非嵌套NER 基本思想是这样的: 我们假设一个序列长度为n, 那么我们最多可以获取到n*(n">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-02-12T11:48:16.000Z">
+<meta property="article:modified_time" content="2026-02-12T12:44:55.343Z">
+<meta property="article:author" content="blacsheep">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>NER - global pointer学习</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2026/01/01/spark%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&text=NER - global pointer学习"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&title=NER - global pointer学习"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&is_video=false&description=NER - global pointer学习"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=NER - global pointer学习&body=Check out this article: http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&title=NER - global pointer学习"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&title=NER - global pointer学习"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&title=NER - global pointer学习"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&title=NER - global pointer学习"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&name=NER - global pointer学习&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&t=NER - global pointer学习"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E5%BD%A2%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">数学形式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">3.</span> <span class="toc-text">最后</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        NER - global pointer学习
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">blacsheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2026-02-12T11:48:16.000Z" class="dt-published" itemprop="datePublished">2026-02-12</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/ML-NLP/">ML NLP</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>年初的时候做了几个市场的切分模型, 年末终于有时间来回顾一下了.
+当时考虑实现一个双指针的写法, 但是进度比较着急, 没来得及改好,
+只做了一个分层的实现. 年末比较有时间, 复盘一下项目.</p>
+<p>首先, global pointer这个做法是苏剑林大佬提出的. <a
+target="_blank" rel="noopener" href="https://www.spaces.ac.cn/archives/8373">GlobalPointer：用统一的方式处理嵌套和非嵌套NER</a></p>
+<p>基本思想是这样的: 我们假设一个序列长度为n,
+那么我们最多可以获取到n*(n+1) // 2个substring, 每一个subs都会做一个打分,
+然后看哪些类型的打分可以超出阈值透出结果.</p>
+<h2 id="数学形式">数学形式</h2>
+<p>我们假设序列输入进来之后有n个token,
+我们encoding之后得到<code>[h1,h2,...hn]</code></p>
+<p>简单做一下变换</p>
+<p><code>$ q_&#123;i,\alpha&#125; = W_&#123;q,\alpha&#125;h_i + b_&#123;q,\alpha&#125; $</code> 以及
+<code>$ k_&#123;i,\alpha&#125; = W_&#123;k,\alpha&#125;h_i + b_&#123;k,\alpha&#125; $</code></p>
+<p>然后我们可以得到</p>
+<p><code>$ [\boldsymbol&#123;q&#125;_&#123;1,\alpha&#125;,\boldsymbol&#123;q&#125;_&#123;2,\alpha&#125;,\cdots,\boldsymbol&#123;q&#125;_&#123;n,\alpha&#125;] $</code>
+和
+<code>$ [\boldsymbol&#123;k&#125;_&#123;1,\alpha&#125;,\boldsymbol&#123;k&#125;_&#123;2,\alpha&#125;,\cdots,\boldsymbol&#123;k&#125;_&#123;n,\alpha&#125;] $</code></p>
+<p>然后我们再定义</p>
+<p><code>$ \begin&#123;equation&#125;s_&#123;\alpha&#125;(i,j) = \boldsymbol&#123;q&#125;_&#123;i,\alpha&#125;^&#123;\top&#125;\boldsymbol&#123;k&#125;_&#123;j,\alpha&#125;\label&#123;eq:s&#125;\end&#123;equation&#125; $</code></p>
+<p>本质就是一个内积作为打分. 不过苏佬实验显示, 这样的形式还是不够,
+这个公式没有显示包含相对位置信息, 于是一个实验是给global
+pointer加上RoPE</p>
+<p><code>$ \begin&#123;equation&#125;s_&#123;\alpha&#125;(i,j) = (\boldsymbol&#123;\mathcal&#123;R&#125;&#125;_i\boldsymbol&#123;q&#125;_&#123;i,\alpha&#125;)^&#123;\top&#125;(\boldsymbol&#123;\mathcal&#123;R&#125;&#125;_j\boldsymbol&#123;k&#125;_&#123;j,\alpha&#125;) = \boldsymbol&#123;q&#125;_&#123;i,\alpha&#125;^&#123;\top&#125; \boldsymbol&#123;\mathcal&#123;R&#125;&#125;_i^&#123;\top&#125;\boldsymbol&#123;\mathcal&#123;R&#125;&#125;_j\boldsymbol&#123;k&#125;_&#123;j,\alpha&#125; = \boldsymbol&#123;q&#125;_&#123;i,\alpha&#125;^&#123;\top&#125; \boldsymbol&#123;\mathcal&#123;R&#125;&#125;_&#123;j-i&#125;\boldsymbol&#123;k&#125;_&#123;j,\alpha&#125;\end&#123;equation&#125; $</code></p>
+<h2 id="损失函数">损失函数</h2>
+<p>我们设计好了打分系统, 正常来说,
+我们后面应该就是一个n*(n+1)//2个的多标签分类问题, 区别于一般的多分类,
+这里我们每个subs可能会对应多个标签.</p>
+<p>那么一个朴素的想法就是把问题转化成k个2分类的问题, 但是这又有问题了,
+我们每次可以获得n * (n+1) / 2个subs, 然而里面实际存在的标签数量非常有限,
+这又是一个典型的类别不均衡的问题.</p>
+<p>这里又有另一篇文章: <a
+target="_blank" rel="noopener" href="https://www.spaces.ac.cn/archives/7359">将“Softmax+交叉熵”推广到多标签分类问题</a></p>
+<p>我们从单标签分类的交叉熵出发:</p>
+<p><span class="math display">\[ \begin{equation}-\log
+\frac{e^{s_t}}{\sum\limits_{i=1}^n e^{s_i}}=-\log
+\frac{1}{\sum\limits_{i=1}^n e^{s_i-s_t}}=\log \sum\limits_{i=1}^n
+e^{s_i-s_t}=\log \left(1 + \sum\limits_{i=1,i\neq t}^n
+e^{s_i-s_t}\right)\end{equation} \]</span></p>
+<p>这里logsumexp其实是max的光滑近似,
+其类似于我们把所有打分都和目标类别的打分做差, 然后我们期望所有其他的s_x
+- s_target都应该小于0.</p>
+<p><span class="math display">\[\begin{equation}\log \left(1 +
+\sum\limits_{i=1,i\neq t}^n e^{s_i-s_t}\right)\approx
+\max\begin{pmatrix}0 \\ s_1 - s_t \\ \vdots \\ s_{t-1} - s_t \\ s_{t+1}
+- s_t \\ \vdots \\ s_n - s_t\end{pmatrix}\end{equation}\]</span></p>
+<p>那么如果是多标签分类,
+我们合理的期望应该是每一个目标类别的打分都应该大于非目标类别的打分</p>
+<p>所以类似的我们就有公式</p>
+<p><span class="math display">\[ \begin{equation}\log \left(1 +
+\sum\limits_{i\in\Omega_{neg},j\in\Omega_{pos}} e^{s_i-s_j}\right)=\log
+\left(1 + \sum\limits_{i\in\Omega_{neg}}
+e^{s_i}\sum\limits_{j\in\Omega_{pos}}
+e^{-s_j}\right)\label{eq:unified}\end{equation} \]</span></p>
+<p>如果我们引入一个0类, 我们希望target类打分都大于0类, 其他类别小于0类,
+那么我们就有推导:</p>
+<p><span class="math display">\[ \begin{equation}\begin{aligned}
+&amp;\log \left(1 + \sum\limits_{i\in\Omega_{neg},j\in\Omega_{pos}}
+e^{s_i-s_j}+\sum\limits_{i\in\Omega_{neg}}
+e^{s_i-s_0}+\sum\limits_{j\in\Omega_{pos}} e^{s_0-s_j}\right)\\
+=&amp;\log \left(e^{s_0} + \sum\limits_{i\in\Omega_{neg}} e^{s_i}\right)
++ \log \left(e^{-s_0} + \sum\limits_{j\in\Omega_{pos}} e^{-s_j}\right)\\
+\end{aligned}\end{equation} \]</span> 如果我们指定0类的打分为0,
+那么我们就有</p>
+<p><span class="math display">\[ \begin{equation}\log \left(1 +
+\sum\limits_{i\in\Omega_{neg}} e^{s_i}\right) + \log \left(1 +
+\sum\limits_{j\in\Omega_{pos}}
+e^{-s_j}\right)\label{eq:final}\end{equation} \]</span>
+这就是最终的打分形式,
+其优化点就是我们并不是把多标签分类转化成了多个二分类的问题,
+而是转化成了类似排序的过程(目标类应该大于非目标类)</p>
+<h2 id="最后">最后</h2>
+<p>理论大概就是上面这些.</p>
+<p>基本实现形式是这样, 代码实现苏神也已经整理到了bert4keras里面了</p>
+<p>我这边实现的时候因为底座想用mdeberta-v3, 用ai重写了一下代码,
+初步看下来, 似乎rope的作用没有太明显, 损失函数倒是比较有用,
+跑了几组实验, 后续出结果了再梳理一下.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E5%BD%A2%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">数学形式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">3.</span> <span class="toc-text">最后</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&text=NER - global pointer学习"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&title=NER - global pointer学习"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&is_video=false&description=NER - global pointer学习"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=NER - global pointer学习&body=Check out this article: http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&title=NER - global pointer学习"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&title=NER - global pointer学习"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&title=NER - global pointer学习"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&title=NER - global pointer学习"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&name=NER - global pointer学习&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/&t=NER - global pointer学习"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2026
+    blacsheep
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

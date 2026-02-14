@@ -4,6 +4,44 @@
   
     
     <entry>
+      <title>NER - global pointer学习</title>
+      <link href="/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/"/>
+      <url>/2026/02/12/NER-global-pointer%E5%AD%A6%E4%B9%A0/</url>
+      
+        <content type="html"><![CDATA[<p>年初的时候做了几个市场的切分模型, 年末终于有时间来回顾一下了.当时考虑实现一个双指针的写法, 但是进度比较着急, 没来得及改好,只做了一个分层的实现. 年末比较有时间, 复盘一下项目.</p><p>首先, global pointer这个做法是苏剑林大佬提出的. <ahref="https://www.spaces.ac.cn/archives/8373">GlobalPointer：用统一的方式处理嵌套和非嵌套NER</a></p><p>基本思想是这样的: 我们假设一个序列长度为n,那么我们最多可以获取到n*(n+1) // 2个substring, 每一个subs都会做一个打分,然后看哪些类型的打分可以超出阈值透出结果.</p><h2 id="数学形式">数学形式</h2><p>我们假设序列输入进来之后有n个token,我们encoding之后得到<code>[h1,h2,...hn]</code></p><p>简单做一下变换</p><p><code>$ q_&#123;i,\alpha&#125; = W_&#123;q,\alpha&#125;h_i + b_&#123;q,\alpha&#125; $</code> 以及<code>$ k_&#123;i,\alpha&#125; = W_&#123;k,\alpha&#125;h_i + b_&#123;k,\alpha&#125; $</code></p><p>然后我们可以得到</p><p><code>$ [\boldsymbol&#123;q&#125;_&#123;1,\alpha&#125;,\boldsymbol&#123;q&#125;_&#123;2,\alpha&#125;,\cdots,\boldsymbol&#123;q&#125;_&#123;n,\alpha&#125;] $</code>和<code>$ [\boldsymbol&#123;k&#125;_&#123;1,\alpha&#125;,\boldsymbol&#123;k&#125;_&#123;2,\alpha&#125;,\cdots,\boldsymbol&#123;k&#125;_&#123;n,\alpha&#125;] $</code></p><p>然后我们再定义</p><p><code>$ \begin&#123;equation&#125;s_&#123;\alpha&#125;(i,j) = \boldsymbol&#123;q&#125;_&#123;i,\alpha&#125;^&#123;\top&#125;\boldsymbol&#123;k&#125;_&#123;j,\alpha&#125;\label&#123;eq:s&#125;\end&#123;equation&#125; $</code></p><p>本质就是一个内积作为打分. 不过苏佬实验显示, 这样的形式还是不够,这个公式没有显示包含相对位置信息, 于是一个实验是给globalpointer加上RoPE</p><p><code>$ \begin&#123;equation&#125;s_&#123;\alpha&#125;(i,j) = (\boldsymbol&#123;\mathcal&#123;R&#125;&#125;_i\boldsymbol&#123;q&#125;_&#123;i,\alpha&#125;)^&#123;\top&#125;(\boldsymbol&#123;\mathcal&#123;R&#125;&#125;_j\boldsymbol&#123;k&#125;_&#123;j,\alpha&#125;) = \boldsymbol&#123;q&#125;_&#123;i,\alpha&#125;^&#123;\top&#125; \boldsymbol&#123;\mathcal&#123;R&#125;&#125;_i^&#123;\top&#125;\boldsymbol&#123;\mathcal&#123;R&#125;&#125;_j\boldsymbol&#123;k&#125;_&#123;j,\alpha&#125; = \boldsymbol&#123;q&#125;_&#123;i,\alpha&#125;^&#123;\top&#125; \boldsymbol&#123;\mathcal&#123;R&#125;&#125;_&#123;j-i&#125;\boldsymbol&#123;k&#125;_&#123;j,\alpha&#125;\end&#123;equation&#125; $</code></p><h2 id="损失函数">损失函数</h2><p>我们设计好了打分系统, 正常来说,我们后面应该就是一个n*(n+1)//2个的多标签分类问题, 区别于一般的多分类,这里我们每个subs可能会对应多个标签.</p><p>那么一个朴素的想法就是把问题转化成k个2分类的问题, 但是这又有问题了,我们每次可以获得n * (n+1) / 2个subs, 然而里面实际存在的标签数量非常有限,这又是一个典型的类别不均衡的问题.</p><p>这里又有另一篇文章: <ahref="https://www.spaces.ac.cn/archives/7359">将“Softmax+交叉熵”推广到多标签分类问题</a></p><p>我们从单标签分类的交叉熵出发:</p><p><span class="math display">\[ \begin{equation}-\log\frac{e^{s_t}}{\sum\limits_{i=1}^n e^{s_i}}=-\log\frac{1}{\sum\limits_{i=1}^n e^{s_i-s_t}}=\log \sum\limits_{i=1}^ne^{s_i-s_t}=\log \left(1 + \sum\limits_{i=1,i\neq t}^ne^{s_i-s_t}\right)\end{equation} \]</span></p><p>这里logsumexp其实是max的光滑近似,其类似于我们把所有打分都和目标类别的打分做差, 然后我们期望所有其他的s_x- s_target都应该小于0.</p><p><span class="math display">\[\begin{equation}\log \left(1 +\sum\limits_{i=1,i\neq t}^n e^{s_i-s_t}\right)\approx\max\begin{pmatrix}0 \\ s_1 - s_t \\ \vdots \\ s_{t-1} - s_t \\ s_{t+1}- s_t \\ \vdots \\ s_n - s_t\end{pmatrix}\end{equation}\]</span></p><p>那么如果是多标签分类,我们合理的期望应该是每一个目标类别的打分都应该大于非目标类别的打分</p><p>所以类似的我们就有公式</p><p><span class="math display">\[ \begin{equation}\log \left(1 +\sum\limits_{i\in\Omega_{neg},j\in\Omega_{pos}} e^{s_i-s_j}\right)=\log\left(1 + \sum\limits_{i\in\Omega_{neg}}e^{s_i}\sum\limits_{j\in\Omega_{pos}}e^{-s_j}\right)\label{eq:unified}\end{equation} \]</span></p><p>如果我们引入一个0类, 我们希望target类打分都大于0类, 其他类别小于0类,那么我们就有推导:</p><p><span class="math display">\[ \begin{equation}\begin{aligned}&amp;\log \left(1 + \sum\limits_{i\in\Omega_{neg},j\in\Omega_{pos}}e^{s_i-s_j}+\sum\limits_{i\in\Omega_{neg}}e^{s_i-s_0}+\sum\limits_{j\in\Omega_{pos}} e^{s_0-s_j}\right)\\=&amp;\log \left(e^{s_0} + \sum\limits_{i\in\Omega_{neg}} e^{s_i}\right)+ \log \left(e^{-s_0} + \sum\limits_{j\in\Omega_{pos}} e^{-s_j}\right)\\\end{aligned}\end{equation} \]</span> 如果我们指定0类的打分为0,那么我们就有</p><p><span class="math display">\[ \begin{equation}\log \left(1 +\sum\limits_{i\in\Omega_{neg}} e^{s_i}\right) + \log \left(1 +\sum\limits_{j\in\Omega_{pos}}e^{-s_j}\right)\label{eq:final}\end{equation} \]</span>这就是最终的打分形式,其优化点就是我们并不是把多标签分类转化成了多个二分类的问题,而是转化成了类似排序的过程(目标类应该大于非目标类)</p><h2 id="最后">最后</h2><p>理论大概就是上面这些.</p><p>基本实现形式是这样, 代码实现苏神也已经整理到了bert4keras里面了</p><p>我这边实现的时候因为底座想用mdeberta-v3, 用ai重写了一下代码,初步看下来, 似乎rope的作用没有太明显, 损失函数倒是比较有用,跑了几组实验, 后续出结果了再梳理一下.</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> ML NLP </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>spark踩坑记录</title>
+      <link href="/2026/01/01/spark%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/"/>
+      <url>/2026/01/01/spark%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</url>
+      
+        <content type="html"><![CDATA[<p>记录几个近期spark里面写表踩的坑.</p><p>一般情况, spark写表的时候做好列对齐, 然后直接老一套的sql就行</p><p>不过还是有一些需要注意的点, 处理不好就会导致数据被删, 问题非常大.</p><h2 id="sql写入">sql写入</h2><p>相对比较稳妥的方式</p><p>指定dt的时候不需要改动态覆盖,<strong>动态dt的时候务必修改为动态覆盖</strong></p><p>比如代码</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定分区的情况</span></span><br><span class="line">insert_sql = <span class="string">f&#x27;INSERT OVERWRITE TABLE <span class="subst">&#123;target_table&#125;</span> PARTITION (dt=&quot;<span class="subst">&#123;dt&#125;</span>&quot;) SELECt * from tmp_table&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 未指定分区的情况</span></span><br><span class="line"><span class="comment"># 记得加上这里的conf, 否则会删表</span></span><br><span class="line">spark.conf.<span class="built_in">set</span>(<span class="string">&quot;spark.sql.sources.partitionOverwriteMode&quot;</span>, <span class="string">&quot;dynamic&quot;</span>)</span><br><span class="line">insert_sql = <span class="string">f&#x27;INSERT OVERWRITE TABLE <span class="subst">&#123;target_table&#125;</span> PARTITION (dt) SELECt * from tmp_table&#x27;</span></span><br><span class="line"></span><br><span class="line">spark.sql(insert_sql)</span><br></pre></td></tr></table></figure><p>这里我们第一种写法不需要修改, 第二种写法必须指定覆盖模式为dynamic,否则会删表.</p><p>这个是spark2.3之后必须做的, 这个参数默认"static", 务必修改.</p><h2 id="saveastable和insertinto">saveAsTable和insertInto</h2><h3 id="saveastable">saveAsTable</h3><p>saveAsTable好处是动态写(可以用于直接创建表),mode可以设置"overwrite"或者"append".</p><p>针对saveAsTable, 我们设置partitionOverwriteMode没有意义</p><p>overwrite模式下, 无论怎么设置partitionOverwriteMode,<strong>一定会删除原有的所有数据</strong> append模式下, 无论怎么设置,都是会新增多一个分区.</p><h3 id="insertinto">insertInto</h3><p>类似于sql的写入, 但是需要注意partitionOverwriteMode.</p><p>append的情况下, 总是新增分区</p><p>overwrite模式下, 配置了dynamic写入, 则覆盖同名分区, 其他分区不变;</p><p>如果static或者默认不做配置, <strong>则删除所有分区</strong></p><h2 id="ai问题">AI问题</h2><p>目前就我自己的经验来看, AI对df的直接写入几乎是没有认知的,且非常喜欢用saveAsTable, 一旦指定mode为overwrite, 就会导致删表问题.</p><p>如果使用AI做数据写入脚本的编写, 务必在小心小心再小心的基础之上,再注意以上这几个点.</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Data </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>cc-switch + mcp-router配置claudecode+codex</title>
       <link href="/2025/10/13/cc-switch-mcp-router%E9%85%8D%E7%BD%AEclaudecode-codex/"/>
       <url>/2025/10/13/cc-switch-mcp-router%E9%85%8D%E7%BD%AEclaudecode-codex/</url>
